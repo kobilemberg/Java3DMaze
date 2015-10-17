@@ -561,8 +561,7 @@ public class MyModel extends Observable implements Model{
 			System.out.println("Client sees server");
 			ObjectOutputStream output=new ObjectOutputStream(myServer.getOutputStream());
 			ObjectInputStream input=new ObjectInputStream(myServer.getInputStream());
-			String[] arr = {"test",""};
-			output.writeObject(arr);
+			output.writeObject(maze);
 			output.flush();
 			System.out.println(input.readObject().toString());
 			myServer.close();
