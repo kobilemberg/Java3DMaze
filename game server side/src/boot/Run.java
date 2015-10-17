@@ -9,12 +9,12 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Observable;
 
-import model.MyModel;
-import presenter.Presenter;
-import presenter.Properties;
+import model.MyModelServerSide;
+import presenter.PresenterServerSide;
+import presenter.PropertiesServerSide;
 import view.MazeBasicWindow;
-import view.MyView;
-import view.View;
+import view.MyViewServerSide;
+import view.ViewServerSide;
 
 
 public class Run {
@@ -28,13 +28,13 @@ public class Run {
 		} catch (FileNotFoundException e) {
 			System.out.println("ERROR: File External files/properties.xml not found");
 		}
-		Properties properties=(Properties)decoder.readObject();
+		PropertiesServerSide properties=(PropertiesServerSide)decoder.readObject();
 		System.out.println(properties);		
 		//
 		
 		
 		
-		
+	/*	
 		if(properties.getUI().equals("GUI"))
 		{
 			MyModel model = new MyModel(properties);
@@ -50,11 +50,11 @@ public class Run {
 			view.start();
 		} 
 		
-		else
+		else*/
 		{
-			MyView view = new MyView(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
-			MyModel model = new MyModel(properties);
-			Presenter presenter = new Presenter(view, model);
+			MyViewServerSide view = new MyViewServerSide(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
+			MyModelServerSide model = new MyModelServerSide(properties);
+			PresenterServerSide presenter = new PresenterServerSide(view, model);
 			view.addObserver(presenter);
 			model.addObserver(presenter);
 			view.start();

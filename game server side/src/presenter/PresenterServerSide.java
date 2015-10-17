@@ -7,12 +7,12 @@ import java.util.Observer;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
-import model.Model;
-import view.View;
+import model.ModelServerSide;
+import view.ViewServerSide;
 
-public class Presenter implements Observer {
-	View view;
-	Model model;
+public class PresenterServerSide implements Observer {
+	ViewServerSide view;
+	ModelServerSide model;
 	HashMap<String, Command> viewCommandMap;
 	
 	
@@ -22,7 +22,7 @@ public class Presenter implements Observer {
 	* @param model Model represent the model layer
 	* @return new MyController as instance
 	* */
-		public Presenter(View view, Model model) {
+		public PresenterServerSide(ViewServerSide view, ModelServerSide model) {
 			super();
 			this.view = view;
 			this.model = model;
@@ -30,7 +30,7 @@ public class Presenter implements Observer {
 			HashMap<String, Command> viewCommandMap = new HashMap<String, Command>();
 			
 			
-			viewCommandMap.put("initServer",new Command() 
+			viewCommandMap.put("init server",new Command() 
 			{
 				@Override
 				public void doCommand(String[] args) {
@@ -83,7 +83,7 @@ public class Presenter implements Observer {
 					model.exit();}
 			});
 			String cliMenu=new String();
-			cliMenu+= "1:	server up\n";
+			cliMenu+= "1:	init server\n";
 			cliMenu+= "2:	generate 3d maze <Maze name> <MyMaze3dGenerator\\SimpleMaze3dGenerator> <X> <Y> <Z>\n";
 			cliMenu+= "3:	display <Maze name>\n";
 			cliMenu+= "4:	display cross section by {X,Y,Z} <index> for <Maze name>\n";
@@ -120,22 +120,22 @@ public class Presenter implements Observer {
 		 * This method will set controller view layer
 		 * @param view View represent the view layer
 		 */
-		public void setView(View view){this.view = view;}
+		public void setView(ViewServerSide view){this.view = view;}
 		/**
 		* This method will set controller model layer
 		* @param model Model represent the model layer
 		*/
-		public void setModel(Model model){this.model = model;}
+		public void setModel(ModelServerSide model){this.model = model;}
 		/**
 		* This method will return the controller view layer
 		* @return View instance represent the view layer of the controller
 		*/
-		public View getView(){return view;}
+		public ViewServerSide getView(){return view;}
 		/**
 		* This method will return the controller model layer
 		* @return Model instance represent the Model layer of the controller
 		*/
-		public Model getModel(){return model;}
+		public ModelServerSide getModel(){return model;}
 		
 		public void errorNoticeToViewr(String s) {view.errorNoticeToUser(s);}
 	
@@ -215,7 +215,7 @@ public class Presenter implements Observer {
 					view.displayData(model.getData());
 					break;
 					
-				case 2:
+				/*case 2:
 					//maze is ready;
 					String s =(String) ((Object[]) model.getData())[0];
 					view.tellTheUserMazeIsReady(s);
@@ -255,7 +255,7 @@ public class Presenter implements Observer {
 					//file size <File name>
 					dataToPassToView = (Object[]) model.getData();
 					view.tellTheUsersizeOfMazeInFile((String)dataToPassToView[0], (double)dataToPassToView[1]);
-					break;
+					break;*/
 							
 				case 9:
 					//solve <Maze name> <A*\BFS>

@@ -9,7 +9,7 @@ package model;
 import java.io.IOException;
 import IO.MyCompressorOutputStream;
 
-public interface Model {
+public interface ModelServerSide {
 	
 
 	/**

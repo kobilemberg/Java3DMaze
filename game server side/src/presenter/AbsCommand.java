@@ -1,16 +1,16 @@
 package presenter;
 
-import model.Model;
+import model.ModelServerSide;
 
 public abstract class AbsCommand implements Command {
 	
 	
-	protected Model model;
+	protected ModelServerSide model;
 	Controller controller;
 	
 	
 	
-	public AbsCommand(Model model, Controller controller) {
+	public AbsCommand(ModelServerSide model, Controller controller) {
 		super();
 		this.model = model;
 		this.controller = controller;

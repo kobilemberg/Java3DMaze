@@ -22,7 +22,7 @@ import presenter.Command;
 import presenter.Controller;
 import java.util.Observable;
 
-public class MyView extends Observable implements View {
+public class MyViewServerSide extends Observable implements ViewServerSide {
 	Controller controller;
 	CLI cli;
 	HashMap<String, Command> viewCommandMap;
@@ -37,7 +37,7 @@ public class MyView extends Observable implements View {
 	/**
 	 * Instantiates a new  my own maze3d generator.
 	 */
-	public MyView()
+	public MyViewServerSide()
 	{
 		super();
 	}
@@ -47,7 +47,7 @@ public class MyView extends Observable implements View {
 	 * @param out PrintWriter represent the output source
 	 * @return new MyView as instance with BufferedReader in and PrintWriter out
 	 */
-	public MyView(BufferedReader in, PrintWriter out)
+	public MyViewServerSide(BufferedReader in, PrintWriter out)
 	{
 		super();
 		this.in = in;
@@ -58,7 +58,7 @@ public class MyView extends Observable implements View {
 	 * @param controller Controller represent the controller layer as instance
 	 * @return new MyView as instance with controller layer
 	 */
-	public MyView(Controller controller)
+	public MyViewServerSide(Controller controller)
 	{
 		super();
 		this.controller = controller;
@@ -73,7 +73,7 @@ public class MyView extends Observable implements View {
 	 * @param viewCommandMap HashMap<String, Command> represent a commands to run
 	 * @return new MyView as instance with controller layer, BufferedReader in, PrintWriter out and commands 
 	 */
-	public MyView(Controller controller, BufferedReader in, PrintWriter out,HashMap<String, Command> viewCommandMap)
+	public MyViewServerSide(Controller controller, BufferedReader in, PrintWriter out,HashMap<String, Command> viewCommandMap)
 	{
 		super();
 		this.controller = controller;
@@ -86,7 +86,7 @@ public class MyView extends Observable implements View {
 	 * @param out PrintWriter represent the output source
 	 * @return new MyView as instance with controller layer BufferedReader in and PrintWriter out
 	 */
-	public MyView(Controller controller, BufferedReader in, PrintWriter out)
+	public MyViewServerSide(Controller controller, BufferedReader in, PrintWriter out)
 	{
 		super();
 		this.controller = controller;

@@ -21,6 +21,7 @@ public class MyTCPIPServer {
 		this.port = port;
 		try {
 			server=new ServerSocket(this.port);
+			System.out.println("Server is up");
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

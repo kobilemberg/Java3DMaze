@@ -38,7 +38,7 @@ import algorithms.search.Solution;
 import algorithms.search.State;
 import presenter.Command;
 
-public class MazeBasicWindow extends BasicWindow implements View{
+public class MazeBasicWindow extends BasicWindow implements ViewServerSide{
 
 	Timer timer;
 	TimerTask task;

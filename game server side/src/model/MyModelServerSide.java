@@ -47,10 +47,10 @@ import algorithms.mazeGenerators.MyMaze3dGenerator;
 import algorithms.mazeGenerators.Position;
 import algorithms.mazeGenerators.SimpleMaze3dGenerator;
 import algorithms.search.Solution;
-import presenter.Properties;
+import presenter.PropertiesServerSide;
 
 
-public class MyModel extends Observable implements Model{
+public class MyModelServerSide extends Observable implements ModelServerSide{
 	
 	Object data;
 	int modelCompletedCommand=0;
@@ -58,14 +58,14 @@ public class MyModel extends Observable implements Model{
 	Map<String, Maze3d> maze3dMap = Collections.synchronizedMap(new HashMap<String, Maze3d>());
 	HashMap<Maze3d, Solution<Position>> solutionMap = new HashMap<Maze3d, Solution<Position>>();
 	HashMap<String, Thread> openThreads = new HashMap<String,Thread>();
-	Properties properties;
+	PropertiesServerSide properties;
 	MyTCPIPServer server;
 	//Constructors
 	/**
 	* Instantiates a new  my own model.
 	*/
 	@SuppressWarnings("unchecked")
-	public MyModel(Properties p)
+	public MyModelServerSide(PropertiesServerSide p)
 	{
 		super();
 		this.properties = p; 
@@ -110,10 +110,10 @@ public class MyModel extends Observable implements Model{
 	* @param controller Controller represent the controller layer to work with
 	*/
 
-	public Properties getProperties() {return properties;}
+	public PropertiesServerSide getProperties() {return properties;}
 
 
-	public void setProperties(Properties properties) {this.properties = properties;}
+	public void setProperties(PropertiesServerSide properties) {this.properties = properties;}
 	
 //Functionality
 	
@@ -239,9 +239,9 @@ public class MyModel extends Observable implements Model{
 	public void setModelCommandCommand(int commandNum){modelCompletedCommand=commandNum;}
 	
 	
-	public static Properties read(String filename) throws Exception {
+	public static PropertiesServerSide read(String filename) throws Exception {
         XMLDecoder decoder =new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
-        Properties properties = (Properties)decoder.readObject();
+        PropertiesServerSide properties = (PropertiesServerSide)decoder.readObject();
         decoder.close();
         return properties;
     }
@@ -282,7 +282,7 @@ public class MyModel extends Observable implements Model{
 			return false; 
 		}
 		//Loading the file object
-		properties=(Properties)decoder.readObject();
+		properties=(PropertiesServerSide)decoder.readObject();
 		setData(properties);
 		
 		System.out.println(properties);

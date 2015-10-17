@@ -14,7 +14,7 @@ import algorithms.search.Solution;
 import presenter.Command;
 
 
-public interface View {
+public interface ViewServerSide {
 	/**
 	 * Starting the View layer
 	 */

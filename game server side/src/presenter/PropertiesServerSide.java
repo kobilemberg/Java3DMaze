@@ -3,7 +3,7 @@ package presenter;
 import java.io.Serializable;
 
 
-public class Properties implements Serializable
+public class PropertiesServerSide implements Serializable
 {
 
 	/**
@@ -17,9 +17,9 @@ public class Properties implements Serializable
 	protected  String defaultSolver;
 	protected int port;
 	
-	public Properties() {}
+	public PropertiesServerSide() {}
 
-	public Properties(int numOfThreads, int numOfClients, String defaultSolver, int port) {
+	public PropertiesServerSide(int numOfThreads, int numOfClients, String defaultSolver, int port) {
 		super();
 		this.numOfThreads = numOfThreads;
 		this.numOfClients = numOfClients;
