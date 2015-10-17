@@ -144,6 +144,14 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	        hintButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
 	        hintButton.setText("Hint");
 	        
+	        Button connectButton = new Button(playForm, SWT.PUSH);
+	        connectButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
+	        connectButton.setText("Connect To Server");
+	        
+	        Button remoteSolveButton = new Button(playForm, SWT.PUSH);
+	        remoteSolveButton.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
+	        remoteSolveButton.setText("Remote Solve");
+	        
 	        /* MetaData Label */ 
 			metaDataLabel = new Label(playForm, SWT.FILL);
 			metaDataLabel.setLayoutData(gd);
@@ -157,7 +165,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			/* Dummy Label */ 
 			dummyLabel = new Label(playForm, SWT.FILL); 
 			
-	        int[] play_weights = {1,1,1,2,2,6};
+	        int[] play_weights = {1,1,1,1,1,2,2,6};
 	        playForm.setWeights(play_weights);
 	        
         
@@ -363,6 +371,24 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		
+		/* What happens when a user clicks "[Remote Solve]". */
+		remoteSolveButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				if(mazeDisplayerCanvas!=null)
+				{
+					isSolving=true;
+					//Updating the model about current place in maze
+					setUserCommand(13);
+					String[] params = {mazeObjectName,currentFloor+"",mazeDisplayerCanvas.getCharacterX()+"",mazeDisplayerCanvas.getCharacterY()+""};
+					notifyObservers(params);
+				}
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
+		});
 		
 		
 		/* What happens when a user clicks "[Hint]". */
@@ -388,7 +414,18 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		
-		
+		/* What happens when a user clicks "[Connect To Server]". */ 
+		connectButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				openConnectWindow();
+				
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
+		});
 	}
 
 	public void startGame(){
@@ -419,6 +456,17 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		stopButton.setEnabled(true);
 //		/shell.layout();
 	}
+	
+	private void openConnectWindow() {
+		Shell connectWindow = new Shell(shell); 
+		
+		connectWindow.setLayout(new GridLayout(2,false));
+		connectWindow.setSize(240, 160);
+		connectWindow.setText("Connect To Server");
+		
+		connectWindow.open();		
+	}
+	
 	public String[] openGenerateWindow(){
 		
 		/* Generate New Maze open Pop-up window */ 

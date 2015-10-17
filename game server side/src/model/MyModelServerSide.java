@@ -299,7 +299,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		return true;
 	}
 	
-	public Solution<Position> requestSolution(String mazeName,Maze3d maze, String ip, int port) throws Exception
+	public Solution<Position> setMazeWithCurrentLocationFromGui(String mazeName,Maze3d maze, String ip, int port) throws Exception
 	{
 		InetAddress localaddr;
 		try {
@@ -350,5 +350,12 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		} catch (SocketException e) {
 			e.printStackTrace();
 		}	
+	}
+
+
+	@Override
+	public void setMazeWithCurrentLocationFromGui(String mazeName, String currentX, String currentY, String currentZ) {
+		// TODO Auto-generated method stub
+		
 	}
 }

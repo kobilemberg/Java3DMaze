@@ -29,7 +29,6 @@ public class PresenterServerSide implements Observer {
 			
 			HashMap<String, Command> viewCommandMap = new HashMap<String, Command>();
 			
-			
 			viewCommandMap.put("init server",new Command() 
 			{
 				@Override
@@ -69,7 +68,7 @@ public class PresenterServerSide implements Observer {
 						((Observable)view).notifyObservers(args);
 					} catch (NullPointerException e) {
 						e.printStackTrace();
-						view.errorNoticeToUser("Exception: unexisted solution");
+						view.errorNoticeToUser("Exception: Solution not found.");
 					}
 				}
 			});

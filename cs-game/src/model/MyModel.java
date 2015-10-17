@@ -20,7 +20,6 @@ import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -35,6 +34,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
+import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
 import IO.MyCompressorOutputStream;
 import IO.MyDecompressorInputStream;
@@ -528,6 +529,8 @@ public class MyModel extends Observable implements Model{
 	
 	private Solution<Position> solveWithAstar(String mazeName,Demo d,SearchableMaze3d searchableMaze)
 	{
+		remoteSolve("", mazeName, searchableMaze);
+		
 		Solution<Position> solutionToAdd = d.solveSearchableMazeWithAstarByManhatenDistance(searchableMaze);
 		solutionMap.put(maze3dMap.get(mazeName), solutionToAdd);
 		modelCompletedCommand=9;
@@ -535,6 +538,7 @@ public class MyModel extends Observable implements Model{
 		setData(mazeName);
 		notifyObservers();
 		return solutionMap.get(maze3dMap.get(mazeName));
+		
 	}
 	
 	
@@ -549,6 +553,30 @@ public class MyModel extends Observable implements Model{
 		return solutionMap.get(maze3dMap.get(mazeName));
 	}
 	
+	public Solution<Position> remoteSolve(String serverAddress, String mazeName, SearchableMaze3d maze)
+	{
+		try{
+			InetAddress serverInetAddress = InetAddress.getLocalHost();
+			Socket myServer = new Socket(serverInetAddress.getHostAddress(), 12345);
+			System.out.println("Client sees server");
+			ObjectOutputStream output=new ObjectOutputStream(myServer.getOutputStream());
+			ObjectInputStream input=new ObjectInputStream(myServer.getInputStream());
+			String[] arr = {"test",""};
+			output.writeObject(arr);
+			output.flush();
+			System.out.println(input.readObject().toString());
+			myServer.close();
+			output.close();
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
+		
+		
+		
+		
+		return null;
+	}
 	@SuppressWarnings("resource")
 	@Override
 	public boolean changePropertiesByFilename(String fileName) 

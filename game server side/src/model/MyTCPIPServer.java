@@ -12,7 +12,7 @@ import java.util.concurrent.Executors;
 
 public class MyTCPIPServer {
 
-	private static final String SOLVE = "solve";
+	private static final String SOLVE = "test";
 	private int port;
 	private Executor executer;
 	private ServerSocket server;
@@ -33,9 +33,12 @@ public class MyTCPIPServer {
 		try {
 			while(serverIsRunning){
 				Socket someClient = server.accept();
+				System.out.println("Accepted connection.");
 				ObjectInputStream input=new ObjectInputStream(someClient.getInputStream());
 				ObjectOutputStream output=new ObjectOutputStream(someClient.getOutputStream());
 				String line = (String) input.readObject();
+				System.out.println(line.toString());
+				output.writeObject("Got it.");
 				if(line.toLowerCase().equals(SOLVE)){
 					//executer.execute(new Thread(new ASCIIArtClientHandler(someClient)));
 				}

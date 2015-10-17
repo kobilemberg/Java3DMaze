@@ -17,7 +17,7 @@ import view.MyViewServerSide;
 import view.ViewServerSide;
 
 
-public class Run {
+public class StartServer {
 
 	public static void main(String[] args) 
 	{
