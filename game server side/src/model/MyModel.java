@@ -115,288 +115,7 @@ public class MyModel extends Observable implements Model{
 	public void setProperties(Properties properties) {this.properties = properties;}
 	
 //Functionality
-	@Override
-	public void dir(String dir) throws NullPointerException
-	{
-		if(dir!=null)
-		{
-			File folder = new File(dir);
-			if((folder.exists()&&folder.isDirectory()))
-			{
-				{
-					String strOfDir ="Files and Directories in: "+dir+"\n";
-					for (String fileOrDirectory: folder.list()){strOfDir+=fileOrDirectory+"\n";}
-					this.data = strOfDir;
-					this.modelCompletedCommand=1;
-					this.setChanged();
-					notifyObservers();
-				}
-			}
-			else{errorNoticeToController("Illegal path");}
-		}
-		else{errorNoticeToController("Illegal path");}
-	}
-
-	@Override
-	public void generateMazeWithName(String name, String generator, String floors, String lines, String columns) {
-		if(floors.isEmpty()||lines.isEmpty()||columns.isEmpty()){errorNoticeToController("Wrong parameters, Usage: generate 3d maze <name> <generator> <other params>");}
-		else
-		{
-			Future<Maze3d> f = TP.submit(new Callable<Maze3d>() {
-				@Override
-				public Maze3d call() throws Exception 
-				{
-						Maze3dGenerator maze;
-						if(generator.equals("mymaze3dgenerator"))
-						{
-							maze = new MyMaze3dGenerator();
-							// errorNoticeToController("Generating maze with MyMaze3dGenerator as your request.");
-						}
-						
-						else if(generator.equals("simplemazegenerator"))
-						{
-							maze = new SimpleMaze3dGenerator();
-							errorNoticeToController("Generating maze with simplemazegenerator as your request.");
-						}
-							
-						else if(properties.getDefaultAlgorith().equals("SimpleMazeGenerator"))
-						{
-							errorNoticeToController("Generating maze with SimpleMaze3dGenerator as your properties file.");
-							maze = new SimpleMaze3dGenerator();
-						}
-						else if(properties.getDefaultAlgorith().equals("MyMaze3dGenerator"))
-						{
-							// errorNoticeToController("Generating maze with MyMaze3dGenerator as your properties file.");
-							maze = new MyMaze3dGenerator();
-						}
-						else
-						{
-							// errorNoticeToController("Generating maze with MyMaze3dGenerator because there were no configurations.");
-							maze = new MyMaze3dGenerator();
-						}
-						if(!floors.isEmpty()&&!lines.isEmpty()&&!columns.isEmpty())
-						{
-							Maze3d maze3dResult = maze.generate(new Integer(floors),new Integer(lines),new Integer(columns));
-							return maze3dResult;
-						}
-						else
-						{	
-							errorNoticeToController("Wrong parameters, Usage: generate 3d maze <name> <generator> <other params>");
-							return null;
-						}
-
-				}
-		
-			});
-			//TP.execute(new Runnable() {
-				//@Override
-				//public void run() {
-					try{ 
-						Maze3d mazeToSet = f.get();
-						mazeToSet = f.get();
-						maze3dMap.put(name, mazeToSet);
-						setChanged();
-						modelCompletedCommand=2;
-						Object[] o = {name,mazeToSet};
-						setData(o);
-						notifyObservers(f.get());
-					}catch (Exception e)
-					{
-						//errorNoticeToController("Error: f.get() did not work properly. ");
-					}
-				//}
-			//});
-		}	
-	}
-
-	@Override
-	public void getMazeWithName(String nameOfMaze) {
-		System.out.println("Name: "+nameOfMaze);
-		System.out.println(maze3dMap.toString());
-			if(maze3dMap.containsKey(nameOfMaze))
-			{
-				TP.isShutdown();
-				this.modelCompletedCommand=3;
-				Object[] dataToSet = new Object[2];
-				dataToSet[0]=maze3dMap.get(nameOfMaze);
-				dataToSet[1]=nameOfMaze;
-				System.out.println("DataToSet[0]: "+dataToSet[0].toString());
-				System.out.println("DataToSet[1]: "+dataToSet[1]);
-				data= dataToSet;
-				setChanged();
-				notifyObservers();
-			}		
-	}
-	@Override
-	public void getCrossSectionByAxe(String axe, String index, String mazeName) {
-		int[][] arrToRet = null;
-		if(maze3dMap.containsKey(mazeName))
-		{
-			Maze3d maze = maze3dMap.get(mazeName);
-			//Floors
-			if(axe.equals("x"))
-			{
-				if((new Integer(index)) >=0 && (new Integer(index)) < maze.getMaze().length){arrToRet = maze.getCrossSectionByX(new Integer(index));}
-				else{errorNoticeToController("illegal index, llegal indexes are:0-"+maze.getMaze().length);}
-			}
-			//Lines
-			else if(axe.equals("y"))
-			{
-				if((new Integer(index)) >=0 && (new Integer(index)) < maze.getMaze()[0].length){arrToRet = maze.getCrossSectionByY(new Integer(index));}
-				else{errorNoticeToController("illegal index, llegal indexes are:0-"+maze.getMaze()[0].length);}
-			}
-			//Columns
-			else if(axe.equals("z"))
-			{
-				if((new Integer(index)) >=0 && (new Integer(index)) < maze.getMaze()[0][0].length){arrToRet = maze.getCrossSectionByZ(new Integer(index));}
-				else{errorNoticeToController("illegal index, llegal indexes are:0-"+maze.getMaze()[0][0].length);}
-			}
-			else{errorNoticeToController("incorrect axe, the options are: X,Y,Z");}
-		}
-		else if(!maze3dMap.containsKey(mazeName)){errorNoticeToController("problem with args");}
-		if(arrToRet!=null)
-		{
-			Object[] argsToRet= new Object[4];
-			argsToRet[0] = arrToRet;
-			argsToRet[1] = axe;
-			argsToRet[2] = index;
-			argsToRet[3] = mazeName;
-			this.setData(argsToRet );
-			this.modelCompletedCommand=4;
-			setChanged();
-			notifyObservers();
-		}
-		else{errorNoticeToController("problem with args");}
-	}
-	@Override
-	public void saveCompressedMazeToFile(String mazeName, String fileName) throws IOException {
-		if(fileName.isEmpty()||mazeName.isEmpty()){errorNoticeToController("Cannot resolve filename\\maze name");}
-		else
-		{
-			if(maze3dMap.containsKey(mazeName))
-			{
-				File fileCreator = new File(fileName);
-				if(fileCreator.exists())
-				{
-					OutputStream out=new MyCompressorOutputStream(new FileOutputStream(fileName));
-					out.write(maze3dMap.get(mazeName).toByteArray());
-					out.flush();
-					out.close();
-					String[] datatToSet = new String[2];
-					datatToSet[0] = mazeName;
-					datatToSet[1] = fileName;
-					data = datatToSet;
-					this.modelCompletedCommand=5;
-					this.setChanged();
-					this.notifyObservers();
-				}
-				else if(!fileCreator.exists())
-				{
-					if(fileCreator.createNewFile())
-					{
-						OutputStream out=new MyCompressorOutputStream(new FileOutputStream(fileName));
-						out.write(maze3dMap.get(mazeName).toByteArray());
-						out.flush();
-						out.close();
-						String[] datatToSet = new String[2];
-						datatToSet[0] = mazeName;
-						datatToSet[1] = fileName;
-						data = datatToSet;
-						this.modelCompletedCommand=5;
-						this.setChanged();
-						this.notifyObservers();
-					}
-					else{errorNoticeToController("It seems that file exists/Cannot create file.");}
-				}
-			}
-			else
-			{
-				errorNoticeToController("The name is incorrect");
-				throw new NullPointerException("There is no maze " +mazeName);
-			}
-		}
-	}
-	@Override
-	public void loadAndDeCompressedMazeToFile(String fileName, String mazeName) throws IOException {
-		if(fileName.isEmpty()||mazeName.isEmpty()){errorNoticeToController("File not found\\Cannot resolve maze name");}
-		else
-		{
-			File file = new File(fileName);
-			if(file.exists())
-			{	
-				@SuppressWarnings("resource")
-				FileInputStream fileIn = new FileInputStream(fileName);//Opening the file
-				byte[] dimensionsArr = new byte[12];//array of diemensions
-				fileIn.read(dimensionsArr, 0, 12);//reading from file to the array
-				int xLength,yLength,zLength;//setting parameters
-				byte[] copyArr = new byte[4];//extracting int
-				//xLength
-				for (int i = 0; i <4; i++) {copyArr[i] = dimensionsArr[i];}
-				xLength = ByteBuffer.wrap(copyArr).getInt();
-				
-				//yLength
-				for (int i = 0; i <4; i++) {copyArr[i] = dimensionsArr[i+4];}
-				yLength = ByteBuffer.wrap(copyArr).getInt();
-				
-				//zLength
-				for (int i = 0; i <4; i++) {copyArr[i] = dimensionsArr[i+8];}
-				zLength = ByteBuffer.wrap(copyArr).getInt();
-				
-				
-				byte[] mazeMatrix = new byte[xLength*yLength*zLength + 36];
-				
-				InputStream in=new MyDecompressorInputStream(new FileInputStream(fileName));
-				in.read(mazeMatrix);
-				in.close();
-				Maze3d mazeToSave = new Maze3d(mazeMatrix);
-				maze3dMap.put(mazeName, mazeToSave);
-				String[] datatToSet = new String[2];
-				datatToSet[1] = mazeName;
-				datatToSet[0] = fileName;
-				data = datatToSet;
-				this.modelCompletedCommand=6;
-				this.setChanged();
-				this.notifyObservers();
-				
-			}
-			else
-			{
-
-				errorNoticeToController("File not found");
-				throw new FileNotFoundException("File not found");
-			}
-		}
-	}
-	@Override
-	public void getSizeOfMazeInRam(String mazeName) {
-		if(maze3dMap.containsKey(mazeName))
-		{
-			Object[] dataToSet = new Object[2];
-			dataToSet[0]=mazeName;
-			dataToSet[1]=new Double(maze3dMap.get(mazeName).toByteArray().length);
-			this.modelCompletedCommand=7;
-			this.setChanged();
-			this.setData(dataToSet);
-			notifyObservers();
-		}
-		else	
-			errorNoticeToController("There is no maze named: "+mazeName);
-	}
-	@Override
-	public void getSizeOfMazeInFile(String fileName) {
-		File f = new File(fileName);
-		if(!f.exists()){errorNoticeToController("File "+fileName+" doesnt exists");}
-		else
-		{
-			Object[] dataToSet = new Object[2];
-			dataToSet[0]=fileName;
-			dataToSet[1]=new Double(f.length());
-			this.modelCompletedCommand=8;
-			this.setChanged();
-			this.setData(dataToSet);
-			notifyObservers();
-		}
-	}
+	
 	@Override
 	public void solveMaze(String mazeName, String algorithm) 
 	{
@@ -607,7 +326,7 @@ public class MyModel extends Observable implements Model{
 			ObjectOutputStream output=new ObjectOutputStream(myServerSocket.getOutputStream());
 			ObjectInputStream input=new ObjectInputStream(myServerSocket.getInputStream());
 			
-			String solveCommand = "solve "+mazeName+" "+properties.getDefaultAlgorith();
+			String solveCommand = "Solve "+mazeName+" "+properties.getDefaultAlgorith();
 			output.writeObject(solveCommand);
 			output.flush();
 			
@@ -631,6 +350,18 @@ public class MyModel extends Observable implements Model{
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+
+	@Override
+	public void initServer(String numOfClients) {
+		MyTCPIPServer server=new MyTCPIPServer(new Integer(numOfClients));
+		modelCompletedCommand=1;
+		setChanged();
+		setData("Server is up");
+		notifyObservers();
+		
+		
 	}
 	
 }
