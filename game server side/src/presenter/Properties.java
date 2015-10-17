@@ -13,83 +13,53 @@ public class Properties implements Serializable
 	
 
 	protected int numOfThreads;
-	protected  String defaultAlgorith;
+	protected  int numOfClients;
 	protected  String defaultSolver;
-	protected String UI;
+	protected int port;
 	
 	public Properties() {}
-	
-	public Properties(int numOfThreads,String defaultAlgorith,String defaultSolver,String UI) {
+
+	public Properties(int numOfThreads, int numOfClients, String defaultSolver, int port) {
 		super();
 		this.numOfThreads = numOfThreads;
-		this.defaultAlgorith = defaultAlgorith;
+		this.numOfClients = numOfClients;
 		this.defaultSolver = defaultSolver;
-		this.UI=UI;
+		this.port = port;
 	}
 
+	public int getNumOfThreads() {
+		return numOfThreads;
+	}
 
+	public void setNumOfThreads(int numOfThreads) {
+		this.numOfThreads = numOfThreads;
+	}
 
-	/**
-	 * @return the numOfThreads
-	 */
-	public int getNumOfThreads() {return numOfThreads;}
+	public int getNumOfClients() {
+		return numOfClients;
+	}
 
+	public void setNumOfClients(int numOfClients) {
+		this.numOfClients = numOfClients;
+	}
 
+	public String getDefaultSolver() {
+		return defaultSolver;
+	}
 
-	/**
-	 * @param numOfThreads the numOfThreads to set
-	 */
-	public void setNumOfThreads(int numOfThreads) {this.numOfThreads = numOfThreads;}
+	public void setDefaultSolver(String defaultSolver) {
+		this.defaultSolver = defaultSolver;
+	}
 
+	public int getPort() {
+		return port;
+	}
 
-	/**
-	 * @return the defaultAlgorith
-	 */
-	public String getDefaultAlgorith() {return defaultAlgorith;}
+	public void setPort(int port) {
+		this.port = port;
+	}
 
-
-
-	/**
-	 * @param defaultAlgorith the defaultAlgorith to set
-	 */
-	public void setDefaultAlgorith(String defaultAlgorith) {this.defaultAlgorith = defaultAlgorith;}
-
-
-	/**
-	 * @return the defaultSolver
-	 */
-	public String getDefaultSolver() {return defaultSolver;}
-
-	/**
-	 * @param defaultSolver the defaultSolver to set
-	 */
-	public void setDefaultSolver(String defaultSolver) {this.defaultSolver = defaultSolver;}
-
-	/**
-	 * @return the uI
-	 */
-	public String getUI() {return UI;}
-
-	/**
-	 * @param uI the uI to set
-	 */
-	public void setUI(String uI) {UI = uI;}
-
-	/**
-	 * @return the serialversionuid
-	 */
-	public static long getSerialversionuid() {return serialVersionUID;}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 */
-	@Override
-	public boolean equals(Object obj) {return this.toString().equals(obj.toString());}
-
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
-	@Override
-	public String toString() {return "Properties [numOfThreads=" + numOfThreads + ", defaultAlgorith=" + defaultAlgorith + ", defaultSolver="+ defaultSolver + ", UI=" + UI + "]";}
-
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 }

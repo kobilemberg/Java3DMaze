@@ -23,6 +23,7 @@ import java.io.OutputStream;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.Collections;
@@ -58,7 +59,7 @@ public class MyModel extends Observable implements Model{
 	HashMap<Maze3d, Solution<Position>> solutionMap = new HashMap<Maze3d, Solution<Position>>();
 	HashMap<String, Thread> openThreads = new HashMap<String,Thread>();
 	Properties properties;
-	
+	MyTCPIPServer server;
 	//Constructors
 	/**
 	* Instantiates a new  my own model.
@@ -69,7 +70,7 @@ public class MyModel extends Observable implements Model{
 		super();
 		this.properties = p; 
 		this.TP = Executors.newFixedThreadPool(p.getNumOfThreads());
-		
+		server = new MyTCPIPServer(p.getPort());
 		File map = new File("External files/solutionMap.txt");
 		if(map.exists())
 		{
@@ -308,7 +309,7 @@ public class MyModel extends Observable implements Model{
 			mazeToSave.setStartPosition(newStartPosition);
 			String newName = mazeName+" From"+currentX+","+currentY+","+currentZ+",";
 			maze3dMap.put(newName, mazeToSave);
-			solveMaze(newName, properties.getDefaultAlgorith());
+			solveMaze(newName, properties.getDefaultSolver());
 		}	
 	}
 	
@@ -326,7 +327,7 @@ public class MyModel extends Observable implements Model{
 			ObjectOutputStream output=new ObjectOutputStream(myServerSocket.getOutputStream());
 			ObjectInputStream input=new ObjectInputStream(myServerSocket.getInputStream());
 			
-			String solveCommand = "Solve "+mazeName+" "+properties.getDefaultAlgorith();
+			String solveCommand = "Solve "+mazeName+" "+properties.getDefaultSolver();
 			output.writeObject(solveCommand);
 			output.flush();
 			
@@ -355,7 +356,13 @@ public class MyModel extends Observable implements Model{
 
 	@Override
 	public void initServer(String numOfClients) {
-		MyTCPIPServer server=new MyTCPIPServer(new Integer(numOfClients));
+		
+		try {
+			this.server.getServer().setSoTimeout(60000*60);
+		} catch (SocketException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		modelCompletedCommand=1;
 		setChanged();
 		setData("Server is up");
