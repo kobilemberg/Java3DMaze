@@ -12,19 +12,18 @@ import java.util.concurrent.Executors;
 
 public class MyTCPIPServer {
 
-	private static final String GET_IMAGE = "get image";
+	private static final String SOLVE = "solve";
 	private int port;
 	private Executor executer;
 	private ServerSocket server;
-	private boolean killServer = true;
+	private boolean serverIsRunning = true;
+
 	public MyTCPIPServer(int port){
 		this.port = port;
 		try {
 			server=new ServerSocket(this.port);
 			System.out.println("Server is up");
-			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -32,25 +31,24 @@ public class MyTCPIPServer {
 	public void startServer(int numOfClients){
 		executer = Executors.newFixedThreadPool(numOfClients);
 		try {
-			
-			while(killServer){
+			while(serverIsRunning){
 				Socket someClient = server.accept();
 				ObjectInputStream input=new ObjectInputStream(someClient.getInputStream());
 				ObjectOutputStream output=new ObjectOutputStream(someClient.getOutputStream());
 				String line = (String) input.readObject();
-				if(line.equals(GET_IMAGE)){
+				if(line.toLowerCase().equals(SOLVE)){
 					//executer.execute(new Thread(new ASCIIArtClientHandler(someClient)));
 				}
 			}
 			server.close();
 		} catch (Exception e) {
-			System.out.println("tiered of waiting for connection");
+			System.out.println("ERROR: Connection timed out.");
 		}finally {
 			((ExecutorService)executer).shutdown();
 		}		
 	}
 	public void stopServer(){
-		killServer = false;
+		serverIsRunning = false;
 	}
 
 	public static void main(String[] args) {
@@ -81,20 +79,12 @@ public class MyTCPIPServer {
 	public void setServer(ServerSocket server) {
 		this.server = server;
 	}
-
-	public boolean isKillServer() {
-		return killServer;
+	
+	public boolean isServerIsRunning() {
+		return serverIsRunning;
 	}
 
-	public void setKillServer(boolean killServer) {
-		this.killServer = killServer;
+	public void setServerIsRunning(boolean serverIsRunning) {
+		this.serverIsRunning = serverIsRunning;
 	}
-
-	public static String getGetImage() {
-		return GET_IMAGE;
-	}
-	
-	
-	
-	
 }

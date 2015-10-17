@@ -134,7 +134,7 @@ String cliMenu;
 			}
 		}
 		commands.get(inputLineAsArray[0]).doCommand(inputLineAsArray);
-		out.println("Exiting from the program...Bye!");
+		out.println("Exiting.");
 		out.flush();
 		try {in.close();} catch (IOException e) {e.printStackTrace();}out.close();
 	}

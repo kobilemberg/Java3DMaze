@@ -125,7 +125,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 			if(solutionMap.containsKey(maze3dMap.get(mazeName)))
 			{
 				errorNoticeToController("Model notification: I have this solution, i won't calculate it again!");
-				modelCompletedCommand=9;
+				modelCompletedCommand=2;
 				setData(mazeName);
 				setChanged();
 				notifyObservers();
@@ -184,7 +184,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		{
 			if(solutionMap.containsKey(maze3dMap.get(mazeName)))
 			{
-				modelCompletedCommand = 10;
+				modelCompletedCommand = 3;
 				Object[] dataToSet = new Object[2];
 				dataToSet[0] = mazeName;
 				dataToSet[1] = solutionMap.get(maze3dMap.get(mazeName));
@@ -199,7 +199,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	@Override
 	public void exit() {
 		try {
-			modelCompletedCommand =11;
+			modelCompletedCommand =4;
 			TP.shutdownNow();
 			ObjectOutputStream mapSave = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(new File("External files/solutionMap.txt"))));
 			mapSave.writeObject(this.solutionMap);
@@ -250,7 +250,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	{
 		Solution<Position> solutionToAdd = d.solveSearchableMazeWithAstarByManhatenDistance(searchableMaze);
 		solutionMap.put(maze3dMap.get(mazeName), solutionToAdd);
-		modelCompletedCommand=9;
+		modelCompletedCommand=2;
 		setChanged();
 		setData(mazeName);
 		notifyObservers();
@@ -262,7 +262,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	{
 		Solution<Position> solutionToAdd = d.solveSearchableMazeWithBFS(searchableMaze);
 		solutionMap.put(maze3dMap.get(mazeName), solutionToAdd);
-		modelCompletedCommand=9;
+		modelCompletedCommand=2;
 		setChanged();
 		setData(mazeName);
 		notifyObservers();
@@ -298,22 +298,8 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		encoder.close();
 		return true;
 	}
-
-
-	@Override
-	public void setMazeWithCurrentLocationFromGui(String mazeName, String currentX, String currentY, String currentZ) {
-		if(maze3dMap.containsKey(mazeName))
-		{
-			Maze3d mazeToSave = maze3dMap.get(mazeName);
-			Position newStartPosition = new Position(new Integer(currentX), new Integer(currentY), new Integer(currentZ));
-			mazeToSave.setStartPosition(newStartPosition);
-			String newName = mazeName+" From"+currentX+","+currentY+","+currentZ+",";
-			maze3dMap.put(newName, mazeToSave);
-			solveMaze(newName, properties.getDefaultSolver());
-		}	
-	}
 	
-	public Solution<Position> connectToServerAndAskForSolution(String mazeName,Maze3d maze, String ip, int port) throws Exception
+	public Solution<Position> requestSolution(String mazeName,Maze3d maze, String ip, int port) throws Exception
 	{
 		InetAddress localaddr;
 		try {
@@ -332,20 +318,18 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 			output.flush();
 			
 			@SuppressWarnings("unchecked")
-			Solution<Position> solutionFromServer=(Solution<Position>)input.readObject();
+			Solution<Position> solution = (Solution<Position>)input.readObject();
 			
-			if(solutionFromServer.toString().contains("Solution:"))
+			output.close();
+			input.close();
+			myServerSocket.close();
+			
+			if(solution.toString().contains("Solution:"))
 			{
-				output.close();
-				input.close();
-				myServerSocket.close();
-				return solutionFromServer;
+				return solution;
 			}
 			//System.out.println("message from server: "+messageFromServer);
 			//output.writeObject("networking is so simple in java");
-			
-
-			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -359,16 +343,12 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		
 		try {
 			this.server.getServer().setSoTimeout(60000*60);
+			modelCompletedCommand=1;
+			setChanged();
+			setData("Server is up");
+			notifyObservers();
 		} catch (SocketException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		modelCompletedCommand=1;
-		setChanged();
-		setData("Server is up");
-		notifyObservers();
-		
-		
+		}	
 	}
-	
 }

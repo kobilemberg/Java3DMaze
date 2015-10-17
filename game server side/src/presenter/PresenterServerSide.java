@@ -34,13 +34,13 @@ public class PresenterServerSide implements Observer {
 			{
 				@Override
 				public void doCommand(String[] args) {
-						try {
-							view.setUserCommand(1);
-							((Observable)view).notifyObservers(args);
-						} catch (Exception e) {
-							e.printStackTrace();
-							view.errorNoticeToUser("Exception: problem with args");
-						}	
+					try {
+						view.setUserCommand(1);
+						((Observable)view).notifyObservers(args);
+					} catch (Exception e) {
+						e.printStackTrace();
+						view.errorNoticeToUser("Exception: problem with args");
+					}	
 				}
 			});
 			
@@ -49,13 +49,13 @@ public class PresenterServerSide implements Observer {
 			{
 				@Override
 				public void doCommand(String[] args) {
-						try {
-							view.setUserCommand(9);
-							((Observable)view).notifyObservers(args);
-						} catch (Exception e) {
-							e.printStackTrace();
-							view.errorNoticeToUser("Exception: problem with args");
-						}	
+					try {
+						view.setUserCommand(2);
+						((Observable)view).notifyObservers(args);
+					} catch (Exception e) {
+						e.printStackTrace();
+						view.errorNoticeToUser("Exception: problem with args");
+					}	
 				}
 			});
 			
@@ -64,13 +64,13 @@ public class PresenterServerSide implements Observer {
 				@Override
 				//args[1] = mazeName
 				public void doCommand(String[] args) {
-						try {
-							view.setUserCommand(10);
-							((Observable)view).notifyObservers(args);
-						} catch (NullPointerException e) {
-							e.printStackTrace();
-							view.errorNoticeToUser("Exception: unexisted solution");
-						}
+					try {
+						view.setUserCommand(3);
+						((Observable)view).notifyObservers(args);
+					} catch (NullPointerException e) {
+						e.printStackTrace();
+						view.errorNoticeToUser("Exception: unexisted solution");
+					}
 				}
 			});
 			
@@ -78,22 +78,15 @@ public class PresenterServerSide implements Observer {
 			{
 				@Override
 				public void doCommand(String[] args) {
-					view.setUserCommand(11);
+					view.setUserCommand(4);
 					((Observable)view).notifyObservers(args);
 					model.exit();}
 			});
 			String cliMenu=new String();
 			cliMenu+= "1:	init server\n";
-			cliMenu+= "2:	generate 3d maze <Maze name> <MyMaze3dGenerator\\SimpleMaze3dGenerator> <X> <Y> <Z>\n";
-			cliMenu+= "3:	display <Maze name>\n";
-			cliMenu+= "4:	display cross section by {X,Y,Z} <index> for <Maze name>\n";
-			cliMenu+= "5:	save maze <Maze name> <File name>\n";
-			cliMenu+= "6:	load maze <File name> <Maze name>\n";
-			cliMenu+= "7:	maze size <Maze name>\n";
-			cliMenu+= "8:	file size <File name>\n";
-			cliMenu+= "9:	solve <Maze name> <A*\\BFS>\n";
-			cliMenu+= "10:	display solution <Maze name>\n";
-			cliMenu+= "11:	exit\n";
+			cliMenu+= "2:	solve <Maze name> <A*\\BFS>\n";
+			cliMenu+= "3:	display solution <Maze name>\n";
+			cliMenu+= "4:	exit\n";
 			this.viewCommandMap = viewCommandMap;
 			view.setCommands(viewCommandMap);
 			view.setCommandsMenu(cliMenu);
