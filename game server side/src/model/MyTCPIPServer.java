@@ -10,6 +10,8 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import algorithms.demo.SearchableMaze3d;
+
 public class MyTCPIPServer {
 
 	private static final String SOLVE = "test";
@@ -36,15 +38,16 @@ public class MyTCPIPServer {
 				System.out.println("Accepted connection.");
 				ObjectInputStream input=new ObjectInputStream(someClient.getInputStream());
 				ObjectOutputStream output=new ObjectOutputStream(someClient.getOutputStream());
-				String line = (String) input.readObject();
+				SearchableMaze3d line = (SearchableMaze3d) input.readObject();
 				System.out.println(line.toString());
 				output.writeObject("Got it.");
-				if(line.toLowerCase().equals(SOLVE)){
+				/*if(line.toLowerCase().equals(SOLVE)){
 					//executer.execute(new Thread(new ASCIIArtClientHandler(someClient)));
-				}
+				}*/
 			}
 			server.close();
 		} catch (Exception e) {
+			e.printStackTrace();
 			System.out.println("ERROR: Connection timed out.");
 		}finally {
 			((ExecutorService)executer).shutdown();

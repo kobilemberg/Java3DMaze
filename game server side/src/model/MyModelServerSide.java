@@ -342,6 +342,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	public void initServer(String numOfClients) {
 		
 		try {
+			
 			this.server.getServer().setSoTimeout(60000*60);
 			modelCompletedCommand=1;
 			setChanged();
