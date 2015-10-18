@@ -57,11 +57,6 @@ public class MyTCPIPServer {
 		serverIsRunning = false;
 	}
 
-	public static void main(String[] args) {
-		MyTCPIPServer server = new MyTCPIPServer(12345);
-		server.startServer(3);
-	}
-
 	public int getPort() {
 		return port;
 	}

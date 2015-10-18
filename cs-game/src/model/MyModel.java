@@ -650,9 +650,7 @@ public class MyModel extends Observable implements Model{
 			}
 			//System.out.println("message from server: "+messageFromServer);
 			//output.writeObject("networking is so simple in java");
-			
 
-			
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

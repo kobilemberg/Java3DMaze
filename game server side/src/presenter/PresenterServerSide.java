@@ -147,7 +147,7 @@ public class PresenterServerSide implements Observer {
 			
 			case 1:
 				//args[0] = numOfClients
-				try {model.initServer(argArr[0]);} catch (Exception e) {
+				try {model.initServer();} catch (Exception e) {
 					
 					e.printStackTrace();
 					view.errorNoticeToUser("Exception: problem with args");}

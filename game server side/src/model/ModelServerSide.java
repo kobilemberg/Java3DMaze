@@ -46,12 +46,7 @@ public interface ModelServerSide {
 	public Object getData();
 	public void setData(Object o);
 	public int getModelCompletedCommand();
-	
 	public void setModelCommandCommand(int commandNum);
-
-
 	public void setMazeWithCurrentLocationFromGui(String mazeName, String currentX, String currentY, String currentZ);
-
-
-	public void initServer(String numOfClients);
+	public void initServer();
 }

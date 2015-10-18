@@ -339,12 +339,11 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 
 
 	@Override
-	public void initServer(String numOfClients) {
-		
+	public void initServer() {
 		try {
-			
 			this.server.getServer().setSoTimeout(60000*60);
 			modelCompletedCommand=1;
+			server.startServer(properties.getNumOfClients());
 			setChanged();
 			setData("Server is up");
 			notifyObservers();
