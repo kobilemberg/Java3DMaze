@@ -23,42 +23,25 @@ public class StartServer {
 	{
 		
 		XMLDecoder decoder=null;
-		try {
+		try 
+		{
 			decoder=new XMLDecoder(new BufferedInputStream(new FileInputStream("External files/properties.xml")));
-		} catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) 
+		{
 			System.out.println("ERROR: File External files/properties.xml not found");
 		}
 		PropertiesServerSide properties=(PropertiesServerSide)decoder.readObject();
+		decoder.close();
+
 		System.out.println(properties);		
-		//
+
+		MyViewServerSide view = new MyViewServerSide(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
+		MyModelServerSide model = new MyModelServerSide();
+		PresenterServerSide presenter = new PresenterServerSide(view, model);
+		view.addObserver(presenter);
+		model.addObserver(presenter);
+		view.start();
 		
-		
-		
-	/*	
-		if(properties.getUI().equals("GUI"))
-		{
-			MyModel model = new MyModel(properties);
-			MazeBasicWindow view=new MazeBasicWindow("3D Maze Game", 1000, 600,null);
-			
-			//win.setCommands();
-			//view.setMazeWindow(win);
-			
-			Presenter presenter = new Presenter(view, model);
-			view.setCommands(presenter.getViewCommandMap());
-			view.addObserver(presenter);
-			model.addObserver(presenter);
-			view.start();
-		} 
-		
-		else*/
-		{
-			MyViewServerSide view = new MyViewServerSide(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
-			MyModelServerSide model = new MyModelServerSide(properties);
-			PresenterServerSide presenter = new PresenterServerSide(view, model);
-			view.addObserver(presenter);
-			model.addObserver(presenter);
-			view.start();
-		}
 		
 
 	}

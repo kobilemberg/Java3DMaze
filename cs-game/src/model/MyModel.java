@@ -24,16 +24,20 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observable;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
+
+import javax.annotation.PostConstruct;
 
 import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
 
@@ -413,46 +417,34 @@ public class MyModel extends Observable implements Model{
 			}
 			else
 			{
-				Callable<Solution<Position>> mazeSolver =new Callable<Solution<Position>>() 
+				Future<Solution<Position>> f = TP.submit(new Callable<Solution<Position>>() 
 				{
 					@Override
 					public Solution<Position> call() throws Exception 
 					{
-						if(maze3dMap.containsKey(mazeName))
-						{
-							Demo d = new Demo();
-							SearchableMaze3d searchableMaze = new SearchableMaze3d(maze3dMap.get(mazeName));
-							if(algorithm.equals("bfs"))
-							{
-								errorNoticeToController("Solving with BFS as your request.");
-								solveWithBFS(mazeName, d, searchableMaze);	
-							}
-							else if(algorithm.equals("a*"))
-							{
-								errorNoticeToController("Solving with A* as your request.");
-								solveWithAstar(mazeName, d, searchableMaze);
-							}
-							
-							else if (properties.getDefaultSolver().equals("A*"))
-							{
-								errorNoticeToController("Solving with A* as your properties file.");
-								solveWithAstar(mazeName, d, searchableMaze);
-							}
-							else if (properties.getDefaultSolver().equals("BFS"))
-							{
-								errorNoticeToController("Solving with BFS as your properties file.");
-								solveWithBFS(mazeName, d, searchableMaze);
-							}
-							else 
-							{
-								errorNoticeToController("Solving with A*.");
-								solveWithAstar(mazeName, d, searchableMaze);
-							}
+						if(maze3dMap.containsKey(mazeName)){
+							return remoteSolve("", mazeName, maze3dMap.get(mazeName));
 						}
-						return null;
+						else {
+							errorNoticeToController("Maze Not Found: "+mazeName+"");
+							return null;
+						}
 					}
-				};
-				TP.submit(mazeSolver);
+				});
+				try {
+					Solution<Position> result = f.get();
+					result = f.get();
+					solutionMap.put(maze3dMap.get(mazeName), result);
+					System.out.println("Result accepted. ");
+					modelCompletedCommand=9;
+					setData(mazeName);
+					setChanged();
+					notifyObservers();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				} catch (ExecutionException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		else{errorNoticeToController("There is no maze named: "+mazeName);}
@@ -473,9 +465,9 @@ public class MyModel extends Observable implements Model{
 				this.data = dataToSet;
 				notifyObservers();
 			}
-			else{errorNoticeToController("maze wasn't solve!");}
+			else{errorNoticeToController("maze wasn't solve! 1");}
 		}
-		else{errorNoticeToController("maze wasn't solve!");}
+		else{errorNoticeToController("maze wasn't solve! 2");}
 	}
 	@Override
 	public void exit() {
@@ -527,33 +519,9 @@ public class MyModel extends Observable implements Model{
         return properties;
     }
 	
-	private Solution<Position> solveWithAstar(String mazeName,Demo d,SearchableMaze3d searchableMaze)
-	{
-		remoteSolve("", mazeName, searchableMaze);
-		
-		Solution<Position> solutionToAdd = d.solveSearchableMazeWithAstarByManhatenDistance(searchableMaze);
-		solutionMap.put(maze3dMap.get(mazeName), solutionToAdd);
-		modelCompletedCommand=9;
-		setChanged();
-		setData(mazeName);
-		notifyObservers();
-		return solutionMap.get(maze3dMap.get(mazeName));
-		
-	}
+
 	
-	
-	private Solution<Position> solveWithBFS(String mazeName,Demo d,SearchableMaze3d searchableMaze)
-	{
-		Solution<Position> solutionToAdd = d.solveSearchableMazeWithBFS(searchableMaze);
-		solutionMap.put(maze3dMap.get(mazeName), solutionToAdd);
-		modelCompletedCommand=9;
-		setChanged();
-		setData(mazeName);
-		notifyObservers();
-		return solutionMap.get(maze3dMap.get(mazeName));
-	}
-	
-	public Solution<Position> remoteSolve(String serverAddress, String mazeName, SearchableMaze3d maze)
+	public Solution<Position> remoteSolve(String serverAddress, String mazeName, Maze3d maze)
 	{
 		try{
 			InetAddress serverInetAddress = InetAddress.getLocalHost();
@@ -561,11 +529,21 @@ public class MyModel extends Observable implements Model{
 			System.out.println("Client sees server");
 			ObjectOutputStream output=new ObjectOutputStream(myServer.getOutputStream());
 			ObjectInputStream input=new ObjectInputStream(myServer.getInputStream());
-			output.writeObject(maze);
+			String line = "solve maze";
+			output.writeObject(line);
 			output.flush();
-			System.out.println(input.readObject().toString());
-			myServer.close();
+			ArrayList<Object> problem = new ArrayList<>(); 
+			problem.add(mazeName);
+			problem.add(properties.getDefaultSolver());
+			problem.add(maze);
+			output.writeObject(problem);
+			output.flush();
+			@SuppressWarnings("unchecked")
+			Solution<Position> result = ((Solution<Position>)input.readObject());
+			System.out.println(result.toString());
+			myServer.close();	
 			output.close();
+			return result;
 		}catch(Exception e)
 		{
 			e.printStackTrace();

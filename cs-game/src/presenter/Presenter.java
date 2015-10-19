@@ -82,7 +82,7 @@ public class Presenter implements Observer {
 						((Observable)view).notifyObservers(args);
 					} catch (Exception e) {
 						e.printStackTrace();
-						view.errorNoticeToUser("Exception: problem with args");}
+						view.errorNoticeToUser("Exception: problem with args at display cross section");}
 				}
 			});
 			
@@ -98,8 +98,8 @@ public class Presenter implements Observer {
 								view.setUserCommand(5);
 								((Observable)view).notifyObservers(args);
 							}
-							else{view.errorNoticeToUser("problem with args");}
-					} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args");}
+							else{view.errorNoticeToUser("problem with args at save maze");}
+					} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args at save maze.");}
 				}
 			});
 			
@@ -110,7 +110,7 @@ public class Presenter implements Observer {
 					try {
 						view.setUserCommand(6);
 						((Observable)view).notifyObservers(args);
-					} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args");}
+					} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args at load maze");}
 				}
 			});
 			
@@ -124,7 +124,7 @@ public class Presenter implements Observer {
 						((Observable)view).notifyObservers(args);
 					}catch (Exception e) {
 						e.printStackTrace();
-						view.errorNoticeToUser("Exception: problem with args");
+						view.errorNoticeToUser("Exception: problem with args at maze size");
 					}
 				}
 			});
@@ -139,7 +139,7 @@ public class Presenter implements Observer {
 						((Observable)view).notifyObservers(args);
 					} catch (Exception e) {
 						e.printStackTrace();
-						view.errorNoticeToUser("Exception: problem with args");
+						view.errorNoticeToUser("Exception: problem with args at file size");
 					}	
 				}
 			});
@@ -153,7 +153,7 @@ public class Presenter implements Observer {
 							((Observable)view).notifyObservers(args);
 						} catch (Exception e) {
 							e.printStackTrace();
-							view.errorNoticeToUser("Exception: problem with args");
+							view.errorNoticeToUser("Exception: problem with args at solve");
 						}	
 				}
 			});
@@ -272,22 +272,22 @@ public class Presenter implements Observer {
 			case 4:
 				try {model.getCrossSectionByAxe(argArr[0], argArr[1], argArr[3]);} catch (Exception e) {
 					e.printStackTrace();
-					view.errorNoticeToUser("Exception: problem with args");}
+					view.errorNoticeToUser("Exception: problem with args at getCrossSectionByAxe");}
 				break;
 
 			case 5:
-				try {model.saveCompressedMazeToFile(argArr[0], argArr[1]);} catch (IOException e) {view.errorNoticeToUser("Exception: problem with args");}
+				try {model.saveCompressedMazeToFile(argArr[0], argArr[1]);} catch (IOException e) {view.errorNoticeToUser("Exception: problem with args at saveCompressedMazeToFile");}
 				break;
 				
 			case 6:
-				try {model.loadAndDeCompressedMazeToFile(argArr[0], argArr[1]);} catch (IOException e) {view.errorNoticeToUser("Exception: problem with args");}
+				try {model.loadAndDeCompressedMazeToFile(argArr[0], argArr[1]);} catch (IOException e) {view.errorNoticeToUser("Exception: problem with args at loadAndDeCompressedMazeToFile");}
 				break;
 				
 			case 7:
 				try {model.getSizeOfMazeInRam(argArr[0]);} 
 				catch (Exception e) {
 					e.printStackTrace();
-					view.errorNoticeToUser("Exception: problem with args");
+					view.errorNoticeToUser("Exception: problem with args at getSizeOfMazeInRam");
 				}
 				break;
 				
@@ -295,17 +295,17 @@ public class Presenter implements Observer {
 				try {model.getSizeOfMazeInFile(argArr[0]);} 
 				catch (Exception e) {
 					e.printStackTrace();
-					view.errorNoticeToUser("Exception: problem with args");
+					view.errorNoticeToUser("Exception: problem with args at getSizeOfMazeInFile");
 				}
 				
 				break;
 			case 9:
-				try {model.solveMaze(argArr[0], argArr[1]);} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args");}
+				try {model.solveMaze(argArr[0], argArr[1]);} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args at solveMaze"); e.printStackTrace();}
 				break;
 				
 			case 10:
 				try {
-					model.getSolutionOfMaze(argArr[0]);} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args");}
+					model.getSolutionOfMaze(argArr[0]);} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args at getSolutionOfMaze"); e.printStackTrace();}
 				break;
 				
 			case 11:

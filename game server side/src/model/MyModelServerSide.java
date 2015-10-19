@@ -8,54 +8,34 @@ package model;
  */
  
 import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
 import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
-import java.net.Inet4Address;
-import java.net.InetAddress;
-import java.net.Socket;
-import java.net.SocketException;
-import java.net.UnknownHostException;
-import java.nio.ByteBuffer;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Observable;
 import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
-import IO.MyCompressorOutputStream;
-import IO.MyDecompressorInputStream;
 import algorithms.demo.Demo;
 import algorithms.demo.SearchableMaze3d;
 import algorithms.mazeGenerators.Maze3d;
-import algorithms.mazeGenerators.Maze3dGenerator;
-import algorithms.mazeGenerators.MyMaze3dGenerator;
 import algorithms.mazeGenerators.Position;
-import algorithms.mazeGenerators.SimpleMaze3dGenerator;
 import algorithms.search.Solution;
 import presenter.PropertiesServerSide;
-
 
 public class MyModelServerSide extends Observable implements ModelServerSide{
 	
 	Object data;
 	int modelCompletedCommand=0;
 	ExecutorService TP ;
-	Map<String, Maze3d> maze3dMap = Collections.synchronizedMap(new HashMap<String, Maze3d>());
 	HashMap<Maze3d, Solution<Position>> solutionMap = new HashMap<Maze3d, Solution<Position>>();
 	HashMap<String, Thread> openThreads = new HashMap<String,Thread>();
 	PropertiesServerSide properties;
@@ -65,137 +45,83 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	* Instantiates a new  my own model.
 	*/
 	@SuppressWarnings("unchecked")
-	public MyModelServerSide(PropertiesServerSide p)
+	public MyModelServerSide()
 	{
 		super();
-		this.properties = p; 
-		this.TP = Executors.newFixedThreadPool(p.getNumOfThreads());
-		server = new MyTCPIPServer(p.getPort());
-		File map = new File("External files/solutionMap.txt");
-		if(map.exists())
-		{
-			ObjectInputStream mapLoader;
-			try {
+
+		/* Initialize Variables */ 
+		ObjectInputStream mapLoader;
+		try {
+			this.properties = read("External files/Properties.xml");
+			this.TP = Executors.newFixedThreadPool(properties.getNumOfThreads());
+			server = new MyTCPIPServer(properties.getPort());
+			File map = new File("External files/solutionMap.txt");
+			if(map.exists())
+			{
 				mapLoader = new ObjectInputStream(new GZIPInputStream(new FileInputStream(new File("External files/solutionMap.txt"))));
 				solutionMap = (HashMap<Maze3d, Solution<Position>>) mapLoader.readObject();
 				mapLoader.close();
-				this.properties = read("External files/Properties.xml");
-			} 
-			catch (FileNotFoundException e) {errorNoticeToController("Problam with solution map file");} 
-			catch (IOException e) 
-			{
-				errorNoticeToController("Problam with solution map file(IO)");
-				e.printStackTrace();
-			} 
-			catch (ClassNotFoundException e) {errorNoticeToController("problam with class");} 
-			catch (Exception e) 
-			{
-				errorNoticeToController("Problem with xml");
-				e.printStackTrace();
 			}
-		}
-		else
-			solutionMap = new HashMap<Maze3d, Solution<Position>>();
+			else
+				solutionMap = new HashMap<Maze3d, Solution<Position>>();
+		} 
+		catch (Exception e) {
+			e.printStackTrace();
+		} 	
 	}
-	/**
-	* Instantiates a new  my own model with given controller
-	* @param controller Controller represent the controller layer to work with
-	* @return new MyModel as instance
-	*/
 	
 	
 //Getters and setters
-	/**
-	* this method will set the controller to work with
-	* @param controller Controller represent the controller layer to work with
-	*/
-
 	public PropertiesServerSide getProperties() {return properties;}
-
 
 	public void setProperties(PropertiesServerSide properties) {this.properties = properties;}
 	
 //Functionality
-	
 	@Override
-	public void solveMaze(String mazeName, String algorithm) 
+	public Solution<Position> solveMaze(String mazeName, String algorithm, Maze3d maze) 
 	{
-		if(maze3dMap.containsKey(mazeName))
+
+		if(solutionMap.containsKey(maze))
 		{
-			if(solutionMap.containsKey(maze3dMap.get(mazeName)))
+			errorNoticeToController("Model notification: I have this solution, i won't calculate it again!");
+			return solutionMap.get(maze);
+		}
+		else
+		{
+			Future<Solution<Position>> f = TP.submit(new Callable<Solution<Position>>() 
 			{
-				errorNoticeToController("Model notification: I have this solution, i won't calculate it again!");
-				modelCompletedCommand=2;
-				setData(mazeName);
-				setChanged();
-				notifyObservers();
-			}
-			else
-			{
-				Callable<Solution<Position>> mazeSolver =new Callable<Solution<Position>>() 
+				@Override
+				public Solution<Position> call() throws Exception 
 				{
-					@Override
-					public Solution<Position> call() throws Exception 
+					Demo d = new Demo();
+					if(algorithm.equals("bfs"))
 					{
-						if(maze3dMap.containsKey(mazeName))
-						{
-							Demo d = new Demo();
-							SearchableMaze3d searchableMaze = new SearchableMaze3d(maze3dMap.get(mazeName));
-							if(algorithm.equals("bfs"))
-							{
-								errorNoticeToController("Solving with BFS as your request.");
-								solveWithBFS(mazeName, d, searchableMaze);	
-							}
-							else if(algorithm.equals("a*"))
-							{
-								errorNoticeToController("Solving with A* as your request.");
-								solveWithAstar(mazeName, d, searchableMaze);
-							}
-							
-							else if (properties.getDefaultSolver().equals("A*"))
-							{
-								errorNoticeToController("Solving with A* as your properties file.");
-								solveWithAstar(mazeName, d, searchableMaze);
-							}
-							else if (properties.getDefaultSolver().equals("BFS"))
-							{
-								errorNoticeToController("Solving with BFS as your properties file.");
-								solveWithBFS(mazeName, d, searchableMaze);
-							}
-							else 
-							{
-								errorNoticeToController("Solving with A*.");
-								solveWithAstar(mazeName, d, searchableMaze);
-							}
-						}
-						return null;
+						errorNoticeToController("Solving with BFS as your request.");
+						return solveWithBFS(mazeName, d, maze);	
 					}
-				};
-				TP.submit(mazeSolver);
-			}
-		}
-		else{errorNoticeToController("There is no maze named: "+mazeName);}
-	}
+					else
+					{
+						errorNoticeToController("Solving with A* as your request.");
+						return solveWithAstar(mazeName, d, maze);
+					}
+				}
+			});
 			
-	@Override
-	public void getSolutionOfMaze(String mazeName) {
-		
-		if(maze3dMap.containsKey(mazeName))
-		{
-			if(solutionMap.containsKey(maze3dMap.get(mazeName)))
-			{
-				modelCompletedCommand = 3;
-				Object[] dataToSet = new Object[2];
-				dataToSet[0] = mazeName;
-				dataToSet[1] = solutionMap.get(maze3dMap.get(mazeName));
-				setChanged();
-				this.data = dataToSet;
-				notifyObservers();
+			try {
+				Solution<Position> result = f.get();
+				result = f.get();
+				return result;
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-			else{errorNoticeToController("maze wasn't solve!");}
+			return null;
 		}
-		else{errorNoticeToController("maze wasn't solve!");}
 	}
+	
 	@Override
 	public void exit() {
 		try {
@@ -208,11 +134,8 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		} catch (Exception e) {
 			errorNoticeToController("ThreadPool exit error");
 			e.printStackTrace();
-		}
-		
-	}
-	
-	
+		}	
+	}	
 	
 	/**
 	* Ihis method will notice to controller an error messege
@@ -225,8 +148,6 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		this.setChanged();
 		notifyObservers();
 	}
-	@Override
-	public boolean isLoaded(String mazeName) {return maze3dMap.containsKey(mazeName);}
 	
 	@Override
 	public Object getData() {return data;}
@@ -238,7 +159,6 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	
 	public void setModelCommandCommand(int commandNum){modelCompletedCommand=commandNum;}
 	
-	
 	public static PropertiesServerSide read(String filename) throws Exception {
         XMLDecoder decoder =new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
         PropertiesServerSide properties = (PropertiesServerSide)decoder.readObject();
@@ -246,116 +166,31 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
         return properties;
     }
 	
-	private Solution<Position> solveWithAstar(String mazeName,Demo d,SearchableMaze3d searchableMaze)
+	private Solution<Position> solveWithAstar(String mazeName,Demo d,Maze3d maze)
 	{
-		Solution<Position> solutionToAdd = d.solveSearchableMazeWithAstarByManhatenDistance(searchableMaze);
-		solutionMap.put(maze3dMap.get(mazeName), solutionToAdd);
-		modelCompletedCommand=2;
-		setChanged();
-		setData(mazeName);
-		notifyObservers();
-		return solutionMap.get(maze3dMap.get(mazeName));
+		Solution<Position> solutionToAdd = d.solveSearchableMazeWithAstarByManhatenDistance(new SearchableMaze3d(maze));
+		solutionMap.put(maze, solutionToAdd);
+		return solutionMap.get(maze);
 	}
 	
-	
-	private Solution<Position> solveWithBFS(String mazeName,Demo d,SearchableMaze3d searchableMaze)
+	private Solution<Position> solveWithBFS(String mazeName,Demo d,Maze3d maze)
 	{
-		Solution<Position> solutionToAdd = d.solveSearchableMazeWithBFS(searchableMaze);
-		solutionMap.put(maze3dMap.get(mazeName), solutionToAdd);
-		modelCompletedCommand=2;
-		setChanged();
-		setData(mazeName);
-		notifyObservers();
-		return solutionMap.get(maze3dMap.get(mazeName));
+		Solution<Position> solutionToAdd = d.solveSearchableMazeWithBFS(new SearchableMaze3d(maze));
+		solutionMap.put(maze, solutionToAdd);
+		return solutionMap.get(maze);
 	}
 	
-	@SuppressWarnings("resource")
-	@Override
-	public boolean changePropertiesByFilename(String fileName) 
-	{	 
-		//Reading the file.
-		XMLDecoder decoder=null;
-		try {
-			decoder=new XMLDecoder(new BufferedInputStream(new FileInputStream(fileName)));
-		} catch (FileNotFoundException e) {
-			errorNoticeToController("ERROR: File " + fileName + " was not found.");
-			return false; 
-		}
-		//Loading the file object
-		properties=(PropertiesServerSide)decoder.readObject();
-		setData(properties);
-		
-		System.out.println(properties);
-		//Saving the new file to the file root directory
-		XMLEncoder encoder=null;
-		try {
-			encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("External files/properties.xml")));
-		} catch (FileNotFoundException e) {
-			errorNoticeToController("ERROR: Writing file External files/properties.xml failed.");
-			return false;
-		}
-		encoder.writeObject(properties);
-		encoder.close();
-		return true;
-	}
-	
-	public Solution<Position> setMazeWithCurrentLocationFromGui(String mazeName,Maze3d maze, String ip, int port) throws Exception
-	{
-		InetAddress localaddr;
-		try {
-			InetAddress.getAllByName(ip);
-			port = 12345;
-			localaddr = InetAddress.getLocalHost();
-			System.out.println("The ip of the server is: "+localaddr.getHostAddress());
-			Socket myServerSocket = new Socket(localaddr.getHostAddress(), port);
-			
-			//Streams
-			ObjectOutputStream output=new ObjectOutputStream(myServerSocket.getOutputStream());
-			ObjectInputStream input=new ObjectInputStream(myServerSocket.getInputStream());
-			
-			String solveCommand = "Solve "+mazeName+" "+properties.getDefaultSolver();
-			output.writeObject(solveCommand);
-			output.flush();
-			
-			@SuppressWarnings("unchecked")
-			Solution<Position> solution = (Solution<Position>)input.readObject();
-			
-			output.close();
-			input.close();
-			myServerSocket.close();
-			
-			if(solution.toString().contains("Solution:"))
-			{
-				return solution;
-			}
-			//System.out.println("message from server: "+messageFromServer);
-			//output.writeObject("networking is so simple in java");
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-
 	@Override
 	public void initServer() {
 		try {
-			this.server.getServer().setSoTimeout(60000*60);
-			modelCompletedCommand=1;
 			server.startServer(properties.getNumOfClients());
+			//this.server.getServer().setSoTimeout(60000*60);
+			modelCompletedCommand=1;
 			setChanged();
 			setData("Server is up");
 			notifyObservers();
-		} catch (SocketException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}	
-	}
-
-
-	@Override
-	public void setMazeWithCurrentLocationFromGui(String mazeName, String currentX, String currentY, String currentZ) {
-		// TODO Auto-generated method stub
-		
 	}
 }

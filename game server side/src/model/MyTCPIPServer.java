@@ -1,11 +1,10 @@
 package model;
 
-
-import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,47 +13,51 @@ import algorithms.demo.SearchableMaze3d;
 
 public class MyTCPIPServer {
 
-	private static final String SOLVE = "test";
+	private static final String SOLVE = "solve maze";
 	private int port;
 	private Executor executer;
 	private ServerSocket server;
-	private boolean serverIsRunning = true;
+	private boolean Running = true;
 
 	public MyTCPIPServer(int port){
 		this.port = port;
-		try {
-			server=new ServerSocket(this.port);
-			System.out.println("Server is up");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
 	}
 
-	public void startServer(int numOfClients){
-		executer = Executors.newFixedThreadPool(numOfClients);
+	public void startServer(int maxClients){
+		executer = Executors.newFixedThreadPool(maxClients);
 		try {
-			while(serverIsRunning){
+			/* Start the server. */
+			server=new ServerSocket(this.port);
+			
+			/* Get Clients */ 
+			while(Running){
 				Socket someClient = server.accept();
 				System.out.println("Accepted connection.");
-				ObjectInputStream input=new ObjectInputStream(someClient.getInputStream());
-				ObjectOutputStream output=new ObjectOutputStream(someClient.getOutputStream());
-				SearchableMaze3d line = (SearchableMaze3d) input.readObject();
-				System.out.println(line.toString());
-				output.writeObject("Got it.");
-				/*if(line.toLowerCase().equals(SOLVE)){
-					//executer.execute(new Thread(new ASCIIArtClientHandler(someClient)));
-				}*/
+				ObjectInputStream input = new ObjectInputStream(someClient.getInputStream());
+				ObjectOutputStream output = new ObjectOutputStream(someClient.getOutputStream());
+				String line = (String) input.readObject(); 
+				if (line.equals(SOLVE))
+				{
+					System.out.println(line + "accepted.");
+					executer.execute(new Thread(new ClientHandler(someClient,input,output)));
+				}
+				else
+				{
+					System.out.println("Command not understood. First String must be "+SOLVE);
+				}
+
 			}
+			
 			server.close();
 		} catch (Exception e) {
 			e.printStackTrace();
-			System.out.println("ERROR: Connection timed out.");
+			System.out.println("ERROR: Problem establishing connection or Running Server.");
 		}finally {
 			((ExecutorService)executer).shutdown();
 		}		
 	}
 	public void stopServer(){
-		serverIsRunning = false;
+		Running = false;
 	}
 
 	public int getPort() {
@@ -79,13 +82,5 @@ public class MyTCPIPServer {
 
 	public void setServer(ServerSocket server) {
 		this.server = server;
-	}
-	
-	public boolean isServerIsRunning() {
-		return serverIsRunning;
-	}
-
-	public void setServerIsRunning(boolean serverIsRunning) {
-		this.serverIsRunning = serverIsRunning;
 	}
 }

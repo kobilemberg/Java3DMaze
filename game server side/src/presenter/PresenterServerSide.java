@@ -1,10 +1,8 @@
 package presenter;
 
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Observable;
 import java.util.Observer;
-import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import model.ModelServerSide;
@@ -43,49 +41,17 @@ public class PresenterServerSide implements Observer {
 				}
 			});
 			
-			
-			viewCommandMap.put("solve",new Command() 
-			{
-				@Override
-				public void doCommand(String[] args) {
-					try {
-						view.setUserCommand(2);
-						((Observable)view).notifyObservers(args);
-					} catch (Exception e) {
-						e.printStackTrace();
-						view.errorNoticeToUser("Exception: problem with args");
-					}	
-				}
-			});
-			
-			viewCommandMap.put("display solution",new Command() 
-			{
-				@Override
-				//args[1] = mazeName
-				public void doCommand(String[] args) {
-					try {
-						view.setUserCommand(3);
-						((Observable)view).notifyObservers(args);
-					} catch (NullPointerException e) {
-						e.printStackTrace();
-						view.errorNoticeToUser("Exception: Solution not found.");
-					}
-				}
-			});
-			
 			viewCommandMap.put("exit",new Command() 
 			{
 				@Override
 				public void doCommand(String[] args) {
-					view.setUserCommand(4);
+					view.setUserCommand(-1);
 					((Observable)view).notifyObservers(args);
 					model.exit();}
 			});
 			String cliMenu=new String();
 			cliMenu+= "1:	init server\n";
-			cliMenu+= "2:	solve <Maze name> <A*\\BFS>\n";
-			cliMenu+= "3:	display solution <Maze name>\n";
-			cliMenu+= "4:	exit\n";
+			cliMenu+= "-1:	exit\n";
 			this.viewCommandMap = viewCommandMap;
 			view.setCommands(viewCommandMap);
 			view.setCommandsMenu(cliMenu);
@@ -151,46 +117,10 @@ public class PresenterServerSide implements Observer {
 					
 					e.printStackTrace();
 					view.errorNoticeToUser("Exception: problem with args");}
-				
 				break;
-			
-			
-			
-			case 9:
-				try {model.solveMaze(argArr[0], argArr[1]);} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args");}
-				break;
-				
-			case 10:
-				try {
-					model.getSolutionOfMaze(argArr[0]);} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args");}
-				break;
-				
-			case 11:
+			case -1: 
 				model.exit();
 				break;
-				
-			case 12:
-				try{
-					model.changePropertiesByFilename(argArr[0]);					
-				}catch (Exception e) { view.errorNoticeToUser("Exception: Open Properties failed, problem with file " + argArr[0]);
-				break;
-				}
-				
-			case 13:
-				try {
-					if(args!=null)
-					{
-						String[] params = (String[])args;
-						model.setMazeWithCurrentLocationFromGui(params[0],params[1],params[2],params[3]); //NameOfMaze,CurrentX - floor, CurrentY - x, CurrentZ - y
-					}
-					
-				} catch (Exception e) {
-					System.out.println("Exception in case 13");
-					e.printStackTrace();
-				}
-				
-				
-				
 			default:
 				break;
 			}
