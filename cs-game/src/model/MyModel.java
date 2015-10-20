@@ -164,12 +164,12 @@ public class MyModel extends Observable implements Model{
 							errorNoticeToController("Generating maze with simplemazegenerator as your request.");
 						}
 							
-						else if(properties.getDefaultAlgorith().equals("SimpleMazeGenerator"))
+						else if(properties.getDefaultAlgorithm().equals("SimpleMazeGenerator"))
 						{
 							errorNoticeToController("Generating maze with SimpleMaze3dGenerator as your properties file.");
 							maze = new SimpleMaze3dGenerator();
 						}
-						else if(properties.getDefaultAlgorith().equals("MyMaze3dGenerator"))
+						else if(properties.getDefaultAlgorithm().equals("MyMaze3dGenerator"))
 						{
 							// errorNoticeToController("Generating maze with MyMaze3dGenerator as your properties file.");
 							maze = new MyMaze3dGenerator();
@@ -423,7 +423,7 @@ public class MyModel extends Observable implements Model{
 					public Solution<Position> call() throws Exception 
 					{
 						if(maze3dMap.containsKey(mazeName)){
-							return remoteSolve("", mazeName, maze3dMap.get(mazeName));
+							return remoteSolve(mazeName, maze3dMap.get(mazeName));
 						}
 						else {
 							errorNoticeToController("Maze Not Found: "+mazeName+"");
@@ -521,14 +521,26 @@ public class MyModel extends Observable implements Model{
 	
 
 	
-	public Solution<Position> remoteSolve(String serverAddress, String mazeName, Maze3d maze)
+	public Solution<Position> remoteSolve(String mazeName, Maze3d maze)
 	{
 		try{
-			InetAddress serverInetAddress = InetAddress.getLocalHost();
-			Socket myServer = new Socket(serverInetAddress.getHostAddress(), 12345);
-			System.out.println("Client sees server");
+			/* Get Server Properties from XML */ 
+			int port = properties.getPort();
+			InetAddress serverAddress;
+			if (properties.getServerAddress() == "localhost")
+				serverAddress = InetAddress.getLocalHost();
+			else
+				serverAddress = InetAddress.getByName(properties.getServerAddress());
+			
+			/* Make Socket and Streams */ 
+			Socket myServer = new Socket(serverAddress.getHostAddress(), port);
 			ObjectOutputStream output=new ObjectOutputStream(myServer.getOutputStream());
 			ObjectInputStream input=new ObjectInputStream(myServer.getInputStream());
+			
+			/* Debug */ 
+			System.out.println("Client sees Server "+serverAddress+" port: "+ port);
+			
+			/* Communication with Server */ 
 			String line = "solve maze";
 			output.writeObject(line);
 			output.flush();
@@ -594,46 +606,8 @@ public class MyModel extends Observable implements Model{
 			mazeToSave.setStartPosition(newStartPosition);
 			String newName = mazeName+" From"+currentX+","+currentY+","+currentZ+",";
 			maze3dMap.put(newName, mazeToSave);
-			solveMaze(newName, properties.getDefaultAlgorith());
+			solveMaze(newName, properties.getDefaultAlgorithm());
 		}	
-	}
-	
-	public Solution<Position> connectToServerAndAskForSolution(String mazeName,Maze3d maze, String ip, int port) throws Exception
-	{
-		InetAddress localaddr;
-		try {
-			InetAddress.getAllByName(ip);
-			port = 12345;
-			localaddr = InetAddress.getLocalHost();
-			System.out.println("The ip of the server is: "+localaddr.getHostAddress());
-			Socket myServerSocket = new Socket(localaddr.getHostAddress(), port);
-			
-			//Streams
-			ObjectOutputStream output=new ObjectOutputStream(myServerSocket.getOutputStream());
-			ObjectInputStream input=new ObjectInputStream(myServerSocket.getInputStream());
-			
-			String solveCommand = "solve "+mazeName+" "+properties.getDefaultAlgorith();
-			output.writeObject(solveCommand);
-			output.flush();
-			
-			@SuppressWarnings("unchecked")
-			Solution<Position> solutionFromServer=(Solution<Position>)input.readObject();
-			
-			if(solutionFromServer.toString().contains("Solution:"))
-			{
-				output.close();
-				input.close();
-				myServerSocket.close();
-				return solutionFromServer;
-			}
-			//System.out.println("message from server: "+messageFromServer);
-			//output.writeObject("networking is so simple in java");
-
-		} catch (UnknownHostException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
 	}
 	
 }

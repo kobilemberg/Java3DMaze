@@ -30,9 +30,6 @@ public class Run {
 		}
 		Properties properties=(Properties)decoder.readObject();
 		System.out.println(properties);		
-		//
-		
-		
 		
 		
 		if(properties.getUI().equals("GUI"))

@@ -10,7 +10,6 @@ public class PropertiesServerSide implements Serializable
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	
 
 	protected int numOfThreads;
 	protected  int numOfClients;

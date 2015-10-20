@@ -10,9 +10,6 @@ import java.io.IOException;
 import IO.MyCompressorOutputStream;
 
 public interface Model {
-	
-	
-
 	/**
 	* This method will return a string of files and directories of given a local path
 	* @param path String represrnt the local path

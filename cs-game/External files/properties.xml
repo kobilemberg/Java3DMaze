@@ -4,14 +4,20 @@
   <void property="UI">
    <string>GUI</string>
   </void>
-  <void property="defaultAlgorith">
+  <void property="defaultAlgorithm">
    <string>MyMaze3dGenerator</string>
   </void>
   <void property="defaultSolver">
    <string>A*</string>
   </void>
   <void property="numOfThreads">
-   <int>30</int>
+   <int>4</int>
+  </void>
+  <void property="port">
+   <int>12345</int>
+  </void>
+  <void property="serverAddress">
+   <string>localhost</string>
   </void>
  </object>
 </java>
