@@ -441,14 +441,19 @@ public class MyModel extends Observable implements Model{
 					result = f.get();
 					if (f.get()==null)
 					{
-						throw new NullPointerException("Problem with server");
+						//throw new NullPointerException();
+						errorNoticeToController("Problem with server");
 					}
-					solutionMap.put(maze3dMap.get(mazeName), result);
-					System.out.println("Result accepted. ");
-					modelCompletedCommand=9;
-					setData(mazeName);
-					setChanged();
-					notifyObservers();
+					else
+					{
+						solutionMap.put(maze3dMap.get(mazeName), result);
+						System.out.println("Result accepted. ");
+						modelCompletedCommand=9;
+						setData(mazeName);
+						setChanged();
+						notifyObservers();
+					}
+					
 				} catch (InterruptedException e) {
 					e.printStackTrace();
 				} catch (ExecutionException e) {
@@ -638,8 +643,7 @@ public class MyModel extends Observable implements Model{
 		this.properties.setDefaultSolver(solver);
 		this.properties.setPort(new Integer(port));
 		this.properties.setServerAddress(server);
-		System.out.println("Configuration has changed to: "+properties.toString());
-		
+		errorNoticeToController("Configuration has changed to: "+properties.toString());
 	}
 	
 }
