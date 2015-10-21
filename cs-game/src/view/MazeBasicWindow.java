@@ -175,7 +175,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		        
 			    /* Server Address - Default: localhost */ 
 			    Label serverAddressLabel = new Label(optionsForm,SWT.NULL);
-			    serverAddressLabel.setText("Server: ");
+			    serverAddressLabel.setText("Server address: ");
 			    Text serverAddressInput = new Text(optionsForm, SWT.PUSH | SWT.BORDER);
 			    serverAddressInput.setText("localhost");
 			    
@@ -183,7 +183,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			    
 			    /* Server Port - Default: 12345 */ 
 			    Label serverPortLabel = new Label(optionsForm,SWT.FILL);
-			    serverPortLabel.setText("Port: ");
+			    serverPortLabel.setText("Server port number:");
 			    Text serverPortInput = new Text(optionsForm, SWT.PUSH | SWT.BORDER);
 			    serverPortInput.setText("12345");
 			    
@@ -191,7 +191,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			    
 			    /* Maze Generation Algorithm - Default: Complicated (MyMazeGenerator) */ 
 			    Label generationAlgorithmLabel = new Label(optionsForm,SWT.FILL);
-			    generationAlgorithmLabel.setText("Generation Algorithm: ");
+			    generationAlgorithmLabel.setText(" Generation Algorithm:  ");
 			    Combo generationAlgorithmCombo = new Combo(optionsForm, SWT.NULL);
 			    generationAlgorithmCombo.add("Simple");
 			    generationAlgorithmCombo.add("Complicated");
@@ -200,7 +200,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 
 			    /* Maze Solving Algorithm - Default: A*  */ 
 			    Label solvingAlgorithmLabel = new Label(optionsForm,SWT.FILL);
-			    solvingAlgorithmLabel.setText("Solving Algorithm: ");
+			    solvingAlgorithmLabel.setText(" Solving Algorithm:  ");
 			    Combo solvingAlgorithmCombo = new Combo(optionsForm, SWT.NULL);
 			    solvingAlgorithmCombo.add("A*");
 			    solvingAlgorithmCombo.add("BFS");
