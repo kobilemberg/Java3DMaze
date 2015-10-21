@@ -123,4 +123,7 @@ public interface Model {
 
 
 	public void setMazeWithCurrentLocationFromGui(String mazeName, String currentX, String currentY, String currentZ);
+
+
+	public void changeSettings(String server, String port, String generator, String solver);
 }

@@ -170,7 +170,8 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		        */
 
 		        Label optionsLabel = new Label(optionsForm,SWT.NULL);
-			    optionsLabel.setText("Here you can change \nServer Settings.");
+		        optionsLabel.setText("\n     Server Settings.");
+			  //  optionsLabel.setText("Here you can change \nServer Settings.");
 		        
 			    /* Server Address - Default: localhost */ 
 			    Label serverAddressLabel = new Label(optionsForm,SWT.NULL);
@@ -208,7 +209,36 @@ public class MazeBasicWindow extends BasicWindow implements View{
 
 		        Button submitButton=new Button(optionsForm, SWT.PUSH);
 		        submitButton.setText("Save Settings");
-
+		        /* What happens when a user clicks [Save settings] */
+		        submitButton.addSelectionListener(new SelectionListener() {
+					
+					@Override
+					public void widgetSelected(SelectionEvent arg0) {
+						String server = serverAddressInput.getText();
+						String port = serverPortInput.getText();
+						String generator="";
+						if(generationAlgorithmCombo.getText().equals("Complicated"))
+							generator="MyMaze3dGenerator";
+						else
+							generator="SimpleMazeGenerator";
+						String solver="";
+						if(solvingAlgorithmCombo.getText().equals("A*"))
+							solver="A*";
+						else
+							solver="BFS";
+						changeSettings(server,port,generator,solver);
+						
+					}
+					
+					@Override
+					public void widgetDefaultSelected(SelectionEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+		        
+		        
+		        
 
 				/* Dummy Label */ 
 		        dummyLabel = new Label(optionsForm, SWT.FILL);
@@ -902,8 +932,8 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	
 	@Override
 	public void printSolutionToUser(String mazeName,Solution<Position> solution) {
-		out.println("Solution of: "+mazeName+"\n");
-		out.flush();
+		//out.println("Solution of: "+mazeName+"\n");
+		//out.flush();
 		for (State<Position> p: solution.getSolution()){
 			out.println(p.getCameFromAction() + " To: "+p.toString());
 			out.flush();
@@ -1075,5 +1105,13 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	    button.setText(text);
 	    return button;
 	}
+	
+	private void changeSettings(String server,String port,String generator,String solver)
+	{
+		String[] args = {server,port,generator,solver};
+		setUserCommand(14);
+		notifyObservers(args);
+	}
+	
 }
 	

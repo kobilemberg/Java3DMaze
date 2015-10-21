@@ -109,10 +109,17 @@ public class Properties implements Serializable
 	@Override
 	public boolean equals(Object obj) {return this.toString().equals(obj.toString());}
 
+	@Override
+	public String toString() {
+		return "Properties [defaultAlgorithm=" + defaultAlgorithm + ", defaultSolver=" + defaultSolver + ", UI=" + UI
+				+ ", serverAddress=" + serverAddress + ", port=" + port + ", numOfThreads=" + numOfThreads + "]";
+	}
+
+	
+
 	/* (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
-	@Override
-	public String toString() {return "Properties [numOfThreads=" + numOfThreads + ", defaultAlgorith=" + defaultAlgorithm + ", defaultSolver="+ defaultSolver + ", UI=" + UI + "]";}
+	
 
 }

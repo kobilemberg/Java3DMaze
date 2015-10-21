@@ -320,17 +320,44 @@ public class Presenter implements Observer {
 				}
 				
 			case 13:
+					{
+						try {
+							if(args!=null)
+							{
+								String[] params = (String[])args;
+								model.setMazeWithCurrentLocationFromGui(params[0],params[1],params[2],params[3]); //NameOfMaze,CurrentX - floor, CurrentY - x, CurrentZ - y
+								
+							}
+						
+						} 
+						catch (Exception e) 
+						{
+							System.out.println("Exception in case 13");
+							e.printStackTrace();
+							
+						}
+						break;
+					}
+				
+			case 14:
+			{
 				try {
 					if(args!=null)
 					{
 						String[] params = (String[])args;
-						model.setMazeWithCurrentLocationFromGui(params[0],params[1],params[2],params[3]); //NameOfMaze,CurrentX - floor, CurrentY - x, CurrentZ - y
+						model.changeSettings(params[0],params[1],params[2],params[3]); //server,port,generator,solver
+						
 					}
-					
-				} catch (Exception e) {
+				
+				} 
+				catch (Exception e) 
+				{
 					System.out.println("Exception in case 13");
 					e.printStackTrace();
+					
 				}
+				break;
+			}	
 				
 				
 				

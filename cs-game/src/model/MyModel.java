@@ -409,13 +409,18 @@ public class MyModel extends Observable implements Model{
 		{
 			if(solutionMap.containsKey(maze3dMap.get(mazeName)))
 			{
-				errorNoticeToController("Model notification: I have this solution, i won't calculate it again!");
-				modelCompletedCommand=9;
-				setData(mazeName);
-				setChanged();
-				notifyObservers();
+				if(solutionMap.get(maze3dMap.get(mazeName)) !=null)
+				{
+					errorNoticeToController("Model notification: I have this solution, i won't calculate it again!");
+					modelCompletedCommand=9;
+					setData(mazeName);
+					setChanged();
+					notifyObservers();
+				}
+				else
+					solutionMap.remove(maze3dMap.get(mazeName));
 			}
-			else
+			if(!solutionMap.containsKey(maze3dMap.get(mazeName)))
 			{
 				Future<Solution<Position>> f = TP.submit(new Callable<Solution<Position>>() 
 				{
@@ -423,7 +428,7 @@ public class MyModel extends Observable implements Model{
 					public Solution<Position> call() throws Exception 
 					{
 						if(maze3dMap.containsKey(mazeName)){
-							return remoteSolve(mazeName, maze3dMap.get(mazeName));
+							return remoteSolve(mazeName, maze3dMap.get(mazeName),algorithm);
 						}
 						else {
 							errorNoticeToController("Maze Not Found: "+mazeName+"");
@@ -434,6 +439,10 @@ public class MyModel extends Observable implements Model{
 				try {
 					Solution<Position> result = f.get();
 					result = f.get();
+					if (f.get()==null)
+					{
+						throw new NullPointerException("Problem with server");
+					}
 					solutionMap.put(maze3dMap.get(mazeName), result);
 					System.out.println("Result accepted. ");
 					modelCompletedCommand=9;
@@ -521,7 +530,8 @@ public class MyModel extends Observable implements Model{
 	
 
 	
-	public Solution<Position> remoteSolve(String mazeName, Maze3d maze)
+	@SuppressWarnings("resource")
+	public Solution<Position> remoteSolve(String mazeName, Maze3d maze,String algorithm)
 	{
 		try{
 			/* Get Server Properties from XML */ 
@@ -537,6 +547,14 @@ public class MyModel extends Observable implements Model{
 			ObjectOutputStream output=new ObjectOutputStream(myServer.getOutputStream());
 			ObjectInputStream input=new ObjectInputStream(myServer.getInputStream());
 			
+			String finalSolver="";
+			if(algorithm.equals("bfs"))
+				finalSolver="BFS";
+			else if(algorithm.equals("astar")) 
+				finalSolver="A*";
+			else
+				finalSolver=properties.getDefaultSolver();
+			
 			/* Debug */ 
 			System.out.println("Client sees Server "+serverAddress+" port: "+ port);
 			
@@ -546,19 +564,22 @@ public class MyModel extends Observable implements Model{
 			output.flush();
 			ArrayList<Object> problem = new ArrayList<>(); 
 			problem.add(mazeName);
-			problem.add(properties.getDefaultSolver());
+			problem.add(finalSolver);
 			problem.add(maze);
+			
 			output.writeObject(problem);
 			output.flush();
 			@SuppressWarnings("unchecked")
 			Solution<Position> result = ((Solution<Position>)input.readObject());
+			if(result==null)
+				throw new NullPointerException("Cannot read solution");
 			System.out.println(result.toString());
 			myServer.close();	
 			output.close();
 			return result;
 		}catch(Exception e)
 		{
-			e.printStackTrace();
+			errorNoticeToController("Server connection problem.");;
 		}
 		
 		
@@ -608,6 +629,17 @@ public class MyModel extends Observable implements Model{
 			maze3dMap.put(newName, mazeToSave);
 			solveMaze(newName, properties.getDefaultAlgorithm());
 		}	
+	}
+
+
+	@Override
+	public void changeSettings(String server, String port, String generator, String solver) {
+		this.properties.setDefaultAlgorithm(generator);
+		this.properties.setDefaultSolver(solver);
+		this.properties.setPort(new Integer(port));
+		this.properties.setServerAddress(server);
+		System.out.println("Configuration has changed to: "+properties.toString());
+		
 	}
 	
 }

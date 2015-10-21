@@ -94,7 +94,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 				public Solution<Position> call() throws Exception 
 				{
 					Demo d = new Demo();
-					if(algorithm.equals("bfs"))
+					if(algorithm.equals("bfs")||algorithm.equals("BFS"))
 					{
 						errorNoticeToController("Solving with BFS as your request.");
 						return solveWithBFS(mazeName, d, maze);	
