@@ -35,7 +35,7 @@ public class Presenter implements Observer {
 				{
 					try {
 						view.setUserCommand(1);
-						((Observable)view).notifyObservers(args);
+						((Observable)view).notifyObservers();
 					} catch (NullPointerException e) {e.printStackTrace();}	
 				}
 			});
