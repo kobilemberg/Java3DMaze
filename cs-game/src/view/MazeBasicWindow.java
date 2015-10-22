@@ -45,7 +45,6 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	TimerTask task; 
 	Label metaDataLabel;
 	Label possibleKeysLabel;
-	Label dummyLabel;
 	HashMap<String, Command> viewCommandMap;
 	private String cliMenu;
 	BufferedReader in=new BufferedReader(new InputStreamReader(System.in));
@@ -153,9 +152,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	    Composite optionsForm = new Composite(MazeFolder, SWT.NONE);
 	    optionsForm.setLayout(rowLayout);
 	    optionsTab.setControl(optionsForm);
-	
-	    createLabel(optionsForm, SWT.FILL, "Server Settings:");
-	    
+		    
 	    /* Server Address - Default: localhost */
 	    createLabel(optionsForm, SWT.NULL, "Server Address: ", 120, 15);
 	    Text serverAddressInput = createText(optionsForm, SWT.SINGLE | SWT.BORDER , "localhost", 107, 15);  
@@ -164,7 +161,6 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		Text serverPortInput = createText(optionsForm, SWT.SINGLE | SWT.BORDER, "12345", 107, 15);
 	    
 		createLabel(optionsForm,SWT.FILL, "", 120, 10); 
-		createLabel(optionsForm,SWT.FILL, "Algorithems:"); 
 	
 		/* Maze Generation Algorithm - Default: Complicated (MyMazeGenerator) */ 
 		createLabel(optionsForm,SWT.FILL, "Generation Algorithm:", 120,15); 
