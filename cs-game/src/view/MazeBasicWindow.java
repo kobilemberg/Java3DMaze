@@ -393,14 +393,6 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		}
 	}
 	
-	private void openConnectWindow() {
-		Shell connectWindow = new Shell(shell); 
-		connectWindow.setLayout(new GridLayout(2,false));
-		connectWindow.setSize(240, 160);
-		connectWindow.setText("Connect To Server");
-		connectWindow.open();		
-	}
-	
 	public String[] openGenerateWindow(){
 		
 		/* Generate New Maze open Pop-up window */ 
