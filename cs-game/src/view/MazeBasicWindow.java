@@ -7,9 +7,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.SashForm;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
@@ -28,7 +26,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
@@ -36,7 +33,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
-
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
@@ -158,30 +154,30 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	    optionsForm.setLayout(rowLayout);
 	    optionsTab.setControl(optionsForm);
 	
-	    Label optionsTitleLabel = createLabel(optionsForm, SWT.FILL, "Server Settings:");
+	    createLabel(optionsForm, SWT.FILL, "Server Settings:");
 	    
 	    /* Server Address - Default: localhost */
-	    Label serverAddressLabel = createLabel(optionsForm, SWT.NULL, "Server Address: ", 120, 15);
+	    createLabel(optionsForm, SWT.NULL, "Server Address: ", 120, 15);
 	    Text serverAddressInput = createText(optionsForm, SWT.SINGLE | SWT.BORDER , "localhost", 107, 15);  
 		    
-	    Label serverPortLabel = createLabel(optionsForm,SWT.FILL, "Port:", 120, 15);
+	    createLabel(optionsForm,SWT.FILL, "Port:", 120, 15);
 		Text serverPortInput = createText(optionsForm, SWT.SINGLE | SWT.BORDER, "12345", 107, 15);
 	    
-		Label dummyLabel = createLabel(optionsForm,SWT.FILL, "", 120, 10); 
-		Label AlgorithmsLabel = createLabel(optionsForm,SWT.FILL, "Algorithems:"); 
+		createLabel(optionsForm,SWT.FILL, "", 120, 10); 
+		createLabel(optionsForm,SWT.FILL, "Algorithems:"); 
 	
 		/* Maze Generation Algorithm - Default: Complicated (MyMazeGenerator) */ 
-		Label generationAlgorithmLabel = createLabel(optionsForm,SWT.FILL, "Generation Algorithm:", 120,15); 
+		createLabel(optionsForm,SWT.FILL, "Generation Algorithm:", 120,15); 
 	
 		String[] options = {"Simple", "Complicated"};
 		Combo generationAlgorithmCombo = createCombo(optionsForm, SWT.NULL, options, "Complicated");
 	    
 	    /* Maze Solving Algorithm - Default: A*  */ 
-		Label solvingAlgorithmLabel = createLabel(optionsForm, SWT.FILL, "Solving Algorithm:", 120, 15);
+		createLabel(optionsForm, SWT.FILL, "Solving Algorithm:", 120, 15);
 		String[] solvingOptions = {"A*", "BFS"};
 		Combo solvingAlgorithmCombo = createCombo(optionsForm, SWT.NULL, solvingOptions, "A*");
 	
-		Label dummyLabel2 = createLabel(optionsForm,SWT.FILL, "", 120, 10); 
+		createLabel(optionsForm,SWT.FILL, "", 120, 10); 
 	
 	    Button submitButton = createButton(optionsForm, " Save   ", "Resources/TabFolder/Save.png");
 	
@@ -399,11 +395,9 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	
 	private void openConnectWindow() {
 		Shell connectWindow = new Shell(shell); 
-		
 		connectWindow.setLayout(new GridLayout(2,false));
 		connectWindow.setSize(240, 160);
 		connectWindow.setText("Connect To Server");
-		
 		connectWindow.open();		
 	}
 	
