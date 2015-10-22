@@ -21,11 +21,14 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowData;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.MessageBox;
@@ -43,9 +46,7 @@ import presenter.Command;
 public class MazeBasicWindow extends BasicWindow implements View{
 
 	Timer timer;
-	TimerTask task;
-	Button startButton; 
-	Button stopButton; 
+	TimerTask task; 
 	Label metaDataLabel;
 	Label possibleKeysLabel;
 	Label dummyLabel;
@@ -132,122 +133,58 @@ public class MazeBasicWindow extends BasicWindow implements View{
         /* "Play" Tab */ 
     	TabItem playTab = new TabItem(MazeFolder, SWT.NULL);
         playTab.setText("Play");
-        SashForm playForm = new SashForm(MazeFolder, SWT.VERTICAL);
+        Composite playForm = new Composite(MazeFolder, SWT.NONE);
+        RowLayout rowLayout = new RowLayout();
+		rowLayout.justify = false;
+		rowLayout.pack = true;
+		rowLayout.type = SWT.VERTICAL;
+		playForm.setLayout(rowLayout);
+		
         playTab.setControl(playForm);
     
-        	Button generateNewMazeButton = createButton(playForm, "  Start    ", "Resources/TabFolder/Generate.png");
-        	Button solveButton = createButton(playForm, "  Solve    ", "Resources/TabFolder/Solve.png");
-        	Button hintButton = createButton(playForm, "  Hint     ", "Resources/TabFolder/Hint.png");
+    	Button generateNewMazeButton = createButton(playForm, "  Start    ", "Resources/TabFolder/Generate.png");
+    	Button solveButton = createButton(playForm, "  Solve    ", "Resources/TabFolder/Solve.png");
+    	Button hintButton = createButton(playForm, "  Hint     ", "Resources/TabFolder/Hint.png");
         	
-        	
-	        /* MetaData Label */ 
-			metaDataLabel = new Label(playForm, SWT.FILL);
-			metaDataLabel.setLayoutData(gd);
-			metaDataLabel.setLayoutData(gd);
-			setMetaDataLabel(0, 0, 0, 0, 0, 0);
-			
-			/* Possible Keys Label */ 
-			possibleKeysLabel = new Label(playForm, SWT.FILL); 
-			possibleKeysLabel.setLayoutData(gd);
-			
-			/* Dummy Label */ 
-			dummyLabel = new Label(playForm, SWT.FILL); 
-			
-	        int[] play_weights = {1,1,1,2,2,6};
-	        playForm.setWeights(play_weights);
-	        
-        
-	        /* "Options" Tab */ 
-	        TabItem optionsTab = new TabItem(MazeFolder, SWT.NULL);
-	        optionsTab.setText("Settings");
-	        SashForm optionsForm = new SashForm(MazeFolder, SWT.VERTICAL);
-	        optionsForm.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, false, false, 0, 0));
-	        optionsTab.setControl(optionsForm);
-	        	/*
-		        startButton=new Button(optionsForm, SWT.PUSH);
-		        stopButton=new Button(optionsForm, SWT.PUSH);
-		        stopButton.setText("Stop");
-		        */
-
-		        Label optionsLabel = new Label(optionsForm,SWT.NULL);
-		        optionsLabel.setText("\n     Server Settings.");
-			  //  optionsLabel.setText("Here you can change \nServer Settings.");
-		        
-			    /* Server Address - Default: localhost */ 
-			    Label serverAddressLabel = new Label(optionsForm,SWT.NULL);
-			    serverAddressLabel.setText("Server address: ");
-			    Text serverAddressInput = new Text(optionsForm, SWT.PUSH | SWT.BORDER);
-			    serverAddressInput.setText("localhost");
-			    
-			    
-			    
-			    /* Server Port - Default: 12345 */ 
-			    Label serverPortLabel = new Label(optionsForm,SWT.FILL);
-			    serverPortLabel.setText("Server port number:");
-			    Text serverPortInput = new Text(optionsForm, SWT.PUSH | SWT.BORDER);
-			    serverPortInput.setText("12345");
-			    
-			    Label dummyLabel = new Label(optionsForm,SWT.SEPARATOR | SWT.HORIZONTAL); 
-			    
-			    /* Maze Generation Algorithm - Default: Complicated (MyMazeGenerator) */ 
-			    Label generationAlgorithmLabel = new Label(optionsForm,SWT.FILL);
-			    generationAlgorithmLabel.setText(" Generation Algorithm:  ");
-			    Combo generationAlgorithmCombo = new Combo(optionsForm, SWT.NULL);
-			    generationAlgorithmCombo.add("Simple");
-			    generationAlgorithmCombo.add("Complicated");
-			    generationAlgorithmCombo.setText("Complicated");
-			    
-
-			    /* Maze Solving Algorithm - Default: A*  */ 
-			    Label solvingAlgorithmLabel = new Label(optionsForm,SWT.FILL);
-			    solvingAlgorithmLabel.setText(" Solving Algorithm:  ");
-			    Combo solvingAlgorithmCombo = new Combo(optionsForm, SWT.NULL);
-			    solvingAlgorithmCombo.add("A*");
-			    solvingAlgorithmCombo.add("BFS");
-			    solvingAlgorithmCombo.setText("A*");
-			    			    Label dummyLabel3 = new Label(optionsForm,SWT.SEPARATOR | SWT.HORIZONTAL); 
-
-		        Button submitButton=new Button(optionsForm, SWT.PUSH);
-		        submitButton.setText("Save Settings");
-		        /* What happens when a user clicks [Save settings] */
-		        submitButton.addSelectionListener(new SelectionListener() {
-					
-					@Override
-					public void widgetSelected(SelectionEvent arg0) {
-						String server = serverAddressInput.getText();
-						String port = serverPortInput.getText();
-						String generator="";
-						if(generationAlgorithmCombo.getText().equals("Complicated"))
-							generator="MyMaze3dGenerator";
-						else
-							generator="SimpleMazeGenerator";
-						String solver="";
-						if(solvingAlgorithmCombo.getText().equals("A*"))
-							solver="A*";
-						else
-							solver="BFS";
-						changeSettings(server,port,generator,solver);
-						
-					}
-					
-					@Override
-					public void widgetDefaultSelected(SelectionEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-				});
-		        
-		        
-		        
-
-				/* Dummy Label */ 
-		        dummyLabel = new Label(optionsForm, SWT.FILL);
-
-		        int[] options_weights = {2,1,1,1,1,1,1,1,1,1,1,2,7};
-		        optionsForm.setWeights(options_weights);
-
-        //changeButton(startButton, true, "Start");
-
+	    /* Labels */
+		metaDataLabel = createLabel(playForm, SWT.FILL, "", 120, 45);
+		setMetaDataLabel(0, 0, 0, 0, 0, 0);
+		possibleKeysLabel = createLabel(playForm, SWT.FILL, "", 120, 60); 
+	
+	    /* "Options" Tab */
+	    TabItem optionsTab = new TabItem(MazeFolder, SWT.NULL);
+	    optionsTab.setText("Options");
+	    Composite optionsForm = new Composite(MazeFolder, SWT.NONE);
+	    optionsForm.setLayout(rowLayout);
+	    optionsTab.setControl(optionsForm);
+	
+	    Label optionsTitleLabel = createLabel(optionsForm, SWT.FILL, "Server Settings:");
+	    
+	    /* Server Address - Default: localhost */
+	    Label serverAddressLabel = createLabel(optionsForm, SWT.NULL, "Server Address: ", 120, 15);
+	    Text serverAddressInput = createText(optionsForm, SWT.SINGLE | SWT.BORDER , "localhost", 107, 15);  
+		    
+	    Label serverPortLabel = createLabel(optionsForm,SWT.FILL, "Port:", 120, 15);
+		Text serverPortInput = createText(optionsForm, SWT.SINGLE | SWT.BORDER, "12345", 107, 15);
+	    
+		Label dummyLabel = createLabel(optionsForm,SWT.FILL, "", 120, 10); 
+		Label AlgorithmsLabel = createLabel(optionsForm,SWT.FILL, "Algorithems:"); 
+	
+		/* Maze Generation Algorithm - Default: Complicated (MyMazeGenerator) */ 
+		Label generationAlgorithmLabel = createLabel(optionsForm,SWT.FILL, "Generation Algorithm:", 120,15); 
+	
+		String[] options = {"Simple", "Complicated"};
+		Combo generationAlgorithmCombo = createCombo(optionsForm, SWT.NULL, options, "Complicated");
+	    
+	    /* Maze Solving Algorithm - Default: A*  */ 
+		Label solvingAlgorithmLabel = createLabel(optionsForm, SWT.FILL, "Solving Algorithm:", 120, 15);
+		String[] solvingOptions = {"A*", "BFS"};
+		Combo solvingAlgorithmCombo = createCombo(optionsForm, SWT.NULL, solvingOptions, "A*");
+	
+		Label dummyLabel2 = createLabel(optionsForm,SWT.FILL, "", 120, 10); 
+	
+	    Button submitButton = createButton(optionsForm, " Save   ", "Resources/TabFolder/Save.png");
+	
         /* Canvas Section */ 
         welcomeDisplayerCanvas = new  WelcomeDisplayer(shell, SWT.BORDER);
 		welcomeDisplayerCanvas.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true,true,1,1));
@@ -269,9 +206,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			}
 			
 			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
-			}
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		
 		/* What happens when a user clicks "File" > "Generate Maze" */ 
@@ -283,9 +218,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			}
 			
 			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
-			}
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 
 		/* What happens when a user clicks "File" > "Exit" */ 
@@ -303,9 +236,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			}
 			
 			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
-				}
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		
 		/* What happens when a user clicks "Maze" > "Save maze to file" */  
@@ -330,9 +261,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			}
 			
 			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
-			}
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		
 
@@ -352,52 +281,17 @@ public class MazeBasicWindow extends BasicWindow implements View{
 					String selectedName = fileLoadDialog.getFileName();
 					String[] args = {fileLoadDialog.getFilterPath()+"\\"+selectedName,mazeObjectName};
 					viewCommandMap.get("load maze").doCommand(args);
-				if(mazeObject!=null && mazeDisplayerCanvas!=null)
-				{
-					//changeButton(startButton, false, "Start");
-					started=true;
+					if(mazeObject!=null && mazeDisplayerCanvas!=null)
+					{
+						started=true;
+					}
 				}
-				}
-				//else
-				//	errorNoticeToUser("Play");
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {
-				// TODO Auto-generated method stub
-			}
-		});
-		
-		
-		/* What happens when a user clicks "[Start]". */ 
-		/*
-		startButton.addSelectionListener(new SelectionListener() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				startGame();
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
-		*/
-		/* What happens when a user clicks "[Stop]". */
-		/*
-		stopButton.addSelectionListener(new SelectionListener() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent arg0) {
-				startButton.setEnabled(true);
-				stopButton.setEnabled(false);
-				started=false;
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent arg0) {}
-		});
-		 */
-
+		
 		/* What happens when a user clicks "[Generate]". */ 
 		generateNewMazeButton.addSelectionListener(new SelectionListener() {
 			
@@ -430,8 +324,6 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		
-		
-		
 		/* What happens when a user clicks "[Hint]". */
 		hintButton.addSelectionListener(new SelectionListener() {
 			
@@ -455,6 +347,31 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		
+        /* What happens when a user clicks [Save] */
+        submitButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				String server = serverAddressInput.getText();
+				String port = serverPortInput.getText();
+				String generator="";
+				if(generationAlgorithmCombo.getText().equals("Complicated"))
+					generator="MyMaze3dGenerator";
+				else
+					generator="SimpleMazeGenerator";
+				String solver="";
+				if(solvingAlgorithmCombo.getText().equals("A*"))
+					solver="A*";
+				else
+					solver="BFS";
+				changeSettings(server,port,generator,solver);
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {					
+			}
+		});	
 	}
 
 	public void startGame(){
@@ -471,19 +388,13 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			{
 				mazeDisplayerCanvas.setFocus();
 			}
-				
-			
-			/* UI Grid */ 
+
 
 		}
 		else
 		{
 			initGame(); 
 		}
-
-		//startButton.setEnabled(false);
-		//stopButton.setEnabled(true);
-//		/shell.layout();
 	}
 	
 	private void openConnectWindow() {
@@ -547,9 +458,6 @@ public class MazeBasicWindow extends BasicWindow implements View{
 					started = true; 
 					game = "mazeGame";
 					viewCommandMap.get("generate 3d maze").doCommand(params);
-					//mazeDisplayerCanvas.setFocus();
-					//startButton.setEnabled(false);
-					//stopButton.setEnabled(true);
 					if (child != null)
 						child.dispose();
 					shell.layout();
@@ -557,56 +465,11 @@ public class MazeBasicWindow extends BasicWindow implements View{
 				}
 				
 				@Override
-				public void widgetDefaultSelected(SelectionEvent arg0) {
-					// TODO Auto-generated method stub
-					
-				}
+				public void widgetDefaultSelected(SelectionEvent arg0) {}
 			});
 		return null; 
 	}
 	
-	public Button getStartButton() {
-		return startButton;
-	}
-
-	public void setStartButton(Button startButton) {
-		this.startButton = startButton;
-		
-	}
-
-	/*public boolean changeButton(Button b, boolean enabled, String text) {
-		if(b == startButton) {
-			// Buttons : Start, Stop  
-			startButton.setText(text);
-			startButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-			startButton.setEnabled(enabled);
-			stopButton.setEnabled(!(enabled));
-			stopButton.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
-		}
-		else if (b == stopButton)
-		{
-			stopButton.setText(text);
-			stopButton.setLayoutData(new GridData(SWT.None, SWT.None, false, false, 1, 1));
-			stopButton.setEnabled(enabled);
-			startButton.setEnabled(!(enabled));
-			startButton.setLayoutData(new GridData(SWT.FILL, SWT.None, false, false, 1, 1));
-		}
-		else
-		{
-			return false; 
-		}
-		return true; 
-	}
-	*/
-	
-	public Button getStopButton() {
-		return stopButton;
-	}
-
-	public void setStopButton(Button stopButton) {
-		this.stopButton = stopButton;
-	}
-
 	public void initKeyListeners()
 	{
 		mazeDisplayerCanvas.addKeyListener(new KeyListener() 
@@ -636,14 +499,12 @@ public class MazeBasicWindow extends BasicWindow implements View{
 						case SWT.PAGE_DOWN:
 							if(pageDownKey){
 								mazeDisplayerCanvas.moveDown();
-								pageDownKey=false;
-							}
+								pageDownKey=false;}
 							break;
 						case SWT.PAGE_UP:
 							if(PageUp){
 								mazeDisplayerCanvas.moveUp();
-								PageUp=false;
-							}
+								PageUp=false;}
 							break;
 		              }
 				}
@@ -846,8 +707,6 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		out.println("Crossed maze: "+name+ " by axe: "+axe+" with index: "+index);
 		out.flush();
 		printArr(crossedArr);
-		
-		metaDataLabel.setText("hello");
 	}
 	
 	
@@ -968,8 +827,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 					try {Thread.sleep(250);} 
 					catch (InterruptedException e) 
 					{
-						// TODO Auto-generated catch block
-						//e.printStackTrace();
+						e.printStackTrace();
 					}
 				}
 			}
@@ -1101,9 +959,18 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	private Button createButton(Composite parent, String text, String image) {
 	    Button button = new Button(parent, SWT.PUSH);
 	    button.setImage(new Image(Display.getCurrent(), image));
-	    button.setLayoutData(new GridData(SWT.FILL, SWT.TOP, false, false, 1, 1));
-	    button.setText(text);
+	    button.setLayoutData(new RowData(120, 30));
+	    button.setText(text);	    
 	    return button;
+	}
+
+	
+	
+	
+	private Button createButton(Composite parent, String text, String image, int width, int height) {
+		Button button = createButton(parent, text, image);
+    	button.setLayoutData(new RowData(width, height));
+    	return button; 		
 	}
 	
 	private void changeSettings(String server,String port,String generator,String solver)
@@ -1113,5 +980,40 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		notifyObservers(args);
 	}
 	
+	private Label createLabel(Composite parent, int style, String placeholder, int width, int height){
+		Label label = new Label(parent, style);
+		label.setLayoutData(new RowData(width, height));
+		label.setText(placeholder);
+		return label; 		
+	}
+	
+	private Label createLabel(Composite parent, int style, String placeholder){
+		return createLabel(parent, style, placeholder, 120, 30); 		
+	}
+	
+	private Text createText(Composite parent, int style, String placeholder, int width, int height){
+		Text text = new Text(parent, style);
+	    text.setText(placeholder);
+	    text.setLayoutData(new RowData(width, height));
+	    return text; 
+	}
+	
+	private Text createText(Composite parent, int style, String placeholder){
+		return createText(parent, style, placeholder, 120, 15); 
+	}
+	
+	private Combo createCombo(Composite parent, int style, String[] options, String placeholder, int width, int height){
+		Combo combo = new Combo(parent, style);
+		for (int i = 0; i < options.length; i++) {
+			combo.add(options[i]);
+		}
+		combo.setText(placeholder);
+		combo.setLayoutData(new RowData(width, height));
+		return combo;
+	}
+	
+	private Combo createCombo(Composite parent, int style, String[] options, String placeholder){
+		return createCombo(parent, style, options, placeholder, 90, 20);
+	}
 }
 	
