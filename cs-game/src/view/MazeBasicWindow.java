@@ -122,7 +122,8 @@ public class MazeBasicWindow extends BasicWindow implements View{
 
         /* Tab Folder */ 
         TabFolder MazeFolder = new TabFolder(shell, SWT.NULL);
-        MazeFolder.setForeground(new Color(display, new RGB(31, 78, 121)));
+        //MazeFolder.setForeground(new Color(display, new RGB(131, 178, 121)));
+        //MazeFolder.setBackground(new Color(display, 31, 0, 121));
         MazeFolder.setLayoutData(stretchGridData);
 
         /* "Play" Tab */ 
@@ -488,6 +489,16 @@ public class MazeBasicWindow extends BasicWindow implements View{
 								mazeDisplayerCanvas.moveUp();
 								PageUp=false;}
 							break;
+						case 'q':
+							if(PageUp){
+								mazeDisplayerCanvas.moveUp();
+								PageUp=false;}
+							break;
+						case 'a':
+							if(pageDownKey){
+								mazeDisplayerCanvas.moveDown();
+								pageDownKey=false;}
+							break;							 	
 		              }
 				}
 		        else
@@ -498,6 +509,12 @@ public class MazeBasicWindow extends BasicWindow implements View{
                         	 pageDownKey=false;
                         	 break;
                          case SWT.PAGE_UP:		
+                        	 PageUp=false;
+                        	 break;
+                         case 'a':	
+                        	 pageDownKey=false;
+                        	 break;
+                         case 'q':		
                         	 PageUp=false;
                         	 break;
                     }
@@ -515,6 +532,12 @@ public class MazeBasicWindow extends BasicWindow implements View{
                         	pageDownKey=getFloorArr("DOWN");
                         	break;
                         case SWT.PAGE_UP:	
+                        	PageUp=getFloorArr("UP");
+                        	break;
+                        case 'a':	
+                        	pageDownKey=getFloorArr("DOWN");
+                       	 	break;
+                        case 'q':		
                         	PageUp=getFloorArr("UP");
                         	break;
 					}
