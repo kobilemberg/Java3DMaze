@@ -1,5 +1,7 @@
 package view;
 
+import java.util.Random;
+
 import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
@@ -40,11 +42,24 @@ public class Maze3dDisplayer extends MazeDisplayer {
 		
 		final Color white=new Color(null, 255, 255, 255);
 		final Color black=new Color(null, 0,0,0);
-		Image bGImage = new Image(getDisplay(), "Resources/wood-floor-texture.jpg");
-		setBackgroundImage(bGImage);
-		//setBackground(white);
+		//Image bGImage = new Image(getDisplay(), "Resources/wood-floor-texture.jpg");
+		//setBackgroundImage(bGImage);
+		Color[] colors = {
+				new Color(null, 46, 204, 113),
+				new Color(null, 52, 152, 219),
+				new Color(null, 155, 89, 182),
+				new Color(null, 230, 126, 34),
+				new Color(null, 241, 196, 15)
+		};
+		
+		Random rand = new Random();
+		int r = rand.nextInt(colors.length);
+		setBackground(colors[r]);
+		
 		addPaintListener(new PaintListener() {
-			
+		Image exitImage = new Image(getDisplay(), "Resources/Maze/Goal.png");
+		Image winImage = new Image(getDisplay(), "Resources/Maze/Goal-Won.png");
+
 			@Override
 			synchronized public void paintControl(PaintEvent e) {
 			   e.gc.setForeground(new Color(null,0,0,0));
@@ -74,12 +89,14 @@ public class Maze3dDisplayer extends MazeDisplayer {
 				          
 				          if(i==characterX && j==characterY && exitX==characterX &&exitY ==characterY&& exitFloor == currentFloor)
 				          {
-				        	  /* Draw Exit & Character at the same place. */ 
+				        	  /* Draw Exit & Character at the same place. 
 				        	  e.gc.setBackground(new Color(null,200,100,0));
 				        	  e.gc.fillOval((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
 				        	  e.gc.setBackground(new Color(null,0,255,255));
 				        	  e.gc.fillOval((int)Math.round(dpoints[0]+2), (int)Math.round(dpoints[1]-cheight/2+2), (int)Math.round((w0+w1)/2/1.5), (int)Math.round(h/1.5));
-				        	  e.gc.setBackground(new Color(null,0,0,0));
+				        	  e.gc.setBackground(new Color(null,0,0,0)); */
+				        	  e.gc.drawImage(winImage, (int)Math.round(dpoints[0]), (int)(Math.round(dpoints[1]-cheight/2-30)));
+
 				          }
 				          else
 				          {
@@ -89,28 +106,29 @@ public class Maze3dDisplayer extends MazeDisplayer {
 					        	  System.out.println("Charactery: "+i);
 					        	  System.out.println("Floor: "+currentFloor);
 								   e.gc.setBackground(new Color(null,200,0,0));
-								   e.gc.fillOval((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
+								   e.gc.fillOval((int)Math.round(dpoints[0]+8), (int)Math.round(dpoints[1]-cheight/2+10), (int)Math.round((w0+w1)/4), (int)Math.round(h/2));
 								   e.gc.setBackground(new Color(null,255,0,0));
-								   e.gc.fillOval((int)Math.round(dpoints[0]+2), (int)Math.round(dpoints[1]-cheight/2+2), (int)Math.round((w0+w1)/2/1.5), (int)Math.round(h/1.5));
+								   e.gc.fillOval((int)Math.round(dpoints[0]+10), (int)Math.round(dpoints[1]-cheight/2+12), (int)Math.round((w0+w1)/2/3), (int)Math.round(h/3));
 								   e.gc.setBackground(new Color(null,0,0,0));
 					          }
 					          /* Draw Exit */ 
 					          if(i==exitX && j==exitY && exitFloor == currentFloor){
-					        	  Image exitImage = new Image(getDisplay(), "Resources/exit.png");
-					        	  //e.gc.drawImage(exitImage, (int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2));
+					        	  e.gc.drawImage(exitImage, (int)Math.round(dpoints[0]), (int)(Math.round(dpoints[1]-cheight/2-30)));
 					        	  
 					        	  mazeBasicWindow.setWon(true);
+					        	  
+					        	  /*
 					        	  e.gc.setBackground(new Color(null,0,255,255));
 					        	  e.gc.setForeground(black);
 					        	  e.gc.fillRectangle((int)Math.round(dpoints[0]), (int)Math.round(dpoints[1]-cheight/2), (int)Math.round((w0+w1)/2), (int)Math.round(h));
 					        	  e.gc.setBackground(new Color(null,0,100,200));
 					        	  e.gc.fillRectangle((int)Math.round(dpoints[0]+2), (int)Math.round(dpoints[1]-cheight/2+2), (int)Math.round((w0+w1)/2/1.5), (int)Math.round(h/1.5));
+					        	  */
 					        	  e.gc.setBackground(new Color(null,0,0,0));
 					          }
 				          }
 				       }
-			   }
-			   
+				   }
 			   }
 			}
 		});

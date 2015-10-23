@@ -184,11 +184,19 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	public void initServer() {
 		try {
 			server.startServer(properties.getNumOfClients());
+
+			Thread t = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					modelCompletedCommand=1;
+					setChanged();
+					setData("Server is up");
+					notifyObservers();				}
+			});
+			t.start();
 			//this.server.getServer().setSoTimeout(60000*60);
-			modelCompletedCommand=1;
-			setChanged();
-			setData("Server is up");
-			notifyObservers();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}	
