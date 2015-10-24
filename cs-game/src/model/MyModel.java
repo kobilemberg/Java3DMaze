@@ -121,6 +121,9 @@ public class MyModel extends Observable implements Model{
 	
 //Functionality
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void dir(String dir) throws NullPointerException
 	{
 		if(dir!=null)
@@ -143,6 +146,9 @@ public class MyModel extends Observable implements Model{
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void generateMazeWithName(String name, String generator, String floors, String lines, String columns) {
 		if(floors.isEmpty()||lines.isEmpty()||columns.isEmpty()){errorNoticeToController("Wrong parameters, Usage: generate 3d maze <name> <generator> <other params>");}
 		else
@@ -215,6 +221,9 @@ public class MyModel extends Observable implements Model{
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void getMazeWithName(String nameOfMaze) {
 		System.out.println("Name: "+nameOfMaze);
 		System.out.println(maze3dMap.toString());
@@ -233,6 +242,9 @@ public class MyModel extends Observable implements Model{
 			}		
 	}
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void getCrossSectionByAxe(String axe, String index, String mazeName) {
 		int[][] arrToRet = null;
 		if(maze3dMap.containsKey(mazeName))
@@ -274,6 +286,9 @@ public class MyModel extends Observable implements Model{
 		else{errorNoticeToController("problem with args");}
 	}
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void saveCompressedMazeToFile(String mazeName, String fileName) throws IOException {
 		if(fileName.isEmpty()||mazeName.isEmpty()){errorNoticeToController("Cannot resolve filename\\maze name");}
 		else
@@ -322,6 +337,9 @@ public class MyModel extends Observable implements Model{
 		}
 	}
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void loadAndDeCompressedMazeToFile(String fileName, String mazeName) throws IOException {
 		if(fileName.isEmpty()||mazeName.isEmpty()){errorNoticeToController("File not found\\Cannot resolve maze name");}
 		else
@@ -373,6 +391,9 @@ public class MyModel extends Observable implements Model{
 		}
 	}
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void getSizeOfMazeInRam(String mazeName) {
 		if(maze3dMap.containsKey(mazeName))
 		{
@@ -388,6 +409,9 @@ public class MyModel extends Observable implements Model{
 			errorNoticeToController("There is no maze named: "+mazeName);
 	}
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void getSizeOfMazeInFile(String fileName) {
 		File f = new File(fileName);
 		if(!f.exists()){errorNoticeToController("File "+fileName+" doesnt exists");}
@@ -403,6 +427,9 @@ public class MyModel extends Observable implements Model{
 		}
 	}
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void solveMaze(String mazeName, String algorithm) 
 	{
 		if(maze3dMap.containsKey(mazeName))
@@ -465,6 +492,9 @@ public class MyModel extends Observable implements Model{
 	}
 			
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void getSolutionOfMaze(String mazeName) {
 		
 		if(maze3dMap.containsKey(mazeName))
@@ -485,6 +515,9 @@ public class MyModel extends Observable implements Model{
 	}
 	@Override
 	public void exit() {
+		/**
+		 * {@inheritDoc}
+		 */
 		try {
 			modelCompletedCommand =11;
 			TP.shutdownNow();
@@ -513,20 +546,43 @@ public class MyModel extends Observable implements Model{
 		notifyObservers();
 	}
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean isLoaded(String mazeName) {return maze3dMap.containsKey(mazeName);}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public Object getData() {return data;}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setData(Object o) {this.data = o;}
-	
+	 
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public int getModelCompletedCommand(){return modelCompletedCommand;}
 	
+	
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setModelCommandCommand(int commandNum){modelCompletedCommand=commandNum;}
 	
-	
-	public static Properties read(String filename) throws Exception {
+	/**
+	 * This method gets a string off an XML file to load
+	 * @param filename represent the full path of the file
+	 * @return new Properties instance represent the settings of the XML
+	 * @throws Exception for unexisted files
+	 */
+	private static Properties read(String filename) throws Exception {
         XMLDecoder decoder =new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
         Properties properties = (Properties)decoder.readObject();
         decoder.close();
@@ -536,6 +592,13 @@ public class MyModel extends Observable implements Model{
 
 	
 	@SuppressWarnings("resource")
+	/**
+	 * This method remotely solves maze with name mazeName, by connecting to solution server 
+	 * @param mazeName represent the name of the maze
+	 * @param maze represent the Maze3d as instance
+	 * @param algorithm represent the algorithm to solve (A*\BFS)
+	 * @return Solution<Position> as instance represent the solution for the maze
+	 */
 	public Solution<Position> remoteSolve(String mazeName, Maze3d maze,String algorithm)
 	{
 		try{
@@ -596,6 +659,9 @@ public class MyModel extends Observable implements Model{
 	}
 	@SuppressWarnings("resource")
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public boolean changePropertiesByFilename(String fileName) 
 	{	 
 		//Reading the file.
@@ -626,6 +692,9 @@ public class MyModel extends Observable implements Model{
 
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setMazeWithCurrentLocationFromGui(String mazeName, String currentX, String currentY, String currentZ) {
 		if(maze3dMap.containsKey(mazeName))
 		{
@@ -640,6 +709,9 @@ public class MyModel extends Observable implements Model{
 
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void changeSettings(String server, String port, String generator, String solver) {
 		this.properties.setDefaultAlgorithm(generator);
 		this.properties.setDefaultSolver(solver);

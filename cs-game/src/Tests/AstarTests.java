@@ -13,20 +13,17 @@ import algorithms.search.Maze3dSolution;
 
 /**
  * @author Kobi
- *
+ *This class contains a maze solver functionality unit tests via Junit 4
  */
 public class AstarTests{
 	
 	
-
-	SearchableMaze3d searchableMazeToTest;
-	SearchableMaze3d randomSearchableMazeToTest;
 	AStarCommonSearcher aStar;
-	
-	SearchableMaze3d noneSearchableMaze;
-	SearchableMaze3d oneCellWallSearchableMaze;
-	SearchableMaze3d oneCellnotWallSearchableMaze; 
-	SearchableMaze3d startEqualsToGoalSearchableMaze;
+	SearchableMaze3d searchableMazeToTest; //Regular maze {3,3,3} with known amount of solution steps
+	SearchableMaze3d randomSearchableMazeToTest;//Regular maze {10,10,10}  
+	SearchableMaze3d noneSearchableMaze;//Maze with no walls, one cell
+	SearchableMaze3d oneCellWallSearchableMaze;//Maze with one cell (wall)
+	SearchableMaze3d startEqualsToGoalSearchableMaze;//Maze with start that equals to goal
 	
 	
 	@Before
@@ -50,24 +47,36 @@ public class AstarTests{
 		
 		noneSearchableMaze = new SearchableMaze3d(noneMaze);
 		oneCellWallSearchableMaze = new SearchableMaze3d(oneCellWallMaze );
-		oneCellnotWallSearchableMaze = new SearchableMaze3d(oneCellnotWallMaze);
 		startEqualsToGoalSearchableMaze = new SearchableMaze3d(startEqualsToGoal);
 		searchableMazeToTest = new SearchableMaze3d(mazeToTest);
 		randomSearchableMazeToTest = new SearchableMaze3d(randomMaze);
 	}
 	
 	@Test
+	/**
+	 * Sanity
+	 * Check the array list of solution amount
+	 */
 	public void testRandomMazeAstarSolutionIsNotNull() {
 	//	System.out.println(aStar.search(randomSearchableMazeToTest).toString());
 		Assert.assertNotEquals(aStar.search(randomSearchableMazeToTest).getSolution().size(),0 );
 	}
 	
 	@Test
+	/**
+	 * Sanity
+	 * Checking solution is not null
+	 */
 	public void testMazeAstarSolutionIsNotNull() {
 		Assert.assertNotEquals(aStar.search(searchableMazeToTest).toString(),"" );
 	}
 	
 	@Test
+	/**
+	 * The only optiions for maze with size {3,3,3} is 0-5 solution steps due to the 
+	 creation way.
+	 
+	 */
 	public void testNegetiveAstarMazeSolutionAmountOfSteps() {
 		aStar.search(searchableMazeToTest);
 		Assert.assertNotEquals(aStar.getSolution().getSolution().size(),6);

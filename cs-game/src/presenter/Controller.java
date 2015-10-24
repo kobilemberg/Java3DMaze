@@ -28,7 +28,7 @@ public interface Controller {
 	
 	/**
 	 * The method will notice the view layer about error messages
-	 *@param s String represent the messege to view         
+	 *@param s String represent the message to display         
 	 */
 	public void errorNoticeToViewr(String s);
 

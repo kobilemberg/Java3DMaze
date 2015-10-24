@@ -1,14 +1,17 @@
 package presenter;
 
+/**
+ * @author Kobi Lemberg, Alon Abadi
+ * @version 1.0
+ * <h1> Properties </h1>
+ * This class represent an instance of settings that the program will use.
+ */
+
 import java.io.Serializable;
 
 
 public class Properties implements Serializable
 {
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	protected String defaultAlgorithm;
 	protected String defaultSolver;
@@ -16,9 +19,19 @@ public class Properties implements Serializable
 	protected String serverAddress;
 	protected int port; 
 	protected int numOfThreads;
-	
+	/**
+	 * Instantiate a new Properties with empty settings
+	 */
 	public Properties() {}
-
+	/**
+	 * Instantiate a new Properties with the following args
+	 * @param defaultAlgorithm represent the maze generation algorithm (SimpleMaze3dGenerator\MyMaze3dGenerator)
+	 * @param defaultSolver represent the solver algorithm (A*\\BFS)
+	 * @param UI represent the user interface (CLI\GUI)
+	 * @param serverAddress represent thr server Pv4 address 
+	 * @param port represent thr server port
+	 * @param numOfThreads represent the allowed threads to execute
+	 */
 	public Properties(String defaultAlgorithm, String defaultSolver, String UI, String serverAddress, int port, int numOfThreads) {
 		super();
 		this.defaultAlgorithm = defaultAlgorithm;
@@ -28,11 +41,16 @@ public class Properties implements Serializable
 		this.port = port;
 		this.numOfThreads = numOfThreads;
 	}
-
+	/**
+	 * @return String represent the generation algorithm
+	 */
 	public String getDefaultAlgorithm() {
 		return defaultAlgorithm;
 	}
-
+	/**
+	 * This method will set the default of the maze generation
+	 * @param defaultAlgorithm represent the generation algorithm (SimpleMaze3dGenerator\MyMaze3dGenerator)
+	 */
 	public void setDefaultAlgorithm(String defaultAlgorithm) {
 		this.defaultAlgorithm = defaultAlgorithm;
 	}

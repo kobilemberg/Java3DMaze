@@ -1,5 +1,10 @@
 package presenter;
-
+/**
+ * @author Kobi Lemberg, Alon Abadi
+ * @version 1.0
+ * <h1> Presenter </h1>
+ * This class implements Observer interface and represent my own presenter layer for MVP infrastructer
+ */
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Observable;
@@ -17,10 +22,10 @@ public class Presenter implements Observer {
 	
 	
 	/**
-	* Instantiates a new  my own controller with given view and model.
+	* Instantiates a new  my own presenter with given view and model.
 	* @param view View represent the view layer
 	* @param model Model represent the model layer
-	* @return new MyController as instance
+	* @return new Presenter as instance
 	* */
 		public Presenter(View view, Model model) {
 			super();
@@ -201,7 +206,7 @@ public class Presenter implements Observer {
 
 	//Getters and setters
 		
-		/**
+	/**
 	 * @return the viewCommandMap
 	 */
 	public HashMap<String, Command> getViewCommandMap() {
@@ -216,26 +221,30 @@ public class Presenter implements Observer {
 	}
 
 		/**
-		 * This method will set controller view layer
+		 * This method will set view layer
 		 * @param view View represent the view layer
 		 */
 		public void setView(View view){this.view = view;}
 		/**
-		* This method will set controller model layer
+		* This method will set model layer
 		* @param model Model represent the model layer
 		*/
 		public void setModel(Model model){this.model = model;}
 		/**
-		* This method will return the controller view layer
-		* @return View instance represent the view layer of the controller
+		* This method will return the view layer
+		* @return View instance represent the view layer
 		*/
 		public View getView(){return view;}
 		/**
-		* This method will return the controller model layer
-		* @return Model instance represent the Model layer of the controller
+		* This method will return the model layer
+		* @return Model instance represent the Model layer
 		*/
 		public Model getModel(){return model;}
 		
+		/**
+		 * This method pass a message to view
+		 * @param s represent the message to pass
+		 */
 		public void errorNoticeToViewr(String s) {view.errorNoticeToUser(s);}
 	
 		
@@ -244,6 +253,9 @@ public class Presenter implements Observer {
 	
 	@SuppressWarnings("unchecked")
 	@Override
+	/**
+	 * This method will update each layer about the changes on other layers
+	 */
 	 public void update(Observable o, Object args) {
 		if(o==view)
 		{

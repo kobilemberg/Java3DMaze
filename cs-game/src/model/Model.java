@@ -112,18 +112,53 @@ public interface Model {
 	* @return False if maze is not exists in the ram disk
 	*/
 	public boolean isLoaded(String mazeName);
-
+	
+	/**
+	 * This method changes the properties settings instance of the model
+	 * @param fileName represent a new properties XML to read
+	 * @return true if the XML has been loaded successfully
+	 */
 	public boolean changePropertiesByFilename(String fileName); 
-
+	
+	/**
+	 * This method returns a data to other application layer
+	 * @return Object represent the data from the other layers
+	 */
 	public Object getData();
+	
+	/**
+	 * This method sets a data to pass to other application layer
+	 * @param o Object represent the data to set to pass for other layers
+	 */
 	public void setData(Object o);
+	
+	/**
+	 * Returns the number of command represent the action that should be done by presenter
+	 * @return int number of command represent the action that should be done by presenter
+	 */
 	public int getModelCompletedCommand();
 	
+	/**
+	 * Sets the number of command represent the action that should be done by presenter
+	 * @param commandNum int represent the number of command represent the action that should be done by presenter
+	 */
 	public void setModelCommandCommand(int commandNum);
-
-
+	
+	/**
+	 * This method update the model with current location for specific maze
+	 * @param mazeName represent the name of the maze
+	 * @param currentX represent the maze current location floor
+	 * @param currentY represent current location rows
+	 * @param currentZ represent current location columns
+	 */
 	public void setMazeWithCurrentLocationFromGui(String mazeName, String currentX, String currentY, String currentZ);
 
-
+	/**
+	 * This method changes model settings by runtime and not with reading XML off settings
+	 * @param server represent the server address
+	 * @param port represent the server port
+	 * @param generator represent the generator type
+	 * @param solver represent the solver to use.
+	 */
 	public void changeSettings(String server, String port, String generator, String solver);
 }
