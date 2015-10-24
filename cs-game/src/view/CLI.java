@@ -28,7 +28,7 @@ HashSet<String> commandsStrings;
 String cliMenu;
 //Constructors
 	/**
-	 * Instantiates a new  my own maze3d generator with given BufferReader,PrintWriter,HasMap for commands
+	 * Instantiates a new  my own CLI with given BufferReader,PrintWriter,HasMap for commands
 	 * @param in BufferReader represent the input source
 	 * @param out PrintWriter represent the output source
 	 * @param commands HashMap<String,Command> represent the commands hashmap
