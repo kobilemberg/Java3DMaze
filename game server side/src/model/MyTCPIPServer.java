@@ -29,25 +29,41 @@ public class MyTCPIPServer {
 			/* Start the server. */
 			server=new ServerSocket(this.port);
 			
-			/* Get Clients */ 
-			while(Running){
-				Socket someClient = server.accept();
-				System.out.println("Accepted connection.");
-				ObjectInputStream input = new ObjectInputStream(someClient.getInputStream());
-				ObjectOutputStream output = new ObjectOutputStream(someClient.getOutputStream());
-				String line = (String) input.readObject(); 
-				if (line.equals(SOLVE))
-				{
-					System.out.println(line + "accepted.");
-					executer.execute(new Thread(new ClientHandler(someClient,input,output)));
-				}
-				else
-				{
-					System.out.println("Command not understood. First String must be "+SOLVE);
-				}
+			Thread t = new Thread(new Runnable() {
+				
+				@Override
+				public void run() {
+					try {
+						while(Running){
+							Socket someClient = server.accept();
+							System.out.println("Accepted connection.");
+							ObjectInputStream input = new ObjectInputStream(someClient.getInputStream());
+							ObjectOutputStream output = new ObjectOutputStream(someClient.getOutputStream());
+							String line = (String) input.readObject(); 
+							if (line.equals(SOLVE))
+							{
+								System.out.println(line + "accepted.");
+								executer.execute(new Thread(new ClientHandler(someClient,input,output)));
+							}
+							else
+							{
+								System.out.println("Command not understood. First String must be "+SOLVE);
+							}
 
-			}
-			
+						}
+
+					}
+					catch(Exception e)
+					{
+						e.printStackTrace();
+					}
+					
+					
+				}
+			});
+			/* Get Clients */ 
+			t.start();
+
 			server.close();
 		} catch (Exception e) {
 			e.printStackTrace();

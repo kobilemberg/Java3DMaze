@@ -27,5 +27,4 @@ public interface ModelServerSide {
 	public void setData(Object o);
 	public int getModelCompletedCommand();
 	public void setModelCommandCommand(int commandNum);
-	public void initServer();
 }

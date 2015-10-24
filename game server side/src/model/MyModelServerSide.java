@@ -112,10 +112,8 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 				result = f.get();
 				return result;
 			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (ExecutionException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			return null;
@@ -178,27 +176,5 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		Solution<Position> solutionToAdd = d.solveSearchableMazeWithBFS(new SearchableMaze3d(maze));
 		solutionMap.put(maze, solutionToAdd);
 		return solutionMap.get(maze);
-	}
-	
-	@Override
-	public void initServer() {
-		try {
-			server.startServer(properties.getNumOfClients());
-
-			Thread t = new Thread(new Runnable() {
-				
-				@Override
-				public void run() {
-					modelCompletedCommand=1;
-					setChanged();
-					setData("Server is up");
-					notifyObservers();				}
-			});
-			t.start();
-			//this.server.getServer().setSoTimeout(60000*60);
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}	
 	}
 }

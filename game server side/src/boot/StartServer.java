@@ -32,9 +32,7 @@ public class StartServer {
 		}
 		PropertiesServerSide properties=(PropertiesServerSide)decoder.readObject();
 		decoder.close();
-
-		System.out.println(properties);		
-
+		
 		MyViewServerSide view = new MyViewServerSide(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
 		MyModelServerSide model = new MyModelServerSide();
 		PresenterServerSide presenter = new PresenterServerSide(view, model);
