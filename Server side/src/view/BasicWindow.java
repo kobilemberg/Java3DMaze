@@ -35,6 +35,8 @@ public abstract class BasicWindow extends Observable implements Runnable {
 		       display.sleep(); 			// sleep until an event occurs 
 		    }
 		} // shell is disposed
+		display.dispose(); // dispose OS components
+
 		exit();
 		
 	}

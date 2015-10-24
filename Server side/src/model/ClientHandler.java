@@ -42,7 +42,7 @@ public class ClientHandler implements Runnable {
 			this.output.close();
 			this.client.close();
 			//System.out.println("Send to Client Solution: " + result.toString());
-			//model.setNumberOfClients(model.getNumberOfClients()-1);
+			model.setNumberOfClients(model.getNumberOfClients()-1);
 			
 		} 
 		catch (Exception e) {

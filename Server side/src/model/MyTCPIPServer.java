@@ -49,26 +49,29 @@ public class MyTCPIPServer {
 								}
 							}
 							server.close();	
+							((ExecutorService)executer).shutdownNow();
 						}
 					
 						catch (Exception e) {
-							//e.printStackTrace();
+						//	e.printStackTrace();
 							System.out.println("Server closed.");
 						}finally {
-							((ExecutorService)executer).shutdown();
+							((ExecutorService)executer).shutdownNow();
 						}	
 	}
 	public void stopServer(){
 		Running = false;
-		if (executer != null)
-				((ExecutorService)executer).shutdown();
+		try {
+	//	if (executer != null)
+				((ExecutorService)executer).shutdownNow();
 		if (server != null)
 			if(!server.isClosed())
-				try {
+				
 					server.close();
-				} catch (IOException e) {
+				} catch (Exception e) {
 					// TODO Auto-generated catch block
-					e.printStackTrace();
+					System.out.println("Server closed.23");
+					//e.printStackTrace();
 				}
 	}
 

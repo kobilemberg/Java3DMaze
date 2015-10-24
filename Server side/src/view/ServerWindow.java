@@ -156,7 +156,6 @@ public class ServerWindow extends BasicWindow implements ViewServerSide{
 		setUserCommand(-1);
 		String[] params = {};
 		notifyObservers(params);
-		display.dispose(); // dispose OS components
 	}
 	
 	@Override

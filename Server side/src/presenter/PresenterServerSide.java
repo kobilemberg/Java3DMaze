@@ -142,13 +142,14 @@ public class PresenterServerSide implements Observer {
 					if(args != null){
 						String[] params = (String[]) args;
 						model.changeSettings(params[0],params[1]);
+						break;
+
 					}
 				}
 				catch(Exception e)
 				{
 					e.printStackTrace();
 				}
-				break;
 			}	
 			case -1: 
 				model.exit();
@@ -221,13 +222,14 @@ public class PresenterServerSide implements Observer {
 					view.printSolutionToUser((String)(dataToPassToView[0]), (Solution<Position>)(dataToPassToView[1]));
 					break;
 					
-				case -2:
+				case -1:
 					//Error
 					try {
 						view.errorNoticeToUser((String) model.getData());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
+					
 					break;
 					
 				default:
