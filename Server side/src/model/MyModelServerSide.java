@@ -240,4 +240,16 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	public int getNumberOfClients() {
 		return this.numberOfClients;
 	}
+
+
+	@Override
+	public void changeSettings(String portNumber, String maxClients) {
+		this.properties.setNumOfClients(Integer.parseInt(maxClients));
+		this.properties.setPort(Integer.parseInt(portNumber));
+		errorNoticeToController("Configuration has changed to: "+properties.toString());
+		data = portNumber;
+		modelCompletedCommand = 4;
+		setChanged();
+		notifyObservers();
+	}
 }

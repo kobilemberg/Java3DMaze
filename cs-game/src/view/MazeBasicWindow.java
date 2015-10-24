@@ -314,7 +314,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				mazeObjectName = "QuickStartMaze"; 
-				String[] params = {"QuickStartMaze","default","2","15","14"};
+				String[] params = {"QuickStartMaze","default","2","14","16"};
 				started = true; 
 				game = "mazeGame";
 				viewCommandMap.get("generate 3d maze").doCommand(params);

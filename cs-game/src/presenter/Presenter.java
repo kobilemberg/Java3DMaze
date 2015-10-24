@@ -346,10 +346,10 @@ public class Presenter implements Observer {
 			case 14:
 			{
 				try {
-					if(args!=null)
+					if(args != null)
 					{
-						String[] params = (String[])args;
-						model.changeSettings(params[0],params[1],params[2],params[3]); //server,port,generator,solver
+						String[] params = (String[]) args;
+						model.changeSettings(params[0], params[1], params[2], params[3]); //server,port,generator,solver
 						
 					}
 				

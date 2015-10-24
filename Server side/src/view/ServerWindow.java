@@ -4,7 +4,6 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -34,6 +33,8 @@ public class ServerWindow extends BasicWindow implements ViewServerSide{
 	Label serverAddress;
 	Label numOfClients; 
 	Button startStopButton;
+	Text portNumberText;
+	Combo maximumClients;
 	               
 	public ServerWindow(String title, int width, int height) {
 		super(title, width, height);
@@ -71,10 +72,10 @@ public class ServerWindow extends BasicWindow implements ViewServerSide{
 		propertiesForm.setLayout(rowLayout);
 		propertiesTab.setControl(propertiesForm);
 		createLabel(propertiesForm, SWT.NONE, "Server Port:", 110, 15);
-		createText(propertiesForm, SWT.SINGLE | SWT.BORDER, "12345", 147, 15);
+		portNumberText = createText(propertiesForm, SWT.SINGLE | SWT.BORDER, "12345", 147, 15);
 		createLabel(propertiesForm, SWT.NONE, "Max Clients:", 110, 15);
 		String[] maxClients = {"3", "4", "5", "6", "7", "8", "9", "10"};
-		createCombo(propertiesForm, SWT.NULL, maxClients, "8",132,15);
+		maximumClients = createCombo(propertiesForm, SWT.NULL, maxClients, "8",132,15);
 		createLabel(propertiesForm, SWT.NONE, "", 110, 10);
 		Button submitButton = createButton(propertiesForm, " Update    ", "Resources/Menu/save.png",160,30);
 		
@@ -103,7 +104,21 @@ public class ServerWindow extends BasicWindow implements ViewServerSide{
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
 		
-		
+		/* What happens when a user clicks "[submit]". */ 
+		submitButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				String portNumber = portNumberText.getText();
+				String maxClients = maximumClients.getText();
+				String[] args = {portNumber, maxClients}; 
+				setUserCommand(4);
+				notifyObservers(args);
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
+		});
 		shell.layout();
 	}
 
@@ -178,6 +193,17 @@ public class ServerWindow extends BasicWindow implements ViewServerSide{
 		}
 		else if (data.toString().toLowerCase().endsWith(" Clients.")){
 			numOfClients.setText(data.toString());
+		}
+		else
+		{
+			String address;
+			try {
+				address = InetAddress.getLocalHost().getHostAddress().toString();
+				address += ":"+data;
+			} catch (UnknownHostException e) {
+				address = "Could not resolve IP:"+data;
+			} 
+			serverAddress.setText(address);
 		}
 	}
 

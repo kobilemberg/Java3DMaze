@@ -31,6 +31,7 @@ public interface ModelServerSide {
 	public void stopServer();
 	public void setNumberOfClients(int num);
 	public int getNumberOfClients();
+	public void changeSettings(String string, String string2);
 
 	
 

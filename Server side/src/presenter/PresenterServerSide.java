@@ -114,7 +114,7 @@ public class PresenterServerSide implements Observer {
 	@SuppressWarnings("unchecked")
 	@Override
 	 public void update(Observable o, Object args) {
-		if(o==view)
+		if(o == view)
 		{
 			String[] argArr = ((String[])args).clone();
 			
@@ -135,6 +135,20 @@ public class PresenterServerSide implements Observer {
 					e.printStackTrace();
 					view.errorNoticeToUser("Exception: Could not stop server");}
 				break;
+			case 4:
+			{
+				//args[0] = portNumber, args[1] = maximumClients
+				try {
+					if(args != null){
+						String[] params = (String[]) args;
+						model.changeSettings(params[0],params[1]);
+					}
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}	
 			case -1: 
 				model.exit();
 				break;
@@ -143,7 +157,7 @@ public class PresenterServerSide implements Observer {
 			}
 		}
 
-		else if(o==model)
+		else if(o == model)
 		{
 			int modelCompletedNum = model.getModelCompletedCommand();
 			Object[] dataToPassToView;
@@ -165,13 +179,12 @@ public class PresenterServerSide implements Observer {
 					view.displayData(model.getData());
 					System.out.println("Prestenter 2. ");
 					break;
-					/*	
+					
 				case 4:
-					//display cross section by {X,Y,Z} <index> for <Maze name>
-					dataToPassToView = (Object[]) model.getData();
-					view.printToUserCrossedArray((int[][])dataToPassToView[0], (String)dataToPassToView[1],  (String)dataToPassToView[2], (String)dataToPassToView[3]);
+					//Change Settings (Port)
+					view.displayData(model.getData());
 					break;
-				
+				/*
 				case 5:
 					//save maze <Maze name> <File name>
 					dataToPassToView = (Object[]) model.getData();
