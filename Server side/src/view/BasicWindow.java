@@ -2,6 +2,7 @@ package view;
 
 import java.util.Observable;
 
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
@@ -13,7 +14,8 @@ public abstract class BasicWindow extends Observable implements Runnable {
 	
  	public BasicWindow(String title, int width,int height) {
  		display=new Display();
- 		shell  = new Shell(display);
+ 		int trim = SWT.TITLE | SWT.CLOSE | SWT.BORDER;
+ 		shell  = new Shell(display, trim);
  		shell.setSize(width,height);
  		shell.setText(title);
  		

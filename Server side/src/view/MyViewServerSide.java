@@ -103,7 +103,10 @@ public class MyViewServerSide extends Observable implements ViewServerSide {
 	/**
 	* this method will start to run the view layer
 	*/
-	public void start() {cli.start();}
+	public void start() {
+		cli.start();
+		
+	}
 
 
 	/**

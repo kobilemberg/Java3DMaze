@@ -49,6 +49,16 @@ public class PresenterServerSide implements Observer {
 					((Observable)view).notifyObservers(args);
 					model.exit();}
 			});
+			
+			viewCommandMap.put("stop server",new Command() 
+			{
+				@Override
+				public void doCommand(String[] args) {
+					view.setUserCommand(2);
+					((Observable)view).notifyObservers(args);
+					model.stopServer();}
+			});
+			
 			String cliMenu=new String();
 			cliMenu+= "1:	init server\n";
 			cliMenu+= "-1:	exit\n";
@@ -116,7 +126,14 @@ public class PresenterServerSide implements Observer {
 				try {model.initServer();} catch (Exception e) {
 					
 					e.printStackTrace();
-					view.errorNoticeToUser("Exception: problem with args");}
+					view.errorNoticeToUser("Exception: Could not start server");}
+				break;
+			case 2:
+				//args[0] = numOfClients
+				try {model.stopServer();} catch (Exception e) {
+					
+					e.printStackTrace();
+					view.errorNoticeToUser("Exception: Could not stop server");}
 				break;
 			case -1: 
 				model.exit();
@@ -137,18 +154,18 @@ public class PresenterServerSide implements Observer {
 					view.displayData(model.getData());
 					break;
 					
-				/*case 2:
-					//maze is ready;
-					String s =(String) ((Object[]) model.getData())[0];
-					view.tellTheUserMazeIsReady(s);
+				case 2:
+					//Stop Server
+					view.displayData(model.getData());
 					break;
 					
 				case 3:
-					//display maze
-					dataToPassToView = (Object[]) model.getData();
-					view.printMazeToUser((Maze3d)dataToPassToView[0], (String)dataToPassToView[1]);
+					//Update number of clients
+					System.out.println("Prestenter. ");
+					view.displayData(model.getData());
+					System.out.println("Prestenter 2. ");
 					break;
-					
+					/*	
 				case 4:
 					//display cross section by {X,Y,Z} <index> for <Maze name>
 					dataToPassToView = (Object[]) model.getData();

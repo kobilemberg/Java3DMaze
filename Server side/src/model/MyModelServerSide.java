@@ -35,7 +35,7 @@ import algorithms.search.Solution;
 import presenter.PropertiesServerSide;
 
 public class MyModelServerSide extends Observable implements ModelServerSide{
-	
+	int numberOfClients = 0; 
 	Object data;
 	int modelCompletedCommand=0;
 	ExecutorService TP ;
@@ -187,7 +187,8 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 
 	@Override
 	public void initServer() {
-		data = "Starting server.";
+		data = "On";
+
 		modelCompletedCommand = 1;
 		setChanged();
 		TP.execute(new Runnable() {
@@ -204,5 +205,39 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		
 		notifyObservers();
 		
+	}
+
+
+	@Override
+	public void stopServer() {
+		server.stopServer();
+		data = "Off";
+		modelCompletedCommand = 2;
+		setChanged();
+		notifyObservers();		
+	}
+
+
+	@Override
+	public void setNumberOfClients(int num) {
+		this.numberOfClients = num; 
+		data = num + " Clients.";
+		modelCompletedCommand = 3;
+		setChanged();
+		//setChanged();
+		TP.execute(new Runnable() {
+			
+			@Override
+			public void run() {
+				notifyObservers();
+				
+			}
+		});
+	}
+
+
+	@Override
+	public int getNumberOfClients() {
+		return this.numberOfClients;
 	}
 }

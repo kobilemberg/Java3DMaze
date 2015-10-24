@@ -28,17 +28,19 @@ public class ClientHandler implements Runnable {
 		{
 			@SuppressWarnings("unchecked")
 			ArrayList<Object> problem = (ArrayList<Object>) input.readObject();
-			
-			for(Object o:problem){
+			model.setNumberOfClients(model.getNumberOfClients()+1);
+			/*for(Object o:problem){
 				System.out.println(o.toString());
-			}
+			}*/
 			String mazeName 	= (String) problem.get(0); 
 			String algorithm 	= (String) problem.get(1);
 			Maze3d maze = (Maze3d) problem.get(2);
 			Solution<Position> result = model.solveMaze(mazeName, algorithm, maze);
 			output.writeObject(result);
 			output.flush();
-			System.out.println("Send to Client Solution: " + result.toString());
+			//System.out.println("Send to Client Solution: " + result.toString());
+			//model.setNumberOfClients(model.getNumberOfClients()-1);
+			
 		} 
 		catch (Exception e) {
 			e.printStackTrace();

@@ -8,12 +8,11 @@ import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Observable;
-
 import model.MyModelServerSide;
 import presenter.PresenterServerSide;
 import presenter.PropertiesServerSide;
-import view.MazeBasicWindow;
 import view.MyViewServerSide;
+import view.ServerWindow;
 import view.ViewServerSide;
 
 
@@ -33,14 +32,16 @@ public class StartServer {
 		PropertiesServerSide properties=(PropertiesServerSide)decoder.readObject();
 		decoder.close();
 		
-		MyViewServerSide view = new MyViewServerSide(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
+		//MyViewServerSide view = new MyViewServerSide(new BufferedReader(new InputStreamReader(System.in)),new PrintWriter(System.out));
 		MyModelServerSide model = new MyModelServerSide();
+		ServerWindow view = new ServerWindow("Solution Server", 188, 202); 
+
 		PresenterServerSide presenter = new PresenterServerSide(view, model);
 		view.addObserver(presenter);
 		model.addObserver(presenter);
-		view.start();
 		
 		
+		view.run();
 
 	}
 

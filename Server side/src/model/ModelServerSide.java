@@ -28,4 +28,10 @@ public interface ModelServerSide {
 	public int getModelCompletedCommand();
 	public void setModelCommandCommand(int commandNum);
 	public void initServer();
+	public void stopServer();
+	public void setNumberOfClients(int num);
+	public int getNumberOfClients();
+
+	
+
 }

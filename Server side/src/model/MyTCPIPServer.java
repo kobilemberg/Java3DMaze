@@ -24,6 +24,7 @@ public class MyTCPIPServer {
 	}
 
 	public void startServerNew(int maxClients){
+		Running = true;
 		executer = Executors.newFixedThreadPool(maxClients);
 				try {
 						server=new ServerSocket(port);
@@ -52,7 +53,7 @@ public class MyTCPIPServer {
 					
 						catch (Exception e) {
 							//e.printStackTrace();
-							System.out.println("ERROR: Server forciblly closed");
+							System.out.println("Server closed.");
 						}finally {
 							((ExecutorService)executer).shutdown();
 						}	

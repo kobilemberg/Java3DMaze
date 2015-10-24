@@ -15,8 +15,7 @@ public class writePropetiesServerSide {
 	//	System.out.println(p.toString());
 		try {
 			XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("External files/properties.xml")));
-			String deafultAlgorithm = "MyMaze3dGenerator";
-			String defaultSolver ="A*";
+			
 			
 			encoder.writeObject(new PropertiesServerSide(20, 20, "A*", 12345));
 			//encoder.flush();

@@ -47,8 +47,6 @@ public interface ViewServerSide {
 	public void setUserCommand(int commandID);
 	
 	public void notifyObservers();
-	
-	//public void notifyObservers(Object o);
 
 	public void displayData(Object data);
 	
