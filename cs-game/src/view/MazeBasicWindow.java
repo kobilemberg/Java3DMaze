@@ -147,9 +147,10 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		
         playTab.setControl(playForm);
     
-    	Button generateNewMazeButton = createButton(playForm, "  Start    ", "Resources/TabFolder/Generate.png");
-    	Button solveButton = createButton(playForm, "  Solve    ", "Resources/TabFolder/Solve.png");
-    	Button hintButton = createButton(playForm, "  Hint     ", "Resources/TabFolder/Hint.png");
+    	Button generateNewMazeButton = createButton(playForm, "  Generate    ", "Resources/TabFolder/Generate.png");
+    	Button quickStartButton = createButton(playForm, "  Quick Start", "Resources/TabFolder/quickStart.png");
+    	Button hintButton = createButton(playForm, "  Get Help     ", "Resources/TabFolder/Hint.png");
+    	Button solveButton = createButton(playForm, "  Solve Maze   ", "Resources/TabFolder/Solve.png");
         	
 	    /* Labels */
 		metaDataLabel = createLabel(playForm, SWT.FILL, "", 120, 45);
@@ -306,6 +307,26 @@ public class MazeBasicWindow extends BasicWindow implements View{
 			@Override
 			public void widgetDefaultSelected(SelectionEvent arg0) {}
 		});
+		
+		/* What happens when a user clicks "[Quick Start]". */ 
+		quickStartButton.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent arg0) {
+				mazeObjectName = "QuickStartMaze"; 
+				String[] params = {"QuickStartMaze","default","2","15","14"};
+				started = true; 
+				game = "mazeGame";
+				viewCommandMap.get("generate 3d maze").doCommand(params);
+				shell.layout();
+				mazeDisplayerCanvas.forceFocus();
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent arg0) {}
+		});
+		
 		
 		/* What happens when a user clicks "[Solve]". */
 		solveButton.addSelectionListener(new SelectionListener() {
