@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<java version="1.8.0_51" class="java.beans.XMLDecoder">
+ <object class="presenter.PropertiesServerSide">
+  <void property="defaultSolver">
+   <string>A*</string>
+  </void>
+  <void property="numOfClients">
+   <int>20</int>
+  </void>
+  <void property="numOfThreads">
+   <int>20</int>
+  </void>
+  <void property="port">
+   <int>12345</int>
+  </void>
+ </object>
+</java>

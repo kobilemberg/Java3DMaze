@@ -23,10 +23,10 @@ public class MyTCPIPServer {
 		this.port = port;
 	}
 
-	public void startServer(int maxClients){
+	/*public void startServerNew(int maxClients){
 		executer = Executors.newFixedThreadPool(maxClients);
 		try {
-			/* Start the server. */
+			 Start the server. 
 			server=new ServerSocket(this.port);
 			
 			Thread t = new Thread(new Runnable() {
@@ -61,7 +61,7 @@ public class MyTCPIPServer {
 					
 				}
 			});
-			/* Get Clients */ 
+			 Get Clients  
 			t.start();
 
 			server.close();
@@ -70,7 +70,7 @@ public class MyTCPIPServer {
 			System.out.println("ERROR: Problem establishing connection or Running Server.");
 		}finally {
 			((ExecutorService)executer).shutdown();
-		}		
+		}		*/
 	}
 	public void stopServer(){
 		Running = false;
