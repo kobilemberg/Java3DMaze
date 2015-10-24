@@ -640,7 +640,7 @@ public class MyModel extends Observable implements Model{
 				throw new NullPointerException("Cannot read solution");
 			System.out.println(result.toString());
 			output.close();
-			//input.close();
+			input.close();
 			myServer.close();	
 			return result;
 		}catch(Exception e)
