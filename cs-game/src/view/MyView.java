@@ -275,17 +275,12 @@ public class MyView extends Observable implements View {
 	/**
 	 * @return PrintWriter as instance represent the output source
 	 */
-	public PrintWriter getOut() {
-		return out;
-	}
+	public PrintWriter getOut() {return out;}
+	
 	/**
 	 * @param PrintWriter as instance represent the output source to set for the program.
 	 */
-	public void setOut(PrintWriter out) {
-		this.out = out;
-	}
-	
-
+	public void setOut(PrintWriter out) {this.out = out;}
 	
 	
 }

@@ -1,4 +1,13 @@
 package view;
+/**
+ * @author Kobi Lemberg, Alon Abadi
+ * @version 1.0
+ * <h1>Maze3dDisplayer</h1>
+ * This class represent an instance off 3d MazeDisplayer canvas   
+ * The class extends MazeDisplayer
+ */
+
+
 
 import java.util.Random;
 
@@ -37,6 +46,9 @@ public class Maze3dDisplayer extends MazeDisplayer {
         e.gc.fillPolygon(r);
 		
 	}
+	/**
+	 * {@inheritDoc}
+	 */
 	public Maze3dDisplayer(Composite parent, int style) {
 		super(parent, style);
 		
@@ -133,7 +145,10 @@ public class Maze3dDisplayer extends MazeDisplayer {
 			}
 		});
 	}
-	
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void moveCharacter(int x,int y){
 		if(y>=0 && y<mazeData[0].length && x>=0 && x<mazeData.length && mazeData[x][y]==0){
 			System.out.println("Moving from: ("+characterX+","+characterY+") to: ("+x+","+y+")");
@@ -151,8 +166,9 @@ public class Maze3dDisplayer extends MazeDisplayer {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see view.MazeDisplayer#moveUp()
+	
+	/**
+	 * {@inheritDoc}
 	 */
 	@Override
 	public void moveForward() {
@@ -165,6 +181,9 @@ public class Maze3dDisplayer extends MazeDisplayer {
 	 * @see view.MazeDisplayer#moveDown()
 	 */
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void moveBackward() {
 		int x=characterX;
 		int y=characterY;
@@ -175,16 +194,20 @@ public class Maze3dDisplayer extends MazeDisplayer {
 	 * @see view.MazeDisplayer#moveLeft()
 	 */
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void moveLeft() {
 		int x=characterX;
 		int y=characterY;
 		y=y-1;
 		moveCharacter(x, y);
 	}
-	/* (non-Javadoc)
-	 * @see view.MazeDisplayer#moveRight()
-	 */
+
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void moveRight() {
 		int x=characterX;
 		int y=characterY;
@@ -192,12 +215,19 @@ public class Maze3dDisplayer extends MazeDisplayer {
 		moveCharacter(x, y);
 	}
 	
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void moveDown() {
 		int x=characterX;
 		int y=characterY;
 		moveCharacter(x, y);
 	}
-	
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void moveUp() {
 		int x=characterX;
 		int y=characterY;
@@ -205,84 +235,79 @@ public class Maze3dDisplayer extends MazeDisplayer {
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setCharacterPosition(int row, int col) {
 		characterX=row;
 		characterY=col;
 		moveCharacter(row,col);
 	}
-	/**
-	 * @return the characterX
-	 */
-	public int getCharacterX() {
-		return characterX;
-	}
-	/**
-	 * @param characterX the characterX to set
-	 */
-	public void setCharacterX(int characterX) {
-		this.characterX = characterX;
-	}
-	/**
-	 * @return the characterY
-	 */
-	public int getCharacterY() {
-		return characterY;
-	}
-	/**
-	 * @param characterY the characterY to set
-	 */
-	public void setCharacterY(int characterY) {
-		this.characterY = characterY;
-	}
-	/**
-	 * @return the exitX
-	 */
-	public int getExitX() {
-		return exitX;
-	}
-	/**
-	 * @param exitX the exitX to set
-	 */
-	public void setExitX(int exitX) {
-		this.exitX = exitX;
-	}
-	/**
-	 * @return the exitY
-	 */
-	public int getExitY() {
-		return exitY;
-	}
-	/**
-	 * @param exitY the exitY to set
-	 */
-	public void setExitY(int exitY) {
-		this.exitY = exitY;
-	}
 	@Override
-	public void setExitFloor(int xPosition) {
-		this.exitFloor = xPosition;		
-	}
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getCharacterX() {return characterX;}
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setCharacterX(int characterX) {this.characterX = characterX;}
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getCharacterY() {return characterY;}
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setCharacterY(int characterY) {this.characterY = characterY;}
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getExitX() {return exitX;}
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setExitX(int exitX) {this.exitX = exitX;}
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public int getExitY() {return exitY;}
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setExitY(int exitY) {this.exitY = exitY;}
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
+	public void setExitFloor(int xPosition) {this.exitFloor = xPosition;}
 
-	
-	public int getCurrentFloor() {
-		return currentFloor;
-	}
-	public void setCurrentFloor(int currentFloor) {
-		this.currentFloor = currentFloor;
-	}
 	/**
-	 * @return the mazeBasicWindow
+	 * This method will return the current maze floor location
+	 * @return int represent the current character floor position on 3dMazes
 	 */
-	public MazeBasicWindow getMazeBasicWindow() {
-		return mazeBasicWindow;
-	}
+	public int getCurrentFloor() {return currentFloor;}
+	
 	/**
-	 * @param mazeBasicWindow the mazeBasicWindow to set
+	 * This method will set the current maze floor location
+	 * @param int currentFloor represent the current character floor position on 3dMazes
 	 */
-	public void setMazeBasicWindow(MazeBasicWindow mazeBasicWindow) {
-		this.mazeBasicWindow = mazeBasicWindow;
-	}
-	
-	
-	
+	public void setCurrentFloor(int currentFloor) {this.currentFloor = currentFloor;}
+	/**
+	 * This method will return the container widget of this canvas
+	 * @return MazeBasicWindow represent the maze Basic Window represent the container widget
+	 */
+	public MazeBasicWindow getMazeBasicWindow() {return mazeBasicWindow;}
+	/**
+	 * This method will set the container widget of this canvas
+	 * @param MazeBasicWindow represent the maze Basic Window represent the container widget
+	 */
+	public void setMazeBasicWindow(MazeBasicWindow mazeBasicWindow) {this.mazeBasicWindow = mazeBasicWindow;}
 }

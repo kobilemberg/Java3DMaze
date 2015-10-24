@@ -589,8 +589,6 @@ public class MyModel extends Observable implements Model{
         return properties;
     }
 	
-
-	
 	@SuppressWarnings("resource")
 	/**
 	 * This method remotely solves maze with name mazeName, by connecting to solution server 
@@ -633,8 +631,7 @@ public class MyModel extends Observable implements Model{
 			ArrayList<Object> problem = new ArrayList<>(); 
 			problem.add(mazeName);
 			problem.add(finalSolver);
-			problem.add(maze);
-			
+			problem.add(maze);		
 			output.writeObject(problem);
 			output.flush();
 			@SuppressWarnings("unchecked")
@@ -645,16 +642,11 @@ public class MyModel extends Observable implements Model{
 			output.close();
 			//input.close();
 			myServer.close();	
-			
 			return result;
 		}catch(Exception e)
 		{
 			errorNoticeToController("Server connection problem.");;
 		}
-		
-		
-		
-		
 		return null;
 	}
 	@SuppressWarnings("resource")
@@ -719,5 +711,4 @@ public class MyModel extends Observable implements Model{
 		this.properties.setServerAddress(server);
 		errorNoticeToController("Configuration has changed to: "+properties.toString());
 	}
-	
 }

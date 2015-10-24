@@ -1,5 +1,14 @@
 package view;
 
+
+/**
+ * @author Kobi Lemberg, Alon Abadi
+ * @version 1.0
+ * <h1> MazeBasicWindow </h1>
+ * This class represent an instance of MazeBasicWindow
+ * The class implements Observable and View interfaces in order to participate at the game MVP infrastructure
+ * The class implements Runnable in order to run in a diffrent thread
+ */
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;

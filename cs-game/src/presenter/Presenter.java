@@ -216,47 +216,39 @@ public class Presenter implements Observer {
 	/**
 	 * @param viewCommandMap the viewCommandMap to set
 	 */
-	public void setViewCommandMap(HashMap<String, Command> viewCommandMap) {
-		this.viewCommandMap = viewCommandMap;
-	}
+	public void setViewCommandMap(HashMap<String, Command> viewCommandMap) {this.viewCommandMap = viewCommandMap;}
 
-		/**
-		 * This method will set view layer
-		 * @param view View represent the view layer
-		 */
-		public void setView(View view){this.view = view;}
-		/**
-		* This method will set model layer
-		* @param model Model represent the model layer
-		*/
-		public void setModel(Model model){this.model = model;}
-		/**
-		* This method will return the view layer
-		* @return View instance represent the view layer
-		*/
-		public View getView(){return view;}
-		/**
-		* This method will return the model layer
-		* @return Model instance represent the Model layer
-		*/
-		public Model getModel(){return model;}
-		
-		/**
-		 * This method pass a message to view
-		 * @param s represent the message to pass
-		 */
-		public void errorNoticeToViewr(String s) {view.errorNoticeToUser(s);}
-	
-		
-		
-		
-	
+	/**
+	 * This method will set view layer
+	 * @param view View represent the view layer
+	 */
+	public void setView(View view){this.view = view;}
+	/**
+	 * This method will set model layer
+	 * @param model Model represent the model layer
+	 */
+	public void setModel(Model model){this.model = model;}
+	/**
+	 * This method will return the view layer
+	 * @return View instance represent the view layer
+	 */
+	public View getView(){return view;}
+	/**
+	 * This method will return the model layer
+	 * @return Model instance represent the Model layer
+	 */
+	public Model getModel(){return model;}
+	/**
+	 * This method pass a message to view
+	 * @param s represent the message to pass
+	 */
+	public void errorNoticeToViewr(String s) {view.errorNoticeToUser(s);}
 	@SuppressWarnings("unchecked")
 	@Override
 	/**
 	 * This method will update each layer about the changes on other layers
 	 */
-	 public void update(Observable o, Object args) {
+	public void update(Observable o, Object args) {
 		if(o==view)
 		{
 			String[] argArr = ((String[])args).clone();

@@ -62,15 +62,31 @@ public abstract class MazeDisplayer extends Canvas{
 	 * This method will move the character position to previous line on the int[][] of the maze
 	 */
 	public abstract  void moveBackward();
-
+	/**
+	 * This method will move the character position to previous columns on the int[][] of the maze
+	 */
 	public abstract  void moveLeft();
 
+	/**
+	 * This method will move the character position to next columns on the int[][] of the maze
+	 */
 	public  abstract void moveRight();
 	
+	/**
+	 * This method will move ths maze character one floor down
+	 */
 	public  abstract void moveDown();
 	
+	/**
+	 * This method will move ths maze character one floor up
+	 */
 	public  abstract void moveUp();
 	
+	/**
+	 * This method will draw the maze character on specific cell 
+	 * @param x represent the row position of the character
+	 * @param y represent the column position of the character
+	 */
 	public abstract void moveCharacter(int x,int y);
 	
 	/**
@@ -105,7 +121,10 @@ public abstract class MazeDisplayer extends Canvas{
 	 * @param exitY the exitY to set
 	 */
 	public abstract void setExitY(int exitY);
-
+	/**
+	 * This method will set the floor number for the maze goal position
+	 * @param xPosition represent the goal floor number
+	 */
 	public abstract void setExitFloor(int xPosition);
 
 }
