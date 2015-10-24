@@ -73,9 +73,8 @@ public class AstarTests{
 	
 	@Test
 	/**
-	 * The only optiions for maze with size {3,3,3} is 0-5 solution steps due to the 
+	 * The only options for maze with size {3,3,3} is 0-5 solution steps due to the 
 	 creation way.
-	 
 	 */
 	public void testNegetiveAstarMazeSolutionAmountOfSteps() {
 		aStar.search(searchableMazeToTest);
@@ -84,27 +83,46 @@ public class AstarTests{
 	}
 	
 	@Test
-	public void testMazeAstarEvaluatedNodesAmountOfSteps() {
+	/**
+	 * The only options for maze with size {3,3,3} is 0-5 nodes to evaluated due to the 
+	 creation way.
+	 */
+	public void testMazeAstarEvaluatedNodesAmount() {
 
 		Assert.assertNotEquals(aStar.getNumberOfNodesEvaluated(),-1);
 		Assert.assertNotEquals(aStar.getNumberOfNodesEvaluated(),6);
 	}
 		
 	@Test
+	/**
+	 * Test that solution of a maze that start position equals to goal position with no walls only
+	 * with one cell is not returning a null value
+	 */
 	public void testNoneMazeSolutionIsNotNull() {
 		Assert.assertNotEquals(aStar.search(noneSearchableMaze).toString(),null );
 	}
 	
 	@Test
+	/**
+	 *Test that solution of a maze that start position equals to goal position with no walls only
+	 * with one cell is not returning a null value, but does not return any steps
+	 */
 	public void testNoneMazeSolutionIsEmpty() {
 		Assert.assertEquals(aStar.search(noneSearchableMaze).toString(),"Solution:{}");
 	}
 	
 	@Test
+	/**
+	 * Test that solution of a maze that start position equals to goal position only with walls only
+	 * with one cell is not returning a null value
+	 */
 	public void oneCellWallMazeSolutionIsNotNull() {
 		Assert.assertNotEquals(aStar.search(oneCellWallSearchableMaze).toString(), null);
 	}
-	
+	/**
+	 *Test that solution of a maze that start position equals to goal position with no walls only
+	 * with one cell is not returning a null value, but does not return any steps
+	 */
 	@Test
 	public void oneCellWallMazeSolutionIsEmpty() {
 		System.out.println(aStar.search(oneCellWallSearchableMaze));
@@ -112,11 +130,17 @@ public class AstarTests{
 	}
 	
 	@Test
+	/**
+	 * Test if Astar return null solution in case of start posiiton equals to goal position
+	 */
 	public void startEqualsToGoalMazeSolutionIsNotNull() {
 		Assert.assertNotEquals(aStar.search(startEqualsToGoalSearchableMaze).toString(), null);
 	}
 	
 	@Test
+	/**
+	 * Test if there is no steps when start position equals to the goal
+	 */
 	public void startEqualsToGoalMazeSolutionIsEmpty() {
 		Assert.assertEquals(aStar.search(startEqualsToGoalSearchableMaze).toString(), "Solution:{}");
 	}
