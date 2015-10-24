@@ -38,6 +38,9 @@ public class ClientHandler implements Runnable {
 			Solution<Position> result = model.solveMaze(mazeName, algorithm, maze);
 			output.writeObject(result);
 			output.flush();
+			this.input.close();
+			this.output.close();
+			this.client.close();
 			//System.out.println("Send to Client Solution: " + result.toString());
 			//model.setNumberOfClients(model.getNumberOfClients()-1);
 			

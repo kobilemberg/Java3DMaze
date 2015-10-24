@@ -148,6 +148,7 @@ public class PresenterServerSide implements Observer {
 				{
 					e.printStackTrace();
 				}
+				break;
 			}	
 			case -1: 
 				model.exit();
@@ -220,14 +221,13 @@ public class PresenterServerSide implements Observer {
 					view.printSolutionToUser((String)(dataToPassToView[0]), (Solution<Position>)(dataToPassToView[1]));
 					break;
 					
-				case -1:
+				case -2:
 					//Error
 					try {
 						view.errorNoticeToUser((String) model.getData());
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
-					
 					break;
 					
 				default:

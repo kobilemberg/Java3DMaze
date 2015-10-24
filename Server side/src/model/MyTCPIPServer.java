@@ -60,15 +60,16 @@ public class MyTCPIPServer {
 	}
 	public void stopServer(){
 		Running = false;
-		((ExecutorService)executer).shutdown();
-		if(!server.isClosed())
-			try {
-				server.close();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		
+		if (executer != null)
+				((ExecutorService)executer).shutdown();
+		if (server != null)
+			if(!server.isClosed())
+				try {
+					server.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 	}
 
 	public int getPort() {

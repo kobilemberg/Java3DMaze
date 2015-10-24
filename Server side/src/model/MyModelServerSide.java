@@ -147,7 +147,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	*/
 	public void errorNoticeToController(String s)
 	{
-		modelCompletedCommand=-1;
+		modelCompletedCommand=-2;
 		data = s;
 		this.setChanged();
 		notifyObservers();
@@ -246,7 +246,6 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	public void changeSettings(String portNumber, String maxClients) {
 		this.properties.setNumOfClients(Integer.parseInt(maxClients));
 		this.properties.setPort(Integer.parseInt(portNumber));
-		errorNoticeToController("Configuration has changed to: "+properties.toString());
 		data = portNumber;
 		modelCompletedCommand = 4;
 		setChanged();
