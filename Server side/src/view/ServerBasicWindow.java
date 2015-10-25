@@ -62,7 +62,6 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 		
 		serverAddress = createLabel(serverForm, SWT.NULL, address);
 		serverStatus = createLabel(serverForm, SWT.NULL , "Status: Off");
-		numOfClients = createLabel(serverForm, SWT.NULL , "0 Clients.");
 		startStopButton = createButton(serverForm, "Start Server", "Resources/Menu/power.png",160,30);
 		
 		TabItem propertiesTab = new TabItem(folder, SWT.NULL);
@@ -194,7 +193,6 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 				toggleServerStatus(true);
 			}
 			else if (data.toString().toLowerCase().endsWith(" Clients.")){
-				numOfClients.setText(data.toString());
 			}
 			else
 			{
