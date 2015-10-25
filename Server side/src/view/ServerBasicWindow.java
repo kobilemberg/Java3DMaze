@@ -26,7 +26,7 @@ import algorithms.mazeGenerators.Position;
 import algorithms.search.Solution;
 import presenter.Command;
 
-public class ServerWindow extends BasicWindow implements ViewServerSide{
+public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 	int userCommand = 0; 
 	boolean serverIsOn = false; 
 	Label serverStatus;
@@ -36,7 +36,7 @@ public class ServerWindow extends BasicWindow implements ViewServerSide{
 	Text portNumberText;
 	Combo maximumClients;
 	               
-	public ServerWindow(String title, int width, int height) {
+	public ServerBasicWindow(String title, int width, int height) {
 		super(title, width, height);
 	}
 
@@ -156,6 +156,8 @@ public class ServerWindow extends BasicWindow implements ViewServerSide{
 		setUserCommand(-1);
 		String[] params = {};
 		notifyObservers(params);
+		display.dispose();
+		System.exit(0);
 	}
 	
 	@Override
@@ -183,27 +185,33 @@ public class ServerWindow extends BasicWindow implements ViewServerSide{
 
 	@Override
 	public void displayData(Object data) {
-		if (data.equals("Off"))
-		{
-			toggleServerStatus(false);
+		
+		try {
+			if (data.equals("Off"))
+			{
+				toggleServerStatus(false);
+			}
+			else if (data.equals("On")){
+				toggleServerStatus(true);
+			}
+			else if (data.toString().toLowerCase().endsWith(" Clients.")){
+				numOfClients.setText(data.toString());
+			}
+			else
+			{
+				String address;
+				try {
+					address = InetAddress.getLocalHost().getHostAddress().toString();
+					address += ":"+data;
+				} catch (UnknownHostException e) {
+					address = "Could not resolve IP:"+data;
+				} 
+				serverAddress.setText(address);
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		else if (data.equals("On")){
-			toggleServerStatus(true);
-		}
-		else if (data.toString().toLowerCase().endsWith(" Clients.")){
-			numOfClients.setText(data.toString());
-		}
-		else
-		{
-			String address;
-			try {
-				address = InetAddress.getLocalHost().getHostAddress().toString();
-				address += ":"+data;
-			} catch (UnknownHostException e) {
-				address = "Could not resolve IP:"+data;
-			} 
-			serverAddress.setText(address);
-		}
+		
 	}
 
 	@Override

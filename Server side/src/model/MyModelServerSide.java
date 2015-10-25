@@ -15,6 +15,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.nio.channels.ShutdownChannelGroupException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Observable;
@@ -119,7 +120,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 			} catch (ExecutionException e) {
 				e.printStackTrace();
 			}
-			return null;
+			throw new NullPointerException();
 		}
 	}
 	
@@ -129,7 +130,8 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 			//modelCompletedCommand =4;
 			server.stopServer();
 			TP.shutdown();
-			List<Runnable> threads = TP.shutdownNow();
+			stopServer();
+			TP.shutdownNow();
 			//TP.awaitTermination(5, TimeUnit.SECONDS);
 			ObjectOutputStream mapSave = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(new File("External files/solutionMap.txt"))));
 			mapSave.writeObject(this.solutionMap);
@@ -188,17 +190,22 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	@Override
 	public void initServer() {
 		data = "On";
-
+		TP = Executors.newFixedThreadPool(properties.getNumOfThreads());
 		modelCompletedCommand = 1;
 		setChanged();
-		TP.execute(new Runnable() {
+		
+		TP.execute(new Thread(new Runnable() {
 			
 			@Override
 			public void run() {
 				server.startServerNew(properties.getNumOfClients());
 				
+				
 			}
-		});
+		}, "Server Socket"));
+		
+		
+		//TP.execute((),);
 		
 		
 		
@@ -211,6 +218,10 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	@Override
 	public void stopServer() {
 		server.stopServer();
+		List<Runnable> threads=TP.shutdownNow();
+		System.out.println("Model TP"+TP.toString());
+		System.out.println("Model thread pool shutted down: "+TP.isShutdown());
+		System.out.println("Model thread pool terminated: "+TP.isTerminated());
 		data = "Off";
 		modelCompletedCommand = 2;
 		setChanged();
@@ -224,15 +235,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		data = num + " Clients.";
 		modelCompletedCommand = 3;
 		setChanged();
-		//setChanged();
-		TP.execute(new Runnable() {
-			
-			@Override
-			public void run() {
-				notifyObservers();
-				
-			}
-		});
+		notifyObservers();
 	}
 
 

@@ -68,6 +68,12 @@ public class MyTCPIPServer {
 			if(!server.isClosed())
 				
 					server.close();
+		
+		
+		System.out.println("Server thread pool shutted down: "+((ExecutorService)executer).isShutdown());
+		System.out.println("Server thread pool Terminated: "+((ExecutorService)executer).isTerminated());
+		System.out.println("Main Socket shutted down: "+ server.isClosed());
+		System.out.println("MyTcpIpServer TP"+((ExecutorService)executer).toString());
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					System.out.println("Server closed.23");
