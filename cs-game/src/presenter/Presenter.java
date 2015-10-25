@@ -56,7 +56,6 @@ public class Presenter implements Observer {
 						//model.generateMazeWithName(args[0],args[1], args[2], args[3],args[4]);
 					} catch (Exception e) {
 						view.errorNoticeToUser("Wrong parameters, Usage:generate 3d maze <name> <generator> <other params>");
-						e.printStackTrace();
 					}
 					 
 				}
@@ -72,7 +71,6 @@ public class Presenter implements Observer {
 						view.setUserCommand(3);
 						((Observable)view).notifyObservers(args);
 					} catch (NullPointerException e) {
-						e.printStackTrace();
 						view.errorNoticeToUser("Exception: there is no maze named "+args[0]);}
 				}
 			});
@@ -86,7 +84,6 @@ public class Presenter implements Observer {
 						view.setUserCommand(4);
 						((Observable)view).notifyObservers(args);
 					} catch (Exception e) {
-						e.printStackTrace();
 						view.errorNoticeToUser("Exception: problem with args at display cross section");}
 				}
 			});
@@ -128,7 +125,6 @@ public class Presenter implements Observer {
 						view.setUserCommand(7);
 						((Observable)view).notifyObservers(args);
 					}catch (Exception e) {
-						e.printStackTrace();
 						view.errorNoticeToUser("Exception: problem with args at maze size");
 					}
 				}
@@ -143,7 +139,6 @@ public class Presenter implements Observer {
 						view.setUserCommand(8);
 						((Observable)view).notifyObservers(args);
 					} catch (Exception e) {
-						e.printStackTrace();
 						view.errorNoticeToUser("Exception: problem with args at file size");
 					}	
 				}
@@ -157,7 +152,6 @@ public class Presenter implements Observer {
 							view.setUserCommand(9);
 							((Observable)view).notifyObservers(args);
 						} catch (Exception e) {
-							e.printStackTrace();
 							view.errorNoticeToUser("Exception: problem with args at solve");
 						}	
 				}
@@ -172,7 +166,6 @@ public class Presenter implements Observer {
 							view.setUserCommand(10);
 							((Observable)view).notifyObservers(args);
 						} catch (NullPointerException e) {
-							e.printStackTrace();
 							view.errorNoticeToUser("Exception: unexisted solution");
 						}
 				}
@@ -264,7 +257,6 @@ public class Presenter implements Observer {
 						model.generateMazeWithName(argArr[0], argArr[1],  argArr[2],  argArr[3],  argArr[4]);
 					}
 					catch (Exception e) {
-					e.printStackTrace();
 					view.errorNoticeToUser("Exception: Wrong parameters, Usage:generate 3d maze <name> <algorythm> <other params>");
 				}
 				break;
@@ -275,7 +267,6 @@ public class Presenter implements Observer {
 
 			case 4:
 				try {model.getCrossSectionByAxe(argArr[0], argArr[1], argArr[3]);} catch (Exception e) {
-					e.printStackTrace();
 					view.errorNoticeToUser("Exception: problem with args at getCrossSectionByAxe");}
 				break;
 
@@ -290,7 +281,6 @@ public class Presenter implements Observer {
 			case 7:
 				try {model.getSizeOfMazeInRam(argArr[0]);} 
 				catch (Exception e) {
-					e.printStackTrace();
 					view.errorNoticeToUser("Exception: problem with args at getSizeOfMazeInRam");
 				}
 				break;
@@ -298,18 +288,17 @@ public class Presenter implements Observer {
 			case 8:
 				try {model.getSizeOfMazeInFile(argArr[0]);} 
 				catch (Exception e) {
-					e.printStackTrace();
 					view.errorNoticeToUser("Exception: problem with args at getSizeOfMazeInFile");
 				}
 				
 				break;
 			case 9:
-				try {model.solveMaze(argArr[0], argArr[1]);} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args at solveMaze"); e.printStackTrace();}
+				try {model.solveMaze(argArr[0], argArr[1]);} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args at solveMaze");}
 				break;
 				
 			case 10:
 				try {
-					model.getSolutionOfMaze(argArr[0]);} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args at getSolutionOfMaze"); e.printStackTrace();}
+					model.getSolutionOfMaze(argArr[0]);} catch (Exception e) {view.errorNoticeToUser("Exception: problem with args at getSolutionOfMaze");}
 				break;
 				
 			case 11:
@@ -329,15 +318,12 @@ public class Presenter implements Observer {
 							if(args!=null)
 							{
 								String[] params = (String[])args;
-								model.setMazeWithCurrentLocationFromGui(params[0],params[1],params[2],params[3]); //NameOfMaze,CurrentX - floor, CurrentY - x, CurrentZ - y
-								
+								model.setMazeWithCurrentLocationFromGui(params[0],params[1],params[2],params[3]); //NameOfMaze,CurrentX - floor, CurrentY - x, CurrentZ - y	
 							}
-						
 						} 
 						catch (Exception e) 
 						{
-							e.printStackTrace();
-							
+							errorNoticeToViewr("Something went wrong!");
 						}
 						break;
 					}
@@ -355,14 +341,10 @@ public class Presenter implements Observer {
 				} 
 				catch (Exception e) 
 				{
-					e.printStackTrace();
-					
+					errorNoticeToViewr("Something went wrong!");
 				}
 				break;
 			}	
-				
-				
-				
 			default:
 				break;
 			}
