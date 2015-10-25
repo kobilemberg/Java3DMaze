@@ -120,7 +120,6 @@ String cliMenu;
 				{
 					out.println("Please enter the next command: ");
 					out.flush();
-					//System.out.println(cliMenu);
 				}
 				
 				inputLineString = scanner.nextLine();
@@ -137,7 +136,6 @@ String cliMenu;
 		out.println("Exiting.");
 		out.flush();
 		try {in.close();} catch (IOException e) {e.printStackTrace();}out.close();
-	//	System.exit(1);
 	}
 	@Override 
 	/**

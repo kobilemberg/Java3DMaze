@@ -1,6 +1,5 @@
 package view;
 
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.HashMap;
@@ -234,6 +233,7 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
     	return button; 		
 	}
 	
+	@SuppressWarnings("unused")
 	private void changeSettings(String server,String port,String generator,String solver)
 	{
 		String[] args = {server,port,generator,solver};
@@ -259,6 +259,7 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 	    return text; 
 	}
 	
+	@SuppressWarnings("unused")
 	private Text createText(Composite parent, int style, String placeholder){
 		return createText(parent, style, placeholder, 120, 15); 
 	}
@@ -273,6 +274,7 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 		return combo;
 	}
 	
+	@SuppressWarnings("unused")
 	private Combo createCombo(Composite parent, int style, String[] options, String placeholder){
 		return createCombo(parent, style, options, placeholder, 90, 20);
 	}

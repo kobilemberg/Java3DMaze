@@ -21,11 +21,9 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.graphics.FontData;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -254,6 +252,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 					String[] fileTypes = {"*.Game"}; 
 					fileDialog.setFilterExtensions(fileTypes);
 					fileDialog.setFileName("Game.Game");
+					@SuppressWarnings("unused")
 					String selectedFile = fileDialog.open();
 					String selectedName = fileDialog.getFileName();
 					String[] args = {mazeObjectName,fileDialog.getFilterPath()+"\\"+selectedName};
@@ -280,6 +279,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 					String[] fileTypes = {"*.Game"}; 
 					fileLoadDialog.setFilterExtensions(fileTypes);
 					fileLoadDialog.setFileName("Game.Game");
+					@SuppressWarnings("unused")
 					String selectedFileToLoad = fileLoadDialog.open();
 					String selectedName = fileLoadDialog.getFileName();
 					String[] args = {fileLoadDialog.getFilterPath()+"\\"+selectedName,mazeObjectName};
@@ -610,9 +610,6 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	@Override
 	public void tellTheUserMazeIsReady(String name) {
 		String[] mazeName={name,};
-		out.println("View: Maze "+name+" is Ready, you can take it!");
-		out.flush();
-		
 		this.viewCommandMap.get("display").doCommand(mazeName);
 		//this.notifyObservers();
 	}
@@ -647,12 +644,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		{
 			if(currentFloor>=0&&currentFloor<(this.mazeObject.getMaze().length-1))
 			{
-				System.out.println("Prepering to go up from: "+currentFloor+" to: "+(currentFloor+1));
 				int[][] crossedArrToCheck = this.mazeObject.getCrossSectionByX(currentFloor+1);
-				System.out.println("Next floor:");
-				printArr(crossedArrToCheck);
-				System.out.println("Charecter position: "+mazeDisplayerCanvas.getCharacterX()+","+mazeDisplayerCanvas.getCharacterY());
-				System.out.println("The cell is: "+crossedArrToCheck[mazeDisplayerCanvas.getCharacterX()][mazeDisplayerCanvas.getCharacterY()]);
 				//this.crossedArr = this.mazeData.getCrossSectionByX(currentFloor+1);
 				if(crossedArrToCheck[mazeDisplayerCanvas.getCharacterX()][mazeDisplayerCanvas.getCharacterY()]==0)
 				{
@@ -664,14 +656,12 @@ public class MazeBasicWindow extends BasicWindow implements View{
 				}
 				else
 				{
-					System.out.println("The cell is 1!!!");
 					return false;
 				}
 				
 			}
 			else
 			{
-				System.out.println("Illegal UP");
 				return false;
 			}
 		}
@@ -680,12 +670,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		{
 			if(currentFloor>=1&&currentFloor<=(this.mazeObject.getMaze().length-1))
 			{
-				System.out.println("Prepering to go down from: "+currentFloor+" to: "+(currentFloor-1));
 				int[][] crossedArrToCheck = this.mazeObject.getCrossSectionByX(currentFloor-1);
-				System.out.println("Previous floor:");
-				printArr(crossedArrToCheck);
-				System.out.println("Charecter position: "+mazeDisplayerCanvas.getCharacterX()+","+mazeDisplayerCanvas.getCharacterY());
-				System.out.println("The cell is: "+crossedArrToCheck[mazeDisplayerCanvas.getCharacterX()][mazeDisplayerCanvas.getCharacterY()]);
 				if(crossedArrToCheck[mazeDisplayerCanvas.getCharacterX()][mazeDisplayerCanvas.getCharacterY()]==0)
 				{
 					this.currentFloorCrossedArr = crossedArrToCheck;
@@ -696,18 +681,15 @@ public class MazeBasicWindow extends BasicWindow implements View{
 				}
 				else
 				{
-					System.out.println("The cell is 1");
 					return false;
 				}	
 			}
 			else
 			{
-				System.out.println("Illegal DOWN");
 				return false;
 			}
 		}
 		
-		System.out.println("No change");
 		return false;
 	}
 	
@@ -734,14 +716,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		mazeDisplayerCanvas.forceFocus();
 		
 		//shell.pack();
-		
-		
-		
-		System.out.println("Crossed Arr!!!");
 		this.currentFloorCrossedArr = crossedArr;
-		out.println("Crossed maze: "+name+ " by axe: "+axe+" with index: "+index);
-		out.flush();
-		printArr(crossedArr);
 	}
 	
 	
@@ -782,57 +757,33 @@ public class MazeBasicWindow extends BasicWindow implements View{
 
 			final Font newFont = new Font(display, fontData);
 			possibleKeysLabel.setFont(newFont);
-
 			possibleKeysLabel.setText(possibleKeysText);
-
-
 		}
 
 	}
 	@Override
-	public void tellTheUserTheMazeIsSaved(String mazeName, String filename) {
-		out.println("Maze: "+mazeName+ " saved to:"+ filename);
-		out.flush();
-	}
+	public void tellTheUserTheMazeIsSaved(String mazeName, String filename) {}
 	
 	@Override
 	public void tellTheUserTheMazeIsLoaded(String fileName, String mazeName) {
-		out.println("Maze: "+mazeName+ " has been loaded from:"+ fileName);
-		out.flush();
 		String[] mazeNameArr={mazeName,};
 		this.viewCommandMap.get("display").doCommand(mazeNameArr);
 	}
 	
 	@Override
-	public void tellTheUsersizeOfMazeInRam(String mazeName,Double size) {
-		out.println("The size of maze: "+mazeName+" in ram memory is:" +size+"b");
-		out.flush();
-	}
+	public void tellTheUsersizeOfMazeInRam(String mazeName,Double size) {}
 	
 	@Override
-	public void tellTheUsersizeOfMazeInFile(String fileName, double sizeOfFile) {
-		out.println("The size of file: "+fileName+" is: "+sizeOfFile+"b");	
-		out.flush();
-	}
+	public void tellTheUsersizeOfMazeInFile(String fileName, double sizeOfFile) {}
 	
 	@Override
 	public void tellTheUserSolutionIsReady(String mazeName) {
-		out.println("Solution for "+mazeName+" is Ready, you can take it!");
-		out.flush();
-		
 		String[] mazeNameArr = {mazeObjectName,"A*"};
 		viewCommandMap.get("display solution").doCommand(mazeNameArr);
 	}
 	
 	@Override
 	public void printSolutionToUser(String mazeName,Solution<Position> solution) {
-		//out.println("Solution of: "+mazeName+"\n");
-		//out.flush();
-		for (State<Position> p: solution.getSolution()){
-			out.println(p.getCameFromAction() + " To: "+p.toString());
-			out.flush();
-			}
-			
 		Thread t = new Thread(new Runnable() {
 			
 			@Override
@@ -867,14 +818,12 @@ public class MazeBasicWindow extends BasicWindow implements View{
 				}
 			}
 		});
-		
 		t.start();
 	}
 	
 	@Override
 	public void setCommands(HashMap<String, Command> viewCommandMap) 
 	{
-		System.out.println("Setted Command map");
 		this.viewCommandMap = viewCommandMap;
 		//cli = new CLI(in, out,viewCommandMap);
 		//if(cliMenu!=null)
@@ -912,13 +861,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	}
 	
 	@Override
-	public void displayData(Object data) {
-		out.println(data);
-		out.flush();		
-	}
-	
-	
-	
+	public void displayData(Object data) {}
 
 	/**
 	 * @return the cli
@@ -987,7 +930,6 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		display.dispose(); // dispose OS components
 		setUserCommand(11);
 		String[] args= {"Exit"};
-		System.out.println("Exiting now");
 		notifyObservers(args);
 	}
 
@@ -1002,6 +944,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	
 	
 	
+	@SuppressWarnings("unused")
 	private Button createButton(Composite parent, String text, String image, int width, int height) {
 		Button button = createButton(parent, text, image);
     	button.setLayoutData(new RowData(width, height));
@@ -1022,6 +965,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		return label; 		
 	}
 	
+	@SuppressWarnings("unused")
 	private Label createLabel(Composite parent, int style, String placeholder){
 		return createLabel(parent, style, placeholder, 120, 30); 		
 	}
@@ -1033,6 +977,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	    return text; 
 	}
 	
+	@SuppressWarnings("unused")
 	private Text createText(Composite parent, int style, String placeholder){
 		return createText(parent, style, placeholder, 120, 15); 
 	}

@@ -15,7 +15,6 @@ import org.eclipse.swt.events.PaintEvent;
 import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 
 public class Maze3dDisplayer extends MazeDisplayer {
@@ -114,9 +113,6 @@ public class Maze3dDisplayer extends MazeDisplayer {
 				          {
 				        	  /* Draw character */ 
 				        	  if(i==characterX && j==characterY){
-					        	  System.out.println("CharacterX: "+j);
-					        	  System.out.println("Charactery: "+i);
-					        	  System.out.println("Floor: "+currentFloor);
 								   e.gc.setBackground(new Color(null,200,0,0));
 								   e.gc.fillOval((int)Math.round(dpoints[0]+8), (int)Math.round(dpoints[1]-cheight/2+10), (int)Math.round((w0+w1)/4), (int)Math.round(h/2));
 								   e.gc.setBackground(new Color(null,255,0,0));
@@ -151,7 +147,6 @@ public class Maze3dDisplayer extends MazeDisplayer {
 	 */
 	public void moveCharacter(int x,int y){
 		if(y>=0 && y<mazeData[0].length && x>=0 && x<mazeData.length && mazeData[x][y]==0){
-			System.out.println("Moving from: ("+characterX+","+characterY+") to: ("+x+","+y+")");
 			characterX=x;
 			characterY=y;
 			

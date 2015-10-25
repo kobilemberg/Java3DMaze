@@ -15,19 +15,15 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.nio.channels.ShutdownChannelGroupException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Observable;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
 import algorithms.demo.Demo;
 import algorithms.demo.SearchableMaze3d;
 import algorithms.mazeGenerators.Maze3d;
@@ -127,18 +123,13 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	@Override
 	public void exit() {
 		try {
-			//modelCompletedCommand =4;
 			server.stopServer();
-			TP.shutdown();
-			stopServer();
 			TP.shutdownNow();
-			//TP.awaitTermination(5, TimeUnit.SECONDS);
 			ObjectOutputStream mapSave = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(new File("External files/solutionMap.txt"))));
 			mapSave.writeObject(this.solutionMap);
 			mapSave.flush();
 			mapSave.close();
 		} catch (Exception e) {
-			errorNoticeToController("ThreadPool exit error");
 			e.printStackTrace();
 		}	
 	}	
@@ -193,35 +184,20 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		TP = Executors.newFixedThreadPool(properties.getNumOfThreads());
 		modelCompletedCommand = 1;
 		setChanged();
-		
 		TP.execute(new Thread(new Runnable() {
-			
 			@Override
 			public void run() {
 				server.startServerNew(properties.getNumOfClients());
-				
-				
 			}
 		}, "Server Socket"));
-		
-		
-		//TP.execute((),);
-		
-		
-		
-		
 		notifyObservers();
-		
 	}
 
 
 	@Override
 	public void stopServer() {
 		server.stopServer();
-		List<Runnable> threads=TP.shutdownNow();
-		System.out.println("Model TP"+TP.toString());
-		System.out.println("Model thread pool shutted down: "+TP.isShutdown());
-		System.out.println("Model thread pool terminated: "+TP.isTerminated());
+		TP.shutdownNow();
 		data = "Off";
 		modelCompletedCommand = 2;
 		setChanged();
@@ -238,12 +214,8 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		notifyObservers();
 	}
 
-
 	@Override
-	public int getNumberOfClients() {
-		return this.numberOfClients;
-	}
-
+	public int getNumberOfClients() {return this.numberOfClients;}
 
 	@Override
 	public void changeSettings(String portNumber, String maxClients) {

@@ -11,12 +11,10 @@ import presenter.PropertiesServerSide;
 public class writePropetiesServerSide {
 
 	public static void main(String[] args) {
-		//Properties p = new Properties(3, "MyMaze3dGenerator", "A*");
-	//	System.out.println(p.toString());
+
+		
 		try {
 			XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("External files/properties.xml")));
-			
-			
 			encoder.writeObject(new PropertiesServerSide(20, 20, "A*", 12345));
 			//encoder.flush();
 			encoder.close();

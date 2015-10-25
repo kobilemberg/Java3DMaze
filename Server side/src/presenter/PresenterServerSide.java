@@ -177,9 +177,7 @@ public class PresenterServerSide implements Observer {
 					
 				case 3:
 					//Update number of clients
-					System.out.println("Prestenter. ");
 					view.displayData(model.getData());
-					System.out.println("Prestenter 2. ");
 					break;
 					
 				case 4:

@@ -33,18 +33,12 @@ public class MyTCPIPServer {
 								if(!server.isClosed())
 								{
 									Socket someClient = server.accept();
-									System.out.println("Accepted connection.");
 									ObjectInputStream input = new ObjectInputStream(someClient.getInputStream());
 									ObjectOutputStream output = new ObjectOutputStream(someClient.getOutputStream());
 									String line = (String) input.readObject(); 
 									if (line.equals(SOLVE))
 									{
-										System.out.println(line + "accepted.");
 										executer.execute(new Thread(new ClientHandler(someClient,input,output)));
-									}
-									else
-									{
-										System.out.println("Command not understood. First String must be "+SOLVE);
 									}
 								}
 							}
@@ -53,55 +47,31 @@ public class MyTCPIPServer {
 						}
 					
 						catch (Exception e) {
-						//	e.printStackTrace();
-							System.out.println("Server closed.");
-						}finally {
-							((ExecutorService)executer).shutdownNow();
-						}	
+							
+						}finally {((ExecutorService)executer).shutdownNow();}	
 	}
-	public void stopServer(){
+	public void stopServer()
+	{
 		Running = false;
 		try {
-	//	if (executer != null)
 				((ExecutorService)executer).shutdownNow();
-		if (server != null)
-			if(!server.isClosed())
-				
-					server.close();
-		
-		
-		System.out.println("Server thread pool shutted down: "+((ExecutorService)executer).isShutdown());
-		System.out.println("Server thread pool Terminated: "+((ExecutorService)executer).isTerminated());
-		System.out.println("Main Socket shutted down: "+ server.isClosed());
-		System.out.println("MyTcpIpServer TP"+((ExecutorService)executer).toString());
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					System.out.println("Server closed.23");
+				if (server != null)
+					if(!server.isClosed())
+						server.close();
+			} catch (Exception e) {
 					//e.printStackTrace();
-				}
+			}
 	}
 
-	public int getPort() {
-		return port;
-	}
+	public int getPort() {return port;}
 
-	public void setPort(int port) {
-		this.port = port;
-	}
+	public void setPort(int port) {this.port = port;}
 
-	public Executor getExecuter() {
-		return executer;
-	}
+	public Executor getExecuter() {return executer;}
 
-	public void setExecuter(Executor executer) {
-		this.executer = executer;
-	}
+	public void setExecuter(Executor executer) {this.executer = executer;}
 
-	public ServerSocket getServer() {
-		return server;
-	}
+	public ServerSocket getServer() {return server;}
 
-	public void setServer(ServerSocket server) {
-		this.server = server;
-	}
+	public void setServer(ServerSocket server) {this.server = server;}
 }

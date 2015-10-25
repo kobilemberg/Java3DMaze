@@ -40,7 +40,7 @@ public class Presenter implements Observer {
 				{
 					try {
 						view.setUserCommand(1);
-						((Observable)view).notifyObservers();
+						((Observable)view).notifyObservers(args);
 					} catch (NullPointerException e) {e.printStackTrace();}	
 				}
 			});
@@ -336,7 +336,6 @@ public class Presenter implements Observer {
 						} 
 						catch (Exception e) 
 						{
-							System.out.println("Exception in case 13");
 							e.printStackTrace();
 							
 						}
@@ -356,7 +355,6 @@ public class Presenter implements Observer {
 				} 
 				catch (Exception e) 
 				{
-					System.out.println("Exception in case 13");
 					e.printStackTrace();
 					
 				}

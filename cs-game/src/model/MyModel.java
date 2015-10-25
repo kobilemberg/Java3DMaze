@@ -22,7 +22,6 @@ import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
-import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,15 +35,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
-
-import javax.annotation.PostConstruct;
-
-import org.omg.CosNaming.NamingContextExtPackage.StringNameHelper;
-
 import IO.MyCompressorOutputStream;
 import IO.MyDecompressorInputStream;
-import algorithms.demo.Demo;
-import algorithms.demo.SearchableMaze3d;
 import algorithms.mazeGenerators.Maze3d;
 import algorithms.mazeGenerators.Maze3dGenerator;
 import algorithms.mazeGenerators.MyMaze3dGenerator;
@@ -225,8 +217,6 @@ public class MyModel extends Observable implements Model{
 	 * {@inheritDoc}
 	 */
 	public void getMazeWithName(String nameOfMaze) {
-		System.out.println("Name: "+nameOfMaze);
-		System.out.println(maze3dMap.toString());
 			if(maze3dMap.containsKey(nameOfMaze))
 			{
 				TP.isShutdown();
@@ -234,8 +224,6 @@ public class MyModel extends Observable implements Model{
 				Object[] dataToSet = new Object[2];
 				dataToSet[0]=maze3dMap.get(nameOfMaze);
 				dataToSet[1]=nameOfMaze;
-				System.out.println("DataToSet[0]: "+dataToSet[0].toString());
-				System.out.println("DataToSet[1]: "+dataToSet[1]);
 				data= dataToSet;
 				setChanged();
 				notifyObservers();
@@ -438,7 +426,6 @@ public class MyModel extends Observable implements Model{
 			{
 				if(solutionMap.get(maze3dMap.get(mazeName)) !=null)
 				{
-					errorNoticeToController("Model notification: I have this solution, i won't calculate it again!");
 					modelCompletedCommand=9;
 					setData(mazeName);
 					setChanged();
@@ -469,12 +456,10 @@ public class MyModel extends Observable implements Model{
 					if (f.get()==null)
 					{
 						//throw new NullPointerException();
-						errorNoticeToController("Problem with server");
 					}
 					else
 					{
 						solutionMap.put(maze3dMap.get(mazeName), result);
-						System.out.println("Result accepted. ");
 						modelCompletedCommand=9;
 						setData(mazeName);
 						setChanged();
@@ -614,15 +599,14 @@ public class MyModel extends Observable implements Model{
 			ObjectInputStream input=new ObjectInputStream(myServer.getInputStream());
 			
 			String finalSolver="";
-			if(algorithm.equals("bfs"))
+			if(algorithm.equals("bfs")||algorithm.equals("BFS"))
 				finalSolver="BFS";
-			else if(algorithm.equals("astar")) 
+			else if(algorithm.equals("astar")||algorithm.equals("Astar")||algorithm.equals("A*")||algorithm.equals("a*")) 
 				finalSolver="A*";
 			else
 				finalSolver=properties.getDefaultSolver();
 			
 			/* Debug */ 
-			System.out.println("Client sees Server "+serverAddress+" port: "+ port);
 			
 			/* Communication with Server */ 
 			String line = "solve maze";
@@ -638,7 +622,6 @@ public class MyModel extends Observable implements Model{
 			Solution<Position> result = ((Solution<Position>)input.readObject());
 			if(result==null)
 				throw new NullPointerException("Cannot read solution");
-			System.out.println(result.toString());
 			output.close();
 			input.close();
 			myServer.close();	
@@ -668,7 +651,6 @@ public class MyModel extends Observable implements Model{
 		properties=(Properties)decoder.readObject();
 		setData(properties);
 		
-		System.out.println(properties);
 		//Saving the new file to the file root directory
 		XMLEncoder encoder=null;
 		try {

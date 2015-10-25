@@ -7,14 +7,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.Observable;
-
 import model.MyModel;
 import presenter.Presenter;
 import presenter.Properties;
 import view.MazeBasicWindow;
 import view.MyView;
-import view.View;
 
 
 public class Run {
@@ -29,17 +26,12 @@ public class Run {
 			System.out.println("ERROR: File External files/properties.xml not found");
 		}
 		Properties properties=(Properties)decoder.readObject();
-		System.out.println(properties);		
 		
 		
 		if(properties.getUI().equals("GUI"))
 		{
 			MyModel model = new MyModel(properties);
 			MazeBasicWindow view=new MazeBasicWindow("3D Maze Game", 1000, 600,null);
-			
-			//win.setCommands();
-			//view.setMazeWindow(win);
-			
 			Presenter presenter = new Presenter(view, model);
 			view.setCommands(presenter.getViewCommandMap());
 			view.addObserver(presenter);
