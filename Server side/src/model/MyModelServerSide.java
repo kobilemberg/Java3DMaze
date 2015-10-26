@@ -2,9 +2,9 @@ package model;
 /**
  * @author Kobi Lemberg, Alon Abadi
  * @version 1.0
- * <h1> MyModel </h1>
- * MyModel class implements Model interface, 
- * class goal is to act as MVC Model and perform all business logic calculations.
+ * <h1> MyModelServerSide </h1>
+ * MyModelServerSide class implements Model interface, 
+ * class goal is to act as MVP Model and perform all business logic calculations and the game server side.
  */
  
 
@@ -45,6 +45,10 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	* Instantiates a new  my own model.
 	*/
 	@SuppressWarnings("unchecked")
+	/**
+	 * Instantiate a new MyModelServerSide
+	 * @return new MyModelServerSide as instance represent the MyModelServerSide
+	 */
 	public MyModelServerSide()
 	{
 		super();
@@ -72,12 +76,22 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	
 	
 //Getters and setters
+	/**
+	 * This method will return instance represent additional properties (number of threads... ).
+	 * @return PropertiesServerSide represent additional properties.
+	 */
 	public PropertiesServerSide getProperties() {return properties;}
-
+	/**
+	 * This method will set instance represent additional properties (number of threads... ).
+	 * @param properties as instance represent additional properties (number of threads... ).
+	 */
 	public void setProperties(PropertiesServerSide properties) {this.properties = properties;}
 	
 //Functionality
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public Solution<Position> solveMaze(String mazeName, String algorithm, Maze3d maze) 
 	{
 
@@ -121,6 +135,9 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void exit() {
 		try {
 			server.stopServer();
@@ -135,7 +152,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	}	
 	
 	/**
-	* Ihis method will notice to controller an error messege
+	* This method will notice to controller an error messege
 	* @param s String represent the error to notice
 	*/
 	public void errorNoticeToController(String s)
@@ -147,29 +164,56 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public Object getData() {return data;}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setData(Object o) {this.data = o;}
-	
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public int getModelCompletedCommand(){return modelCompletedCommand;}
-	
+	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setModelCommandCommand(int commandNum){modelCompletedCommand=commandNum;}
-	
+	/**
+	 * This static method reads the properties XML file and load the configuratuin
+	 * @param filename represent the new configuration XML
+	 */
 	public static PropertiesServerSide read(String filename) throws Exception {
         XMLDecoder decoder =new XMLDecoder(new BufferedInputStream(new FileInputStream(filename)));
         PropertiesServerSide properties = (PropertiesServerSide)decoder.readObject();
         decoder.close();
         return properties;
     }
-	
+	/**
+	 * This method will solve a specific maze and will solve the problem via Astar algorithm
+	 * @param mazeName represent the name of the maze
+	 * @param d represent the solver
+	 * @param maze represent the maze as Object
+	 * @return Solution<Position> represent the solution for the maxe
+	 */
 	private Solution<Position> solveWithAstar(String mazeName,Demo d,Maze3d maze)
 	{
 		Solution<Position> solutionToAdd = d.solveSearchableMazeWithAstarByManhatenDistance(new SearchableMaze3d(maze));
 		solutionMap.put(maze, solutionToAdd);
 		return solutionMap.get(maze);
 	}
-	
+	/**
+	 * This method will solve a specific maze and will solve the problem via BFS algorithm
+	 * @param mazeName represent the name of the maze
+	 * @param d represent the solver
+	 * @param maze represent the maze as Object
+	 * @return Solution<Position> represent the solution for the maxe
+	 */
 	private Solution<Position> solveWithBFS(String mazeName,Demo d,Maze3d maze)
 	{
 		Solution<Position> solutionToAdd = d.solveSearchableMazeWithBFS(new SearchableMaze3d(maze));
@@ -179,6 +223,9 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void initServer() {
 		data = "On";
 		TP = Executors.newFixedThreadPool(properties.getNumOfThreads());
@@ -195,6 +242,9 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void stopServer() {
 		server.stopServer();
 		TP.shutdownNow();
@@ -206,7 +256,9 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 
 
 	@Override
-	public void setNumberOfClients(int num) {
+	/**
+	 * {@inheritDoc}
+	 */	public void setNumberOfClients(int num) {
 		this.numberOfClients = num; 
 		data = num + " Clients.";
 		modelCompletedCommand = 3;
@@ -215,10 +267,15 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	}
 
 	@Override
-	public int getNumberOfClients() {return this.numberOfClients;}
+	/**
+	 * {@inheritDoc}
+	 */	public int getNumberOfClients() {return this.numberOfClients;}
 
 	@Override
-	public void changeSettings(String portNumber, String maxClients) {
+	/**
+	 * {@inheritDoc}
+	 */
+		public void changeSettings(String portNumber, String maxClients) {
 		this.properties.setNumOfClients(Integer.parseInt(maxClients));
 		this.properties.setPort(Integer.parseInt(portNumber));
 		data = portNumber;

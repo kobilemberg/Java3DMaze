@@ -1,5 +1,11 @@
 package model;
-
+/**
+ * @author Kobi Lemberg, Alon Abadi
+ * @version 1.0
+ * <h1>ClientHandler</h1>
+ * ClientHandler implements Runnable.
+ * The goal of this class is to being executed by thread for each client 
+ */
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -15,6 +21,12 @@ public class ClientHandler implements Runnable {
 	private ObjectInputStream input;
 	private ObjectOutputStream output;
 	
+	/**
+	 * Instantiate a new ClientHandler with given Client Socket client, ObjectInputStream input and ObjectOutputStream outpu
+	 * @param client represent client socket
+	 * @param input represent socket ObjectInputStream
+	 * @param output represent socket ObjectOutputStream
+	 */
 	public ClientHandler(Socket client, ObjectInputStream input, ObjectOutputStream output) {
 		this.client = client;
 		this.input = input;
@@ -23,6 +35,11 @@ public class ClientHandler implements Runnable {
 	}
 
 	@Override
+	/**
+	 * This method override Runnable interface "Run()" method.
+	 * The method read the problem from the socket and pass the problem to model layer for calculation.
+	 * after the calculation the solution is being send and all resources are being closed
+	 */
 	public void run() {
 		try
 		{
