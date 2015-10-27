@@ -58,27 +58,37 @@ public class Properties implements Serializable
 	/**
 	 * @return the numOfThreads
 	 */
-	public int getNumOfThreads() {return numOfThreads;}
+	public int getNumOfThreads() {
+		return numOfThreads;
+	}
 
 	/**
 	 * @param numOfThreads the numOfThreads to set
 	 */
-	public void setNumOfThreads(int numOfThreads) {this.numOfThreads = numOfThreads;}
+	public void setNumOfThreads(int numOfThreads) {
+		this.numOfThreads = numOfThreads;
+	}
 
 	/**
 	 * @return the defaultSolver
 	 */
-	public String getDefaultSolver() {return defaultSolver;}
+	public String getDefaultSolver() {
+		return defaultSolver;
+	}
 
 	/**
 	 * @param defaultSolver the defaultSolver to set
 	 */
-	public void setDefaultSolver(String defaultSolver) {this.defaultSolver = defaultSolver;}
+	public void setDefaultSolver(String defaultSolver) {
+		this.defaultSolver = defaultSolver;
+	}
 
 	/**
 	 * @return the serialversionuid
 	 */
-	public static long getSerialversionuid() {return serialVersionUID;}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
 
 	/**
 	 * 
@@ -125,7 +135,9 @@ public class Properties implements Serializable
 	 * @see java.lang.Object#equals(java.lang.Object)
 	 */
 	@Override
-	public boolean equals(Object obj) {return this.toString().equals(obj.toString());}
+	public boolean equals(Object obj) {
+		return this.toString().equals(obj.toString());
+	}
 
 	@Override
 	public String toString() {
@@ -133,11 +145,7 @@ public class Properties implements Serializable
 				+ ", serverAddress=" + serverAddress + ", port=" + port + ", numOfThreads=" + numOfThreads + "]";
 	}
 
-	
 
-	/* (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
 	
 
 }
