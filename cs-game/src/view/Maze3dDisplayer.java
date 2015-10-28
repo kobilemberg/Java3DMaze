@@ -51,7 +51,9 @@ public class Maze3dDisplayer extends MazeDisplayer {
 	public Maze3dDisplayer(Composite parent, int style) {
 		super(parent, style);
 		
+		@SuppressWarnings("unused")
 		final Color white=new Color(null, 255, 255, 255);
+		@SuppressWarnings("unused")
 		final Color black=new Color(null, 0,0,0);
 		//Image bGImage = new Image(getDisplay(), "Resources/wood-floor-texture.jpg");
 		//setBackgroundImage(bGImage);

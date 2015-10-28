@@ -21,9 +21,9 @@ public class Run {
 		
 		XMLDecoder decoder=null;
 		try {
-			decoder=new XMLDecoder(new BufferedInputStream(new FileInputStream("External files/properties.xml")));
+			decoder=new XMLDecoder(new BufferedInputStream(new FileInputStream("External client files/properties.xml")));
 		} catch (FileNotFoundException e) {
-			System.out.println("ERROR: File External files/properties.xml not found");
+			System.out.println("ERROR: File External client files/properties.xml not found");
 		}
 		Properties properties=(Properties)decoder.readObject();
 		

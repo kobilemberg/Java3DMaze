@@ -16,7 +16,7 @@ public class writePropeties {
 
 	public static void main(String[] args) {
 		try {
-			XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("External files/properties.xml")));
+			XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("External client files/properties.xml")));
 			String defaultAlgorithm = "MyMaze3dGenerator";
 			String defaultSolver ="A*";
 			int port = 12345; 

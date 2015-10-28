@@ -67,15 +67,15 @@ public class MyModel extends Observable implements Model{
 		this.properties = p; 
 		this.TP = Executors.newFixedThreadPool(p.getNumOfThreads());
 		
-		File map = new File("External files/solutionMap.txt");
+		File map = new File("External client files/solutionMap.txt");
 		if(map.exists())
 		{
 			ObjectInputStream mapLoader;
 			try {
-				mapLoader = new ObjectInputStream(new GZIPInputStream(new FileInputStream(new File("External files/solutionMap.txt"))));
+				mapLoader = new ObjectInputStream(new GZIPInputStream(new FileInputStream(new File("External client files/solutionMap.txt"))));
 				solutionMap = (HashMap<Maze3d, Solution<Position>>) mapLoader.readObject();
 				mapLoader.close();
-				this.properties = read("External files/Properties.xml");
+				this.properties = read("External client files/Properties.xml");
 			} 
 			catch (FileNotFoundException e) {errorNoticeToController("Problam with solution map file");} 
 			catch (IOException e) 
@@ -496,7 +496,7 @@ public class MyModel extends Observable implements Model{
 		try {
 			modelCompletedCommand =11;
 			TP.shutdownNow();
-			ObjectOutputStream mapSave = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(new File("External files/solutionMap.txt"))));
+			ObjectOutputStream mapSave = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(new File("External client files/solutionMap.txt"))));
 			mapSave.writeObject(this.solutionMap);
 			mapSave.flush();
 			mapSave.close();
@@ -644,9 +644,9 @@ public class MyModel extends Observable implements Model{
 		//Saving the new file to the file root directory
 		XMLEncoder encoder=null;
 		try {
-			encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("External files/properties.xml")));
+			encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("External client files/properties.xml")));
 		} catch (FileNotFoundException e) {
-			errorNoticeToController("ERROR: Writing file External files/properties.xml failed.");
+			errorNoticeToController("ERROR: Writing file External client files/properties.xml failed.");
 			return false;
 		}
 		encoder.writeObject(properties);
