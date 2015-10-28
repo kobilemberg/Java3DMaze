@@ -112,10 +112,16 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 			@Override
 			public void widgetSelected(SelectionEvent arg0) {
 				String portNumber = portNumberText.getText();
-				String maxClients = maximumClients.getText();
-				String[] args = {portNumber, maxClients}; 
-				setUserCommand(4);
-				notifyObservers(args);
+				Integer port = new Integer(portNumber);
+				if(port>=1024&&port<=65000)
+				{
+					String maxClients = maximumClients.getText();
+					String[] args = {portNumber, maxClients}; 
+					setUserCommand(4);
+					notifyObservers(args);
+				}
+				else
+					errorNoticeToUser("Port range is 1024 to 65000");
 			}
 			
 			@Override

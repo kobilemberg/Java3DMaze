@@ -55,13 +55,13 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		/* Initialize Variables */ 
 		ObjectInputStream mapLoader;
 		try {
-			this.properties = read("External files/Properties.xml");
+			this.properties = read("External server files/Properties.xml");
 			this.TP = Executors.newFixedThreadPool(properties.getNumOfThreads());
 			server = new MyTCPIPServer(properties.getPort());
-			File map = new File("External files/solutionMap.txt");
+			File map = new File("External server files/solutionMap.txt");
 			if(map.exists())
 			{
-				mapLoader = new ObjectInputStream(new GZIPInputStream(new FileInputStream(new File("External files/solutionMap.txt"))));
+				mapLoader = new ObjectInputStream(new GZIPInputStream(new FileInputStream(new File("External server files/solutionMap.txt"))));
 				solutionMap = (HashMap<Maze3d, Solution<Position>>) mapLoader.readObject();
 				mapLoader.close();
 			}
@@ -141,7 +141,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		try {
 			server.stopServer();
 			TP.shutdownNow();
-			ObjectOutputStream mapSave = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(new File("External files/solutionMap.txt"))));
+			ObjectOutputStream mapSave = new ObjectOutputStream(new GZIPOutputStream(new FileOutputStream(new File("External server files/solutionMap.txt"))));
 			mapSave.writeObject(this.solutionMap);
 			mapSave.flush();
 			mapSave.close();
@@ -233,6 +233,7 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 		TP.execute(new Thread(new Runnable() {
 			@Override
 			public void run() {
+				server.setPort(properties.getPort());
 				server.startServerNew(properties.getNumOfClients());
 			}
 		}, "Server Socket"));

@@ -390,8 +390,11 @@ public class MazeBasicWindow extends BasicWindow implements View{
 					solver="A*";
 				else
 					solver="BFS";
-				changeSettings(server,port,generator,solver);
-				
+				Integer portNum =new Integer(port);
+				if(portNum>=1024&&portNum<=65000)
+					changeSettings(server,port,generator,solver);
+				else
+					errorNoticeToUser("Port range is 1024 to 65000");
 			}
 			
 			@Override
@@ -837,7 +840,7 @@ public class MazeBasicWindow extends BasicWindow implements View{
 					try {Thread.sleep(250);} 
 					catch (InterruptedException e) 
 					{
-						e.printStackTrace();
+						//e.printStackTrace();
 					}
 				}
 			}
