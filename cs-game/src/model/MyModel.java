@@ -93,18 +93,8 @@ public class MyModel extends Observable implements Model{
 		else
 			solutionMap = new HashMap<Maze3d, Solution<Position>>();
 	}
-	/**
-	* Instantiates a new  my own model with given controller
-	* @param controller Controller represent the controller layer to work with
-	* @return new MyModel as instance
-	*/
-	
-	
-//Getters and setters
-	/**
-	* this method will set the controller to work with
-	* @param controller Controller represent the controller layer to work with
-	*/
+
+
 
 	public Properties getProperties() {return properties;}
 
@@ -520,7 +510,7 @@ public class MyModel extends Observable implements Model{
 	
 	
 	/**
-	* Ihis method will notice to controller an error messege
+	* This method will notice to Presenter\Controller an error message
 	* @param s String represent the error to notice
 	*/
 	public void errorNoticeToController(String s)

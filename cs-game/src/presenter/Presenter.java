@@ -25,7 +25,6 @@ public class Presenter implements Observer {
 	* Instantiates a new  my own presenter with given view and model.
 	* @param view View represent the view layer
 	* @param model Model represent the model layer
-	* @return new Presenter as instance
 	* */
 		public Presenter(View view, Model model) {
 			super();

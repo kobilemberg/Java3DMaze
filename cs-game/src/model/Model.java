@@ -3,7 +3,7 @@ package model;
  * @author Kobi Lemberg, Alon Abadi
  * @version 1.0
  * <h1>Model</h1>
- * Model interface represent a generally model layer of MVC
+ * Model interface represent a generally model layer of MVP
  */
 
 import java.io.IOException;
@@ -13,9 +13,8 @@ public interface Model {
 	/**
 	* This method will return a string of files and directories of given a local path
 	* @param path String represrnt the local path
-	* @return String of files and directories of given a local path
 	*/
-	//public String dir(String path);
+
 	public void dir(String path);
 
 
@@ -33,7 +32,6 @@ public interface Model {
 	/**
 	* This method return a Maze3d object with given name.
 	* @param name String represent the name of the Maze3d instance to return.
-	* @return Maze3d maze with the correct name.
 	*/
 	public void getMazeWithName(String string);
 
@@ -43,7 +41,6 @@ public interface Model {
 	* @param axe String represent the axe, options are X,Y,Z.
 	* @param index String represent the index of the axe
 	* @param name String represent the name of the Maze3d instance
-	* @return int[][] represent the cross section by some axe with given index of maze
 	*/
 	public void getCrossSectionByAxe(String axe, String index, String mazeName);
 
@@ -71,7 +68,6 @@ public interface Model {
 	/**
 	* This method will return the size of maze with mazeName object in ramdisk
 	* @param mazeName String represent instance name
-	* @return double represent the size of maze with mazeName object in ramdisk
 	*/
 	public void getSizeOfMazeInRam(String mazeName);
 
@@ -79,7 +75,6 @@ public interface Model {
 	/**
 	* This method will return the size of file that contains maze
 	* @param fileName String represent the file name to check
-	* @return double represent the size of file with name fileName
 	*/
 	public void getSizeOfMazeInFile(String fileName);
 
@@ -95,7 +90,6 @@ public interface Model {
 	/**
 	* This method will return solution of maze with given maze name
 	* @param mazeName String represent the name of the maze to solve.
-	* @return the solution of the maze named mazeName
 	*/
 	public void getSolutionOfMaze(String mazeName);
 
@@ -109,7 +103,6 @@ public interface Model {
 	* This boolean method returns true if the maze with name mazeName has been loaded
 	* @param mazeName String represent the mazeName to check if loaded
 	* @return True if the maze exists in the ram disk
-	* @return False if maze is not exists in the ram disk
 	*/
 	public boolean isLoaded(String mazeName);
 	

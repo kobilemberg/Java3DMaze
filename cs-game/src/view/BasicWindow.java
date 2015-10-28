@@ -23,7 +23,6 @@ public abstract class BasicWindow extends Observable implements Runnable {
 	 * @param title represent the title for the shell
 	 * @param width represent the width of the shell
 	 * @param height represent the height of the shell
-	 * @return new BasicWindow as instance
 	 */
  	public BasicWindow(String title, int width,int height) {
  		display=new Display();

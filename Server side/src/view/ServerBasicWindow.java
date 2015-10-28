@@ -40,6 +40,9 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	void initWidgets(){
 		shell.setLayout(new GridLayout(2, false));
 		TabFolder folder = new TabFolder(shell, SWT.NULL); 
@@ -122,35 +125,53 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void start() {
 		this.run();
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void tellTheUserSolutionIsReady(String mazeName) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void printSolutionToUser(String mazeName, Solution<Position> solution) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setCommands(HashMap<String, Command> viewCommandMap) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setCommandsMenu(String cliMenu) {
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void exit() {
 		setUserCommand(-1);
 		String[] params = {};
@@ -160,6 +181,9 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void errorNoticeToUser(String s) {
 		Display.getDefault().asyncExec(new Runnable() {
 		    public void run() {
@@ -172,17 +196,26 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public int getUserCommand() {
 		return this.userCommand;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setUserCommand(int commandID) {
 		this.setChanged();
 		this.userCommand = commandID;
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void displayData(Object data) {
 		
 		try {
@@ -214,11 +247,20 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public HashMap<String, Command> getViewCommandMap() {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
+	/**
+	 * This method create a button with the following parameters
+	 * @param parent represent the Composite to being added to
+	 * @param text represent the text value of thr button
+	 * @param image represent the image that will be added to button
+	 * @return button
+	 */
 	private Button createButton(Composite parent, String text, String image) {
 	    Button button = new Button(parent, SWT.PUSH);
 	    button.setImage(new Image(Display.getCurrent(), image));
@@ -226,7 +268,15 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 	    button.setText(text);	    
 	    return button;
 	}
-	
+	/**
+	 * This method create a button with the following parameters
+	 * @param parent represent the Composite to being added to 
+	 * @param text represent the text value of thr button
+	 * @param image image represent the image that will be added to button
+	 * @param width represent the width
+	 * @param height represent the height
+	 * @return button
+	 */
 	private Button createButton(Composite parent, String text, String image, int width, int height) {
 		Button button = createButton(parent, text, image);
     	button.setLayoutData(new RowData(width, height));
@@ -234,13 +284,28 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 	}
 	
 	@SuppressWarnings("unused")
+	/**
+	 * Thie method will change server XML settings
+	 * @param server represent the server address as string
+	 * @param port represent server port
+	 * @param generator represent the maze generation algorithm 
+	 * @param solver represent the solve algorithm
+	 */
 	private void changeSettings(String server,String port,String generator,String solver)
 	{
 		String[] args = {server,port,generator,solver};
 		setUserCommand(14);
 		notifyObservers(args);
 	}
-	
+	/**
+	 * This method will create label with\by the following values
+	 * @param parent represent the composite to be added to
+	 * @param style represent the style
+	 * @param placeholder represent the text value of the label
+	 * @param width represent label width
+	 * @param height represent label height
+	 * @return label
+	 */
 	private Label createLabel(Composite parent, int style, String placeholder, int width, int height){
 		Label label = new Label(parent, style);
 		label.setLayoutData(new RowData(width, height));
@@ -248,10 +313,25 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 		return label; 		
 	}
 	
+	/**
+	 * This method will create label with\by the following values
+	 * @param parent represent the composite to be added to
+	 * @param style represent the style
+	 * @param placeholder represent the text value of the label
+	 * @return label
+	 */
 	private Label createLabel(Composite parent, int style, String placeholder){
 		return createLabel(parent, style, placeholder, 120, 30); 		
 	}
-	
+	/**
+	 * This method will create text box with\by the following values
+	 * @param parent represent the composite to be added to
+	 * @param style represent the style
+	 * @param placeholder represent the text value of the label
+	 * @param width represent Text width
+	 * @param height represent Text height
+	 * @return the text box
+	 */
 	private Text createText(Composite parent, int style, String placeholder, int width, int height){
 		Text text = new Text(parent, style);
 	    text.setText(placeholder);
@@ -259,10 +339,27 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 	    return text; 
 	}
 	
+	@SuppressWarnings("unused")
+	/**
+	 * This method will create text box with\by the following values
+	 * @param parent represent the composite to be added to
+	 * @param style represent the style
+	 * @param placeholder represent the text value of the label
+	 * @return the text box
+	 */
 	private Text createText(Composite parent, int style, String placeholder){
 		return createText(parent, style, placeholder, 120, 15); 
 	}
-	
+	/**
+	 * This method will create combo box with\by the following values
+	 * @param parent represent the parent to be added to
+	 * @param style represent the style
+	 * @param options represent the String[] of strings to put at the combo
+	 * @param placeholder represent the first value of the combo
+	 * @param width represent the combo width
+	 * @param height represent the combo height
+	 * @return combo 
+	 */
 	private Combo createCombo(Composite parent, int style, String[] options, String placeholder, int width, int height){
 		Combo combo = new Combo(parent, style);
 		for (int i = 0; i < options.length; i++) {
@@ -274,10 +371,21 @@ public class ServerBasicWindow extends BasicWindow implements ViewServerSide{
 	}
 	
 	@SuppressWarnings("unused")
+	/**
+	 * This method will create combo box with\by the following values
+	 * @param parent represent the parent to be added to
+	 * @param style represent the style
+	 * @param options represent the String[] of strings to put at the combo
+	 * @param placeholder represent the first value of the combo
+	 * @return combo 
+	 */
 	private Combo createCombo(Composite parent, int style, String[] options, String placeholder){
 		return createCombo(parent, style, options, placeholder, 90, 20);
 	}
-	
+	/**
+	 * Thie method changes the server button
+	 * @param status boolean represent the server status to set
+	 */
 	private void toggleServerStatus(boolean status){
 		if (!status){
 

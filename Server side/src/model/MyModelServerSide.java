@@ -47,7 +47,6 @@ public class MyModelServerSide extends Observable implements ModelServerSide{
 	@SuppressWarnings("unchecked")
 	/**
 	 * Instantiate a new MyModelServerSide
-	 * @return new MyModelServerSide as instance represent the MyModelServerSide
 	 */
 	public MyModelServerSide()
 	{

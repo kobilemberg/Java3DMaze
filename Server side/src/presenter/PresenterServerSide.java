@@ -23,7 +23,6 @@ public class PresenterServerSide implements Observer {
 	* Instantiates a new  my own controller with given view and model.
 	* @param view View represent the view layer
 	* @param model Model represent the model layer
-	* @return new MyController as instance
 	* */
 	public PresenterServerSide(ViewServerSide view, ModelServerSide model) 
 	{

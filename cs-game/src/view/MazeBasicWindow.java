@@ -76,6 +76,9 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	void initWidgets() {
 
 		/* General Grid Stuff */
@@ -694,6 +697,9 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void printToUserCrossedArray(int[][] crossedArr, String axe, String index, String name) {
 		
 		
@@ -762,27 +768,45 @@ public class MazeBasicWindow extends BasicWindow implements View{
 
 	}
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void tellTheUserTheMazeIsSaved(String mazeName, String filename) {}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void tellTheUserTheMazeIsLoaded(String fileName, String mazeName) {
 		String[] mazeNameArr={mazeName,};
 		this.viewCommandMap.get("display").doCommand(mazeNameArr);
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void tellTheUsersizeOfMazeInRam(String mazeName,Double size) {}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void tellTheUsersizeOfMazeInFile(String fileName, double sizeOfFile) {}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void tellTheUserSolutionIsReady(String mazeName) {
 		String[] mazeNameArr = {mazeObjectName,"A*"};
 		viewCommandMap.get("display solution").doCommand(mazeNameArr);
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void printSolutionToUser(String mazeName,Solution<Position> solution) {
 		Thread t = new Thread(new Runnable() {
 			
@@ -822,6 +846,9 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setCommands(HashMap<String, Command> viewCommandMap) 
 	{
 		this.viewCommandMap = viewCommandMap;
@@ -831,12 +858,18 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setCommandsMenu(String cliMenu) {
 		this.cliMenu = cliMenu;
 		if(cli!=null){cli.setCLIMenu(cliMenu);}	
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void errorNoticeToUser(String s) 
 	{
 		Display.getDefault().asyncExec(new Runnable() {
@@ -851,9 +884,15 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public int getUserCommand() {return this.userCommand;}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void setUserCommand(int commandID) 
 	{
 		this.setChanged();
@@ -861,6 +900,9 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	}
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void displayData(Object data) {}
 
 	/**
@@ -913,10 +955,16 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	public void setWon(boolean won) {this.won = won;}
 
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void start() {this.run();}
 	
 	
 	@Override
+	/**
+	 * {@inheritDoc}
+	 */
 	public void exit(){
 		if (started)
 		{
@@ -932,7 +980,13 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		String[] args= {"Exit"};
 		notifyObservers(args);
 	}
-
+	/**
+	 * This method create a button with the following parameters
+	 * @param parent represent the Composite to being added to
+	 * @param text represent the text value of thr button
+	 * @param image represent the image that will be added to button
+	 * @return button
+	 */
 	private Button createButton(Composite parent, String text, String image) {
 	    Button button = new Button(parent, SWT.PUSH);
 	    button.setImage(new Image(Display.getCurrent(), image));
@@ -945,19 +999,42 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	
 	
 	@SuppressWarnings("unused")
+	/**
+	 * This method create a button with the following parameters
+	 * @param parent represent the Composite to being added to 
+	 * @param text represent the text value of thr button
+	 * @param image image represent the image that will be added to button
+	 * @param width represent the width
+	 * @param height represent the height
+	 * @return button
+	 */
 	private Button createButton(Composite parent, String text, String image, int width, int height) {
 		Button button = createButton(parent, text, image);
     	button.setLayoutData(new RowData(width, height));
     	return button; 		
 	}
-	
+	/**
+	 * Thie method will change client XML settings
+	 * @param server represent the server address as string
+	 * @param port represent server port
+	 * @param generator represent the maze generation algorithm 
+	 * @param solver represent the solve algorithm
+	 */
 	private void changeSettings(String server,String port,String generator,String solver)
 	{
 		String[] args = {server,port,generator,solver};
 		setUserCommand(14);
 		notifyObservers(args);
 	}
-	
+	/**
+	 * This method will create label with\by the following values
+	 * @param parent represent the composite to be added to
+	 * @param style represent the style
+	 * @param placeholder represent the text value of the label
+	 * @param width represent label width
+	 * @param height represent label height
+	 * @return label
+	 */
 	private Label createLabel(Composite parent, int style, String placeholder, int width, int height){
 		Label label = new Label(parent, style);
 		label.setLayoutData(new RowData(width, height));
@@ -966,10 +1043,25 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	}
 	
 	@SuppressWarnings("unused")
+	/**
+	 * This method will create label with\by the following values
+	 * @param parent represent the composite to be added to
+	 * @param style represent the style
+	 * @param placeholder represent the text value of the label
+	 * @return label
+	 */
 	private Label createLabel(Composite parent, int style, String placeholder){
 		return createLabel(parent, style, placeholder, 120, 30); 		
 	}
-	
+	/**
+	 * This method will create text box with\by the following values
+	 * @param parent represent the composite to be added to
+	 * @param style represent the style
+	 * @param placeholder represent the text value of the label
+	 * @param width represent Text width
+	 * @param height represent Text height
+	 * @return the text box
+	 */
 	private Text createText(Composite parent, int style, String placeholder, int width, int height){
 		Text text = new Text(parent, style);
 	    text.setText(placeholder);
@@ -978,10 +1070,26 @@ public class MazeBasicWindow extends BasicWindow implements View{
 	}
 	
 	@SuppressWarnings("unused")
+	/**
+	 * This method will create text box with\by the following values
+	 * @param parent represent the composite to be added to
+	 * @param style represent the style
+	 * @param placeholder represent the text value of the label
+	 * @return the text box
+	 */
 	private Text createText(Composite parent, int style, String placeholder){
 		return createText(parent, style, placeholder, 120, 15); 
 	}
-	
+	/**
+	 * This method will create combo box with\by the following values
+	 * @param parent represent the parent to be added to
+	 * @param style represent the style
+	 * @param options represent the String[] of strings to put at the combo
+	 * @param placeholder represent the first value of the combo
+	 * @param width represent the combo width
+	 * @param height represent the combo height
+	 * @return combo 
+	 */
 	private Combo createCombo(Composite parent, int style, String[] options, String placeholder, int width, int height){
 		Combo combo = new Combo(parent, style);
 		for (int i = 0; i < options.length; i++) {
@@ -991,7 +1099,14 @@ public class MazeBasicWindow extends BasicWindow implements View{
 		combo.setLayoutData(new RowData(width, height));
 		return combo;
 	}
-	
+	/**
+	 * This method will create combo box with\by the following values
+	 * @param parent represent the parent to be added to
+	 * @param style represent the style
+	 * @param options represent the String[] of strings to put at the combo
+	 * @param placeholder represent the first value of the combo
+	 * @return combo 
+	 */
 	private Combo createCombo(Composite parent, int style, String[] options, String placeholder){
 		return createCombo(parent, style, options, placeholder, 90, 20);
 	}

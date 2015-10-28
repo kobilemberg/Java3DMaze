@@ -16,7 +16,6 @@ public interface ModelServerSide {
 	* @param mazeName String represent the name of the maze to solve.
 	* @param algorithm String represent the algorithm to solve with
 	* @param maze 
-	* @return 
 	*/
 	public Solution<Position> solveMaze(String mazeName, String algorithm, Maze3d maze);
 	/**

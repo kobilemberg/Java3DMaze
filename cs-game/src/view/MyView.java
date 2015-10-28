@@ -41,7 +41,6 @@ public class MyView extends Observable implements View {
 	 * Instantiates a new  my own view with given: BufferedReader in, PrintWriter out
 	 * @param in BufferedReader represent the input source
 	 * @param out PrintWriter represent the output source
-	 * @return new MyView as instance with BufferedReader in and PrintWriter out
 	 */
 	public MyView(BufferedReader in, PrintWriter out)
 	{
@@ -54,7 +53,6 @@ public class MyView extends Observable implements View {
 	 * @param in BufferedReader represent the input source
 	 * @param out PrintWriter represent the output source
 	 * @param viewCommandMap HashMap<String, Command> represent a commands to run
-	 * @return new MyView as instance with controller layer, BufferedReader in, PrintWriter out and commands 
 	 */
 	public MyView(BufferedReader in, PrintWriter out,HashMap<String, Command> viewCommandMap)
 	{
